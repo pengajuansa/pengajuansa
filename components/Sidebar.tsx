@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { supabase } from '../supabase/lib/supabase';
 import {
   UniversityIcon,
   HomeIcon,
@@ -19,7 +20,12 @@ export default function Sidebar() {
     if (userStr) setUser(JSON.parse(userStr));
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch (e) {
+      console.error('Error signing out:', e);
+    }
     localStorage.removeItem('user');
     router.push('/login');
   };

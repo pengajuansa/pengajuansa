@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { supabase } from '../supabase/lib/supabase';
 
 const DashboardIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
@@ -28,6 +29,17 @@ const TaskIcon = () => (
 
 export default function DosenSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch (e) {
+      console.error('Error signing out:', e);
+    }
+    localStorage.removeItem('user');
+    router.push('/login');
+  };
 
   const menuItems = [
     { path: '/dosen/dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
@@ -79,10 +91,13 @@ export default function DosenSidebar() {
       <div className="px-6 pb-8 flex flex-col gap-4">
         <div className="flex flex-col gap-1 border-t border-gray-100 pt-6">
 
-          <Link href="/login" className="flex items-center gap-3 px-2 py-2 text-sm font-semibold text-gray-500 hover:text-red-600">
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center gap-3 px-2 py-2 text-sm font-semibold text-gray-500 hover:text-red-600 cursor-pointer bg-transparent border-0 text-left font-sans"
+          >
             <LogoutIcon />
             Keluar
-          </Link>
+          </button>
         </div>
       </div>
     </aside>
