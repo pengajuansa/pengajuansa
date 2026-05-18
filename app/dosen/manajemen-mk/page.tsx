@@ -193,7 +193,7 @@ export default function ManajemenMK() {
           </div>
         </div>
 
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6">
           <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-50">
             <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Total MK Diampu</span>
             <p className="text-3xl font-black text-[#1A365D] mt-1">{courses.length}</p>
@@ -206,14 +206,14 @@ export default function ManajemenMK() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {loading ? (
             <div className="col-span-2 py-20 text-center font-bold text-gray-400 uppercase tracking-widest animate-pulse">
               Mensinkronkan Data...
             </div>
           ) : courses.length > 0 ? (
             courses.map((course, idx) => (
-              <div key={`${course.id}-${idx}`} className="group relative rounded-[2rem] bg-white p-8 shadow-sm border border-gray-50 transition-all hover:shadow-xl">
+              <div key={`${course.id}-${idx}`} className="group relative rounded-2xl md:rounded-[2rem] bg-white p-5 md:p-8 shadow-sm border border-gray-50 transition-all hover:shadow-xl">
                 <div className="mb-4 flex items-center justify-between">
                   <span className="rounded-full bg-blue-50 px-3 py-1 text-[10px] font-bold text-blue-700 uppercase tracking-widest">
                     {course.kode_mk || 'Kode Kosong'}
@@ -221,13 +221,13 @@ export default function ManajemenMK() {
                   <div className={`h-2.5 w-2.5 rounded-full ${course.status_buka ? 'bg-green-500 animate-pulse' : 'bg-red-500'} ring-4 ring-gray-50`}></div>
                 </div>
 
-                <h4 className="mb-2 text-xl font-bold text-gray-900 group-hover:text-blue-900 transition-colors line-clamp-1" title={course.nama_mk}>
+                <h4 className="mb-2 text-lg md:text-xl font-bold text-gray-900 group-hover:text-blue-900 transition-colors line-clamp-1" title={course.nama_mk}>
                   {course.nama_mk}
                 </h4>
                 <p className="mb-4 text-[10px] text-gray-500 font-medium uppercase tracking-wide">
                   {course.jurusan || '-'} • {course.prodi || '-'}
                 </p>
-                <div className="mb-8 flex items-center gap-4">
+                <div className="mb-6 flex items-center gap-4">
                   <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">
                     {course.sks} SKS • Sem {course.semester_asal}
                   </p>
@@ -236,7 +236,7 @@ export default function ManajemenMK() {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between border-t border-gray-50 pt-6">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-t border-gray-50 pt-5">
                   <span className={`text-[10px] font-black uppercase tracking-widest ${course.status_buka ? 'text-green-600' : 'text-red-500'}`}>
                     Status: {course.status_buka ? 'DIBUKA' : 'DITUTUP'}
                   </span>
@@ -275,9 +275,9 @@ export default function ManajemenMK() {
       {selectedMK && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between border-b border-gray-100 px-8 py-6">
-              <div>
-                <h3 className="text-xl font-black text-[#1A365D]">{selectedMK.nama_mk}</h3>
+            <div className="flex items-start justify-between border-b border-gray-100 px-5 md:px-8 py-5 md:py-6 gap-3">
+              <div className="min-w-0">
+                <h3 className="text-lg md:text-xl font-black text-[#1A365D] line-clamp-2">{selectedMK.nama_mk}</h3>
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">
                   {selectedMK.kode_mk} • {selectedMK.sks} SKS • {selectedMK.jurusan}
                 </p>
@@ -290,7 +290,7 @@ export default function ManajemenMK() {
               </button>
             </div>
             
-            <div className="p-8 overflow-y-auto flex-grow bg-gray-50/50">
+            <div className="p-6 md:p-8 overflow-y-auto flex-grow bg-gray-50/50">
               <h4 className="text-sm font-bold text-gray-900 mb-4">Mahasiswa Terdaftar ({enrolledStudents.length})</h4>
               
               {loadingModal ? (
@@ -298,8 +298,8 @@ export default function ManajemenMK() {
                   Memuat Daftar Mahasiswa...
                 </div>
               ) : enrolledStudents.length > 0 ? (
-                <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-                  <table className="w-full text-left text-sm">
+                <div className="overflow-x-auto bg-white rounded-2xl border border-gray-100">
+                  <table className="w-full min-w-[360px] text-left text-sm">
                     <thead className="bg-gray-50 text-[10px] uppercase tracking-wider text-gray-500 font-bold">
                       <tr>
                         <th className="px-6 py-4">No</th>
@@ -334,8 +334,8 @@ export default function ManajemenMK() {
       {editingMK && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
           <div className="bg-white rounded-3xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between border-b border-gray-100 px-8 py-6">
-              <h3 className="text-xl font-black text-[#1A365D]">Edit Mata Kuliah</h3>
+            <div className="flex items-start justify-between border-b border-gray-100 px-5 md:px-8 py-5 md:py-6 gap-3">
+              <h3 className="text-lg md:text-xl font-black text-[#1A365D]">Edit Mata Kuliah</h3>
               <button 
                 onClick={() => setEditingMK(null)}
                 className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-900 transition-colors"
@@ -344,7 +344,7 @@ export default function ManajemenMK() {
               </button>
             </div>
             
-            <div className="p-8 overflow-y-auto flex-grow bg-gray-50/50">
+            <div className="p-5 md:p-8 overflow-y-auto flex-grow bg-gray-50/50">
               <form onSubmit={handleUpdateMK} className="flex flex-col gap-5">
                 <div>
                   <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-widest">Nama Mata Kuliah</label>
@@ -356,7 +356,7 @@ export default function ManajemenMK() {
                     required
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-widest">Kode MK</label>
                     <input 
@@ -380,7 +380,7 @@ export default function ManajemenMK() {
                     />
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label className="mb-2 block text-xs font-bold text-gray-500 uppercase tracking-widest">Semester Asal</label>
                     <input 
@@ -412,7 +412,7 @@ export default function ManajemenMK() {
                     className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium focus:border-[#1A365D] focus:outline-none focus:ring-1 focus:ring-[#1A365D]"
                   />
                 </div>
-                <div className="mt-4 flex justify-end gap-3">
+                <div className="mt-4 flex flex-col-reverse sm:flex-row justify-end gap-3">
                   <button 
                     type="button" 
                     onClick={() => setEditingMK(null)}

@@ -93,9 +93,9 @@ export default function PendaftaranPage() {
 
   return (
     <MainLayout topbarTitle={topbarTitle}>
-      <div className="flex gap-8">
+      <div className="flex flex-col lg:flex-row gap-8">
         {/* Kolom Kiri: Form Upload */}
-        <div className="w-2/3 flex flex-col gap-6">
+        <div className="flex-1 flex flex-col gap-6 min-w-0">
           <div className="rounded-3xl bg-white p-10 shadow-sm border border-gray-50">
             <h3 className="text-xl font-bold text-[#1A365D] mb-4">Lengkapi Berkas Pendaftaran</h3>
             <p className="text-sm text-gray-500 mb-8 leading-relaxed">
@@ -152,7 +152,7 @@ export default function PendaftaranPage() {
         </div>
 
         {/* Kolom Kanan: Panduan */}
-        <div className="w-1/3 flex flex-col gap-6">
+        <div className="w-full lg:w-72 shrink-0 flex flex-col gap-6">
           <div className="rounded-3xl bg-[#0F172A] p-8 text-white shadow-xl relative overflow-hidden">
             <h4 className="text-xs font-bold text-blue-400 uppercase tracking-[0.2em] mb-6 relative z-10">Instruksi Pembayaran</h4>
             <div className="space-y-6 relative z-10">

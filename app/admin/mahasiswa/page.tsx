@@ -289,8 +289,8 @@ export default function AdminMahasiswa() {
           </div>
         )}
 
-        <div className="flex items-center justify-between">
-          <div className="relative w-96 group">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="relative w-full sm:w-96 group">
             <input
               type="text"
               placeholder="Cari Nama atau NIM..."
@@ -302,7 +302,7 @@ export default function AdminMahasiswa() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <input
               type="file"
               id="csvInput"
@@ -313,22 +313,51 @@ export default function AdminMahasiswa() {
             />
             <label
               htmlFor="csvInput"
-              className={`rounded-2xl border-2 border-[#1A365D] px-8 py-4 text-xs font-black text-[#1A365D] hover:bg-gray-50 transition-all uppercase tracking-widest cursor-pointer flex items-center gap-2 ${isSubmitting ? 'opacity-50 pointer-events-none' : ''}`}
+              className={`rounded-2xl border-2 border-[#1A365D] px-5 py-3 text-xs font-black text-[#1A365D] hover:bg-gray-50 transition-all uppercase tracking-widest cursor-pointer flex items-center gap-2 ${isSubmitting ? 'opacity-50 pointer-events-none' : ''}`}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
               Import CSV
             </label>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="rounded-2xl bg-[#1A365D] px-8 py-4 text-xs font-black text-white shadow-xl shadow-blue-900/20 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest"
+              className="rounded-2xl bg-[#1A365D] px-5 py-3 text-xs font-black text-white shadow-xl shadow-blue-900/20 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest whitespace-nowrap"
             >
               + Tambah Mahasiswa
             </button>
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-[2.5rem] bg-white shadow-sm border border-gray-50">
-          <table className="w-full text-left">
+        {/* ── MOBILE: Card List ── */}
+        <div className="md:hidden flex flex-col gap-2">
+          {loading ? (
+            <div className="py-16 text-center font-bold text-gray-400 uppercase tracking-widest animate-pulse">Memuat Data...</div>
+          ) : filteredStudents.length > 0 ? filteredStudents.map((student, idx) => (
+            <div key={`m-${student.id}-${idx}`} className="flex items-center gap-4 rounded-2xl bg-white border border-gray-50 shadow-sm p-4">
+              <div className="h-11 w-11 shrink-0 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center font-black text-blue-600 border border-blue-200/50 shadow-sm">
+                {student.nama_mahasiswa?.charAt(0)}
+              </div>
+              <div className="flex-grow min-w-0">
+                <p className="text-sm font-bold text-gray-900 line-clamp-1">{student.nama_mahasiswa}</p>
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">{student.nim}</p>
+                <p className="text-[10px] font-semibold text-gray-400 line-clamp-1">{student.prodi}</p>
+              </div>
+              <div className="flex flex-col gap-1 shrink-0">
+                <Link href={`/admin/mahasiswa/${student.id}`} className="rounded-xl bg-gray-50 px-3 py-1.5 text-[9px] font-black text-gray-400 hover:bg-[#1A365D] hover:text-white transition-all uppercase tracking-widest text-center">
+                  Detail
+                </Link>
+                <Link href={`/admin/mahasiswa/edit/${student.id}`} className="rounded-xl bg-yellow-50 px-3 py-1.5 text-[9px] font-black text-yellow-600 hover:bg-yellow-600 hover:text-white transition-all uppercase tracking-widest text-center border border-yellow-100">
+                  Edit
+                </Link>
+              </div>
+            </div>
+          )) : (
+            <div className="py-12 text-center font-bold text-gray-300 uppercase tracking-widest">Data tidak ditemukan</div>
+          )}
+        </div>
+
+        {/* ── DESKTOP: Table ── */}
+        <div className="hidden md:block overflow-x-auto rounded-[2.5rem] bg-white shadow-sm border border-gray-50">
+          <table className="w-full min-w-[600px] text-left">
             <thead className="bg-gray-50/50">
               <tr>
                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-gray-400">Mahasiswa</th>
@@ -341,7 +370,7 @@ export default function AdminMahasiswa() {
               {loading ? (
                 <tr><td colSpan={4} className="px-8 py-20 text-center font-bold text-gray-400 uppercase tracking-widest">Memuat Data...</td></tr>
               ) : filteredStudents.length > 0 ? filteredStudents.map((student, idx) => (
-                <tr key={`mhs-${student.id}-${idx}`} className="hover:bg-blue-50/30 transition-colors group">
+                <tr key={`d-${student.id}-${idx}`} className="hover:bg-blue-50/30 transition-colors group">
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
                       <div className="h-11 w-11 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center font-black text-blue-600 border border-blue-200/50 shadow-sm">
@@ -355,7 +384,14 @@ export default function AdminMahasiswa() {
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">{student.prodi}</span>
                   </td>
                   <td className="px-8 py-6 text-right">
-                    <Link href={`/admin/mahasiswa/${student.id}`} className="inline-flex rounded-xl bg-gray-50 px-5 py-2.5 text-[10px] font-black text-gray-400 hover:bg-[#1A365D] hover:text-white transition-all uppercase tracking-widest shadow-sm">Detail Profil</Link>
+                    <div className="flex items-center justify-end gap-2">
+                      <Link href={`/admin/mahasiswa/${student.id}`} className="inline-flex rounded-xl bg-gray-50 px-4 py-2.5 text-[10px] font-black text-gray-400 hover:bg-[#1A365D] hover:text-white transition-all uppercase tracking-widest shadow-sm">
+                        Detail
+                      </Link>
+                      <Link href={`/admin/mahasiswa/edit/${student.id}`} className="inline-flex rounded-xl bg-yellow-50 px-4 py-2.5 text-[10px] font-black text-yellow-600 hover:bg-yellow-600 hover:text-white transition-all uppercase tracking-widest shadow-sm border border-yellow-100">
+                        Edit
+                      </Link>
+                    </div>
                   </td>
                 </tr>
               )) : (
@@ -382,7 +418,7 @@ export default function AdminMahasiswa() {
                 </button>
               </div>
 
-              <form onSubmit={handleAddStudent} className="grid grid-cols-2 gap-6">
+              <form onSubmit={handleAddStudent} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2 col-span-2">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Nama Lengkap Mahasiswa</label>
                   <input

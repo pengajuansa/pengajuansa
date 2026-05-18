@@ -64,7 +64,7 @@ export default function PortalAkademik({ mahasiswaId, mkIds }: PortalAkademikPro
         </Link>
       </div>
 
-      <div className="flex gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {loading ? (
           <div className="flex-1 py-10 text-center font-bold text-gray-300 uppercase tracking-widest">Memuat MK...</div>
         ) : courses.length > 0 ? (

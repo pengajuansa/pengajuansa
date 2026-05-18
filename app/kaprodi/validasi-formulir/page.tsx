@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import KaprodiLayout from '../../../components/KaprodiLayout';
 import { supabase } from '../../../supabase/lib/supabase';
 
@@ -74,7 +75,7 @@ export default function ValidasiFormulir() {
               <p className="text-xs font-bold text-gray-400/70 mt-1">Belum ada formulir baru yang diteruskan oleh Sekjur.</p>
             </div>
           ) : applications.map((app, idx) => (
-            <div key={`${app.id}-${idx}`} className="rounded-3xl bg-white p-8 shadow-sm border border-gray-50 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-lg transition-all group">
+            <div key={`${app.id}-${idx}`} className="rounded-3xl bg-white p-5 md:p-8 shadow-sm border border-gray-50 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:shadow-lg transition-all group">
               
               <div className="flex items-start gap-6 flex-grow">
                 <div className="h-14 w-14 shrink-0 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center text-lg font-black text-blue-700 shadow-sm border border-white">
@@ -100,8 +101,8 @@ export default function ValidasiFormulir() {
                 </div>
               </div>
 
-              <div className="flex md:flex-col lg:flex-row gap-3 shrink-0">
-                <div className="rounded-xl bg-blue-50 px-6 py-3.5 text-[10px] font-black text-blue-600 border border-blue-100 uppercase tracking-widest flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-3 shrink-0 items-stretch sm:items-center md:items-stretch lg:items-center">
+                <div className="rounded-xl bg-blue-50 px-6 py-3.5 text-[10px] font-black text-blue-600 border border-blue-100 uppercase tracking-widest flex items-center justify-center gap-2">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                   Diterima dari Sekjur
                 </div>

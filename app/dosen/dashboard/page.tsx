@@ -163,7 +163,7 @@ export default function DosenDashboard() {
       <div className="flex flex-col gap-8 relative">
 
         {/* Stats Row */}
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-50 relative overflow-hidden">
             {loading && <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10 flex items-center justify-center"><div className="h-4 w-4 border-2 border-[#1A365D] border-t-transparent rounded-full animate-spin"></div></div>}
             <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-3">TOTAL MAHASISWA BIMBINGAN</p>
@@ -198,7 +198,7 @@ export default function DosenDashboard() {
           </div>
         </div>
 
-        <div className="flex gap-8">
+        <div className="flex flex-col lg:flex-row gap-8">
           {/* Left Column */}
           <div className="flex flex-col gap-8 flex-grow">
 
@@ -235,7 +235,7 @@ export default function DosenDashboard() {
           </div>
 
           {/* Right Column */}
-          <div className="w-[340px] shrink-0 flex flex-col gap-8">
+          <div className="w-full lg:w-[340px] shrink-0 flex flex-col gap-8">
 
             {/* Needs Grading Card */}
             <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-50 relative">

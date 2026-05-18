@@ -238,8 +238,8 @@ export default function DataDosenAdmin() {
         )}
 
         {/* Table Header / Toolbar */}
-        <div className="flex items-center justify-between rounded-[2rem] bg-white p-8 shadow-sm border border-gray-50">
-          <div className="flex gap-4 flex-grow max-w-md">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-[2rem] bg-white p-5 md:p-8 shadow-sm border border-gray-50">
+          <div className="flex gap-4 w-full sm:flex-grow sm:max-w-md">
             <div className="relative flex-grow group">
               <input
                 type="text"
@@ -253,7 +253,7 @@ export default function DataDosenAdmin() {
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3">
             <input
               type="file"
               id="csvDosen"
@@ -263,23 +263,51 @@ export default function DataDosenAdmin() {
             />
             <label
               htmlFor="csvDosen"
-              className="group flex items-center gap-3 rounded-2xl border-2 border-[#1A365D] px-8 py-4 text-xs font-black text-[#1A365D] hover:bg-gray-50 transition-all uppercase tracking-widest cursor-pointer"
+              className="group flex items-center gap-2 rounded-2xl border-2 border-[#1A365D] px-5 py-3 text-xs font-black text-[#1A365D] hover:bg-gray-50 transition-all uppercase tracking-widest cursor-pointer"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
               IMPORT CSV
             </label>
             <Link
               href="/admin/dosen/tambah"
-              className="group flex items-center gap-3 rounded-2xl bg-[#1A365D] px-10 py-4 text-sm font-black text-white shadow-xl shadow-blue-900/20 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest"
+              className="group flex items-center gap-2 rounded-2xl bg-[#1A365D] px-5 py-3 text-sm font-black text-white shadow-xl shadow-blue-900/20 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest whitespace-nowrap"
             >
-              <PlusIcon /> TAMBAH DOSEN BARU
+              <PlusIcon /> TAMBAH DOSEN
             </Link>
           </div>
         </div>
 
-        {/* Data Table */}
-        <div className="rounded-[2rem] bg-white shadow-sm border border-gray-50 overflow-hidden">
-          <table className="w-full text-left">
+        {/* ── MOBILE: Card List ── */}
+        <div className="md:hidden flex flex-col gap-2">
+          {loading ? (
+            <div className="py-16 text-center font-bold text-gray-400 uppercase tracking-widest animate-pulse">Sinkronisasi Data...</div>
+          ) : filteredDosen.length > 0 ? filteredDosen.map((item, idx) => (
+            <div key={`m-${item.id}-${idx}`} className="flex items-center gap-3 rounded-2xl bg-white border border-gray-50 shadow-sm p-4">
+              <div className="h-10 w-10 shrink-0 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center text-xs font-black text-blue-700 shadow-sm border border-blue-200/50">
+                {item.nama_lengkap.charAt(0)}
+              </div>
+              <div className="flex-grow min-w-0">
+                <p className="text-sm font-bold text-gray-900 line-clamp-1">{item.nama_lengkap}</p>
+                <p className="text-[10px] font-black text-blue-600 tracking-tighter">{item.nim_nip}</p>
+                <p className="text-[10px] font-semibold text-gray-400 line-clamp-1">{item.alokasi_dosen?.[0]?.mata_kuliah?.nama_mk || 'Belum Dialokasikan'}</p>
+              </div>
+              <div className="flex gap-2 shrink-0">
+                <Link href={`/admin/dosen/edit/${item.id}`} className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-gray-400 hover:bg-blue-600 hover:text-white transition-all border border-gray-100 shadow-sm">
+                  <EditIcon />
+                </Link>
+                <button onClick={() => handleDelete(item.id)} className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-gray-400 hover:bg-red-600 hover:text-white transition-all border border-gray-100 shadow-sm">
+                  <TrashIcon />
+                </button>
+              </div>
+            </div>
+          )) : (
+            <div className="py-12 text-center font-bold text-gray-300 uppercase tracking-widest">Data dosen tidak ditemukan</div>
+          )}
+        </div>
+
+        {/* ── DESKTOP: Table ── */}
+        <div className="hidden md:block overflow-x-auto rounded-[2rem] bg-white shadow-sm border border-gray-50">
+          <table className="w-full min-w-[640px] text-left">
             <thead>
               <tr className="bg-gray-50/50">
                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-gray-400">NIP / NIDN</th>
@@ -292,7 +320,7 @@ export default function DataDosenAdmin() {
               {loading ? (
                 <tr><td colSpan={4} className="px-8 py-20 text-center font-bold text-gray-300 uppercase tracking-widest">Sinkronisasi Data...</td></tr>
               ) : filteredDosen.map((item, idx) => (
-                <tr key={`${item.id}-${idx}`} className="hover:bg-gray-50/30 transition-all group">
+                <tr key={`d-${item.id}-${idx}`} className="hover:bg-gray-50/30 transition-all group">
                   <td className="px-8 py-6">
                     <span className="text-sm font-black text-blue-600 tracking-tighter">{item.nim_nip}</span>
                   </td>
@@ -308,17 +336,11 @@ export default function DataDosenAdmin() {
                     {item.alokasi_dosen?.[0]?.mata_kuliah?.nama_mk || 'Belum Dialokasikan'}
                   </td>
                   <td className="px-8 py-6 text-right">
-                    <div className="flex items-center justify-end gap-3 transition-all">
-                      <Link
-                        href={`/admin/dosen/edit/${item.id}`}
-                        className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-gray-400 hover:bg-blue-600 hover:text-white transition-all border border-gray-100 shadow-sm hover:shadow-lg hover:shadow-blue-200"
-                      >
+                    <div className="flex items-center justify-end gap-3">
+                      <Link href={`/admin/dosen/edit/${item.id}`} className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-gray-400 hover:bg-blue-600 hover:text-white transition-all border border-gray-100 shadow-sm hover:shadow-lg hover:shadow-blue-200">
                         <EditIcon />
                       </Link>
-                      <button
-                        onClick={() => handleDelete(item.id)}
-                        className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-gray-400 hover:bg-red-600 hover:text-white transition-all border border-gray-100 shadow-sm hover:shadow-lg hover:shadow-red-200"
-                      >
+                      <button onClick={() => handleDelete(item.id)} className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-gray-400 hover:bg-red-600 hover:text-white transition-all border border-gray-100 shadow-sm hover:shadow-lg hover:shadow-red-200">
                         <TrashIcon />
                       </button>
                     </div>
@@ -334,7 +356,7 @@ export default function DataDosenAdmin() {
             </div>
           )}
 
-          <div className="bg-gray-50/30 p-8 flex items-center justify-between border-t border-gray-50">
+          <div className="bg-gray-50/30 p-6 md:p-8 flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-gray-50">
             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Total Master Data: {filteredDosen.length} Dosen</p>
           </div>
         </div>

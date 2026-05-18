@@ -14,6 +14,7 @@ interface MainLayoutProps {
 export default function MainLayout({ children, topbarTitle }: MainLayoutProps) {
   const router = useRouter();
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -37,18 +38,26 @@ export default function MainLayout({ children, topbarTitle }: MainLayoutProps) {
       </div>
     );
   }
+
   return (
     <div className="flex min-h-screen bg-[#F8F9FB] font-sans">
-      <Sidebar />
-      <div className="ml-[260px] flex flex-grow flex-col">
-        <Topbar title={topbarTitle} />
-        <div className="flex flex-grow flex-col p-8">
+      <Sidebar
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
+      <div className="flex flex-grow flex-col lg:ml-[260px]">
+        <Topbar
+          title={topbarTitle}
+          onMenuToggle={() => setIsMobileMenuOpen((prev) => !prev)}
+          isMobileMenuOpen={isMobileMenuOpen}
+        />
+        <div className="flex flex-grow flex-col p-4 md:p-8">
           {children}
         </div>
 
         {/* Footer */}
-        <footer className="mt-12 flex items-center justify-between border-t border-gray-200 py-8 px-8 text-xs font-semibold text-gray-400">
-          <p className="uppercase tracking-wider">
+        <footer className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between border-t border-gray-200 py-6 px-4 md:px-8 text-xs font-semibold text-gray-400 gap-2">
+          <p className="uppercase tracking-wider text-center sm:text-left">
             © 2026 POLITEKNIK NEGERI MANADO. EXCELLENCE IN VOCATIONAL EDUCATION.
           </p>
         </footer>

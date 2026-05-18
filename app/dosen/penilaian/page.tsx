@@ -289,19 +289,19 @@ export default function PenilaianTugasDosen() {
         )}
 
         {/* Header & Main Filters */}
-        <div className="flex justify-between items-end">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
           <div className="max-w-xl">
-            <h1 className="text-4xl font-black text-[#1A365D] mb-4 tracking-tight">Penilaian Mahasiswa</h1>
+            <h1 className="text-3xl md:text-4xl font-black text-[#1A365D] mb-3 md:mb-4 tracking-tight">Penilaian Mahasiswa</h1>
             <p className="text-sm font-semibold text-gray-400">Kelola tugas dan berikan penilaian khusus untuk setiap mahasiswa secara mandiri.</p>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 w-full md:w-auto">
             <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Pilih Mata Kuliah</label>
             <div className="relative group">
               <select
                 value={selectedMK}
                 onChange={(e) => setSelectedMK(e.target.value)}
-                className="appearance-none w-80 rounded-2xl bg-white border border-gray-100 px-6 py-4 text-sm font-bold text-gray-900 outline-none focus:ring-4 focus:ring-blue-50 transition-all shadow-sm pr-12"
+                className="appearance-none w-full md:w-80 rounded-2xl bg-white border border-gray-100 px-6 py-4 text-sm font-bold text-gray-900 outline-none focus:ring-4 focus:ring-blue-50 transition-all shadow-sm pr-12"
               >
                 {mkList.length > 0 ? mkList.map(mk => (
                   <option key={mk.id} value={mk.id}>{mk.nama_mk}</option>
@@ -324,25 +324,56 @@ export default function PenilaianTugasDosen() {
             </div>
           )}
 
-          <div className="flex items-center justify-between px-10 py-8 border-b border-gray-50 bg-gray-50/30">
-            <h3 className="text-xl font-black text-[#1A365D] uppercase tracking-wider">Daftar Mahasiswa di Kelas</h3>
+          <div className="flex items-center justify-between px-6 md:px-10 py-6 md:py-8 border-b border-gray-50 bg-gray-50/30">
+            <h3 className="text-lg md:text-xl font-black text-[#1A365D] uppercase tracking-wider">Daftar Mahasiswa di Kelas</h3>
           </div>
 
-          <table className="w-full text-left">
+          {/* ── MOBILE: Card List (hidden on md+) ── */}
+          <div className="md:hidden divide-y divide-gray-50">
+            {mhsList.length > 0 ? mhsList.map((mhs, index) => {
+              const color = getRandomColorClass(index);
+              return (
+                <div key={`m-${mhs.id}-${index}`} className="p-5 flex items-center gap-4">
+                  <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.2rem] font-black text-sm shadow-sm ${color.bg} ${color.text} border border-white/50`}>
+                    {getInitials(mhs.nama_mahasiswa)}
+                  </div>
+                  <div className="flex-grow min-w-0">
+                    <p className="text-sm font-bold text-gray-900 line-clamp-1">{mhs.nama_mahasiswa}</p>
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter">{mhs.nim}</p>
+                    <p className="text-[10px] font-semibold text-gray-400 mt-0.5">{mhs.prodi || 'Informatika'}</p>
+                  </div>
+                  <button
+                    onClick={() => { setSelectedMhs(mhs); setIsDetailModalOpen(true); }}
+                    className="shrink-0 rounded-xl bg-gray-100 px-3 py-2.5 text-[10px] font-black text-gray-600 hover:bg-[#1A365D] hover:text-white transition-all uppercase tracking-widest"
+                  >
+                    Kelola
+                  </button>
+                </div>
+              );
+            }) : (
+              <div className="py-16 text-center text-sm font-black text-gray-400 uppercase tracking-widest">
+                Belum Ada Mahasiswa di Kelas Ini
+              </div>
+            )}
+          </div>
+
+          {/* ── DESKTOP: Table (hidden on mobile) ── */}
+          <div className="hidden md:block">
+          <table className="w-full min-w-[480px] text-left">
             <thead>
               <tr className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 bg-gray-50/50">
-                <th className="px-10 py-6">MAHASISWA</th>
-                <th className="px-10 py-6">PROGRAM STUDI</th>
-                <th className="px-10 py-6 text-center">TUGAS AKTIF</th>
-                <th className="px-10 py-6 text-right">AKSI MANAJEMEN</th>
+                <th className="px-6 py-5">MAHASISWA</th>
+                <th className="px-6 py-5">PROGRAM STUDI</th>
+                <th className="px-6 py-5 text-center">STATUS</th>
+                <th className="px-6 py-5 text-right">AKSI MANAJEMEN</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
               {mhsList.length > 0 ? mhsList.map((mhs, index) => {
                 const color = getRandomColorClass(index);
                 return (
-                  <tr key={`${mhs.id}-${index}`} className="transition-all hover:bg-blue-50/30 group">
-                    <td className="px-10 py-8">
+                  <tr key={`d-${mhs.id}-${index}`} className="transition-all hover:bg-blue-50/30 group">
+                    <td className="px-6 py-6">
                       <div className="flex items-center gap-4">
                         <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.2rem] font-black text-sm shadow-sm ${color.bg} ${color.text} border border-white/50`}>
                           {getInitials(mhs.nama_mahasiswa)}
@@ -353,21 +384,19 @@ export default function PenilaianTugasDosen() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-10 py-8">
+                    <td className="px-6 py-6">
                       <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">{mhs.prodi || 'Informatika'}</span>
                     </td>
-                    <td className="px-10 py-8 text-center">
+                    <td className="px-6 py-6 text-center">
                       <span className="rounded-full bg-blue-50 px-3 py-1 text-[10px] font-black text-blue-700">Terdaftar</span>
                     </td>
-                    <td className="px-10 py-8 text-right">
-                      <div className="flex justify-end gap-3">
-                        <button
-                          onClick={() => { setSelectedMhs(mhs); setIsDetailModalOpen(true); }}
-                          className="rounded-xl bg-gray-100 px-6 py-3 text-[10px] font-black text-gray-600 hover:bg-[#1A365D] hover:text-white transition-all uppercase tracking-widest"
-                        >
-                          Kelola Tugas & Nilai
-                        </button>
-                      </div>
+                    <td className="px-6 py-6 text-right">
+                      <button
+                        onClick={() => { setSelectedMhs(mhs); setIsDetailModalOpen(true); }}
+                        className="rounded-xl bg-gray-100 px-5 py-3 text-[10px] font-black text-gray-600 hover:bg-[#1A365D] hover:text-white transition-all uppercase tracking-widest"
+                      >
+                        Kelola Tugas & Nilai
+                      </button>
                     </td>
                   </tr>
                 );
@@ -380,25 +409,26 @@ export default function PenilaianTugasDosen() {
               )}
             </tbody>
           </table>
+          </div>
         </div>
 
         {/* Task Detail Modal */}
         {isDetailModalOpen && selectedMhs && (
           <div className="fixed inset-0 z-[120] flex items-center justify-center bg-[#0F172A]/80 backdrop-blur-md p-4">
-            <div className="w-full max-w-4xl rounded-[2.5rem] bg-white p-10 shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-4">
-                  <div className="h-16 w-16 rounded-[1.5rem] bg-blue-600 flex items-center justify-center text-white font-black text-2xl shadow-xl">
+            <div className="w-full max-w-4xl rounded-2xl md:rounded-[2.5rem] bg-white p-6 md:p-10 shadow-2xl animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
+              <div className="flex items-center justify-between mb-6 md:mb-8">
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="h-12 w-12 md:h-16 md:w-16 rounded-[1.2rem] md:rounded-[1.5rem] bg-blue-600 flex items-center justify-center text-white font-black text-xl md:text-2xl shadow-xl">
                     {getInitials(selectedMhs.nama_mahasiswa)}
                   </div>
                   <div>
-                    <h3 className="text-2xl font-black text-[#1A365D] uppercase tracking-tight">{selectedMhs.nama_mahasiswa}</h3>
+                    <h3 className="text-lg md:text-2xl font-black text-[#1A365D] uppercase tracking-tight">{selectedMhs.nama_mahasiswa}</h3>
                     <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">{selectedMhs.nim} • Manajemen Tugas Individu</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setIsDetailModalOpen(false)}
-                  className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 hover:bg-red-100 hover:text-red-600 transition-all"
+                  className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 hover:bg-red-100 hover:text-red-600 transition-all shrink-0"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>

@@ -178,46 +178,46 @@ export default function DetailTugasMahasiswa() {
 
   return (
     <MainLayout topbarTitle={topbarTitle}>
-      <div className="mx-auto max-w-7xl animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="mx-auto max-w-7xl px-4 md:px-0 animate-in fade-in slide-in-from-bottom-4 duration-700">
         
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-stretch">
           
           {/* Kolom Kiri: Header & Detail Instruksi (8 Kolom) */}
           <div className="lg:col-span-8 flex flex-col">
-            <div className="rounded-[2.5rem] bg-white p-10 shadow-sm border border-gray-50 relative overflow-hidden flex-grow flex flex-col">
+            <div className="rounded-[2rem] md:rounded-[2.5rem] bg-white p-6 md:p-10 shadow-sm border border-gray-50 relative overflow-hidden flex-grow flex flex-col">
                <div className="relative z-10 flex-grow flex flex-col">
-                  <div className="mb-6 flex flex-wrap items-center gap-3">
-                    <span className="rounded-xl bg-[#1A365D] px-4 py-2 text-[10px] font-black text-white uppercase tracking-[0.2em] shadow-lg shadow-blue-900/10">
+                  <div className="mb-4 md:mb-6 flex flex-wrap items-center gap-3">
+                    <span className="rounded-xl bg-[#1A365D] px-3 py-1.5 md:px-4 md:py-2 text-[9px] md:text-[10px] font-black text-white uppercase tracking-[0.2em] shadow-lg shadow-blue-900/10">
                       {(task.mata_kuliah as any)?.nama_mk || 'Mata Kuliah'}
                     </span>
-                    <span className={`rounded-xl px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] border ${isExpired ? 'bg-red-50 text-red-600 border-red-100' : 'bg-green-50 text-green-600 border-green-100'}`}>
+                    <span className={`rounded-xl px-3 py-1.5 md:px-4 md:py-2 text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] border ${isExpired ? 'bg-red-50 text-red-600 border-red-100' : 'bg-green-50 text-green-600 border-green-100'}`}>
                       {isExpired ? 'DEADLINE BERAKHIR' : 'STATUS: AKTIF'}
                     </span>
                   </div>
 
-                  <h1 className="text-4xl md:text-5xl font-black text-[#1A365D] tracking-tight leading-tight mb-8">
+                  <h1 className="text-2xl md:text-4xl lg:text-5xl font-black text-[#1A365D] tracking-tight leading-tight mb-6 md:mb-8">
                     {task.judul}
                   </h1>
 
-                  <div className="flex items-center gap-4 p-4 rounded-3xl bg-gray-50/80 border border-gray-100 w-fit mb-10">
-                    <div className="h-12 w-12 rounded-2xl bg-[#1A365D] flex items-center justify-center text-lg font-black text-white shadow-lg shadow-blue-900/10">
+                  <div className="flex items-center gap-4 p-3 md:p-4 rounded-3xl bg-gray-50/80 border border-gray-100 w-fit max-w-full mb-8 md:mb-10">
+                    <div className="h-10 w-10 md:h-12 md:w-12 rounded-2xl bg-[#1A365D] flex items-center justify-center text-base md:text-lg font-black text-white shadow-lg shadow-blue-900/10 shrink-0">
                         {(task.dosen as any)?.nama_lengkap?.charAt(0) || 'D'}
                     </div>
-                    <div>
-                        <p className="text-sm font-black text-[#1A365D]">{(task.dosen as any)?.nama_lengkap || 'Dosen Pengampu'}</p>
-                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Dosen Utama Semester Antara</p>
+                    <div className="min-w-0">
+                        <p className="text-xs md:text-sm font-black text-[#1A365D] truncate">{(task.dosen as any)?.nama_lengkap || 'Dosen Pengampu'}</p>
+                        <p className="text-[8px] md:text-[10px] font-black text-gray-400 uppercase tracking-widest truncate">Dosen Utama Semester Antara</p>
                     </div>
                   </div>
 
                   {/* Instruksi Section - AGA KEBAWAH & SEJAJAR PANJANGNYA */}
-                  <div className="border-t border-gray-100 pt-12 flex-grow flex flex-col">
-                    <div className="flex items-center gap-3 mb-8">
-                        <div className="h-1.5 w-10 bg-blue-600 rounded-full"></div>
-                        <h4 className="text-[11px] font-black text-gray-400 uppercase tracking-[0.3em]">Instruksi Penugasan</h4>
+                  <div className="border-t border-gray-100 pt-8 md:pt-12 flex-grow flex flex-col">
+                    <div className="flex items-center gap-3 mb-6 md:mb-8">
+                        <div className="h-1.5 w-8 md:w-10 bg-blue-600 rounded-full"></div>
+                        <h4 className="text-[10px] md:text-[11px] font-black text-gray-400 uppercase tracking-[0.3em]">Instruksi Penugasan</h4>
                     </div>
                     
                     <div className="text-gray-600 font-medium leading-relaxed flex-grow">
-                        <p className="whitespace-pre-line text-base md:text-lg">{task.deskripsi || 'Tidak ada instruksi khusus untuk tugas ini.'}</p>
+                        <p className="whitespace-pre-line text-sm md:text-base lg:text-lg">{task.deskripsi || 'Tidak ada instruksi khusus untuk tugas ini.'}</p>
                     </div>
                   </div>
                </div>
@@ -228,41 +228,41 @@ export default function DetailTugasMahasiswa() {
           <div className="lg:col-span-4 flex flex-col">
             
             {/* Action Card: Portal Pengumpulan */}
-            <div className="rounded-[2.5rem] bg-[#0F172A] p-10 shadow-2xl relative overflow-hidden flex flex-col h-full">
+            <div className="rounded-[2rem] md:rounded-[2.5rem] bg-[#0F172A] p-6 md:p-10 shadow-2xl relative overflow-hidden flex flex-col h-full">
                <div className="absolute top-0 right-0 h-64 w-64 rounded-full bg-blue-600/10 blur-3xl"></div>
                
                <div className="relative z-10">
-                  <div className="mb-10 flex items-center justify-between">
-                     <h3 className="text-xs font-black text-blue-300 uppercase tracking-[0.3em]">Portal Tugas</h3>
+                  <div className="mb-6 md:mb-10 flex items-center justify-between">
+                     <h3 className="text-[10px] md:text-xs font-black text-blue-300 uppercase tracking-[0.3em]">Portal Tugas</h3>
                      <div className={`h-2 w-2 rounded-full ${submission ? 'bg-green-500 shadow-[0_0_15px_#22c55e]' : 'bg-red-500 shadow-[0_0_15px_#ef4444]'}`}></div>
                   </div>
 
-                  <div className="flex flex-col gap-6 mb-10">
+                  <div className="flex flex-col gap-4 md:gap-6 mb-6 md:mb-10">
                      <div className="flex justify-between items-center">
-                        <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Deadline</p>
+                        <p className="text-[9px] md:text-[10px] font-black text-gray-500 uppercase tracking-widest">Deadline</p>
                         <p className="text-xs font-bold text-white uppercase">
                            {task.deadline ? new Date(task.deadline).toLocaleString('id-ID', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'Open'}
                         </p>
                      </div>
                      <div className="h-px w-full bg-white/5"></div>
                      <div className="flex justify-between items-center">
-                        <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Status</p>
+                        <p className="text-[9px] md:text-[10px] font-black text-gray-500 uppercase tracking-widest">Status</p>
                         {submission ? (
-                           <span className="text-[10px] font-black text-green-400 uppercase tracking-widest">TERKIRIM</span>
+                           <span className="text-[9px] md:text-[10px] font-black text-green-400 uppercase tracking-widest">TERKIRIM</span>
                         ) : (
-                           <span className="text-[10px] font-black text-red-400 uppercase tracking-widest animate-pulse">PENDING</span>
+                           <span className="text-[9px] md:text-[10px] font-black text-red-400 uppercase tracking-widest animate-pulse">PENDING</span>
                         )}
                      </div>
                   </div>
 
                   {!submission ? (
-                     <form onSubmit={handleUpload} className="flex flex-col gap-6">
+                     <form onSubmit={handleUpload} className="flex flex-col gap-5 md:gap-6">
                         <div 
-                           className="group relative flex flex-col items-center justify-center rounded-[2rem] border-2 border-dashed border-white/10 bg-white/5 py-10 px-6 text-center hover:bg-white/10 transition-all cursor-pointer"
+                           className="group relative flex flex-col items-center justify-center rounded-[1.5rem] md:rounded-[2rem] border-2 border-dashed border-white/10 bg-white/5 py-8 md:py-10 px-4 md:px-6 text-center hover:bg-white/10 transition-all cursor-pointer"
                            onClick={() => document.getElementById('file-upload')?.click()}
                         >
-                           <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/5 text-blue-400">
-                              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                           <div className="mb-4 flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-2xl bg-white/5 text-blue-400">
+                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
                            </div>
                            <p className="text-xs font-black text-white/80 mb-1 max-w-full truncate">
                               {selectedFile ? selectedFile.name : 'Pilih Berkas'}
@@ -274,20 +274,20 @@ export default function DetailTugasMahasiswa() {
                         <button 
                            type="submit"
                            disabled={submitting || isExpired}
-                           className={`w-full rounded-2xl py-6 text-[11px] font-black text-white shadow-2xl transition-all uppercase tracking-[0.2em] ${submitting || isExpired ? 'bg-gray-800 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-500 active:scale-95'}`}
+                           className={`w-full rounded-2xl py-5 md:py-6 text-[10px] md:text-[11px] font-black text-white shadow-2xl transition-all uppercase tracking-[0.2em] ${submitting || isExpired ? 'bg-gray-800 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-500 active:scale-95'}`}
                         >
                            {submitting ? 'Mengirim...' : 'Submit Tugas'}
                         </button>
                      </form>
                   ) : (
-                     <div className="rounded-[2rem] bg-white/5 border border-white/10 p-8 flex flex-col items-center text-center">
-                        <div className="h-16 w-16 rounded-2xl bg-green-500/10 text-green-500 flex items-center justify-center mb-6">
-                           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M20 6L9 17l-5-5"></path></svg>
+                     <div className="rounded-[1.5rem] md:rounded-[2rem] bg-white/5 border border-white/10 p-6 md:p-8 flex flex-col items-center text-center">
+                        <div className="h-12 w-12 md:h-16 md:w-16 rounded-2xl bg-green-500/10 text-green-500 flex items-center justify-center mb-4 md:mb-6 shrink-0">
+                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M20 6L9 17l-5-5"></path></svg>
                         </div>
-                        <h4 className="text-sm font-black text-white mb-8 uppercase tracking-widest">Tugas Berhasil Terkirim</h4>
+                        <h4 className="text-xs md:text-sm font-black text-white mb-6 md:mb-8 uppercase tracking-widest">Tugas Berhasil Terkirim</h4>
                         <button 
                            onClick={handleViewFile}
-                           className="w-full rounded-2xl bg-white/10 py-5 text-[10px] font-black text-white uppercase tracking-widest border border-white/10 hover:bg-white/20 transition-all text-center"
+                           className="w-full rounded-2xl bg-white/10 py-4 md:py-5 text-[9px] md:text-[10px] font-black text-white uppercase tracking-widest border border-white/10 hover:bg-white/20 transition-all text-center"
                         >
                            Buka Berkas Saya
                         </button>
@@ -296,20 +296,20 @@ export default function DetailTugasMahasiswa() {
                </div>
 
                {/* Score Display */}
-               <div className="relative z-10 mt-10 pt-10 border-t border-white/5">
+               <div className="relative z-10 mt-8 md:mt-10 pt-8 md:pt-10 border-t border-white/5">
                   <div className="flex items-center justify-between">
                      <div>
-                        <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Nilai Akhir</p>
-                        <p className="text-[9px] font-black text-blue-400 uppercase tracking-widest">{submission && submission.nilai !== null ? 'Sudah Dinilai' : 'Pending'}</p>
+                        <p className="text-[9px] md:text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Nilai Akhir</p>
+                        <p className="text-[8px] md:text-[9px] font-black text-blue-400 uppercase tracking-widest">{submission && submission.nilai !== null ? 'Sudah Dinilai' : 'Pending'}</p>
                      </div>
                      <div className="text-right">
                         {submission && submission.nilai !== null ? (
                            <div className="flex items-baseline gap-1">
-                              <span className="text-5xl font-black text-white leading-none tracking-tighter">{submission.nilai}</span>
-                              <span className="text-sm font-black text-gray-600 uppercase tracking-widest">/100</span>
+                              <span className="text-4xl md:text-5xl font-black text-white leading-none tracking-tighter">{submission.nilai}</span>
+                              <span className="text-xs md:text-sm font-black text-gray-600 uppercase tracking-widest">/100</span>
                            </div>
                         ) : (
-                           <span className="text-4xl font-black text-gray-800 tracking-tighter">--</span>
+                           <span className="text-3xl md:text-4xl font-black text-gray-800 tracking-tighter">--</span>
                         )}
                      </div>
                   </div>

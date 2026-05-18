@@ -281,12 +281,12 @@ function PengisianFormulirSAInner() {
 
         {/* Main Form Card */}
         <div className="rounded-3xl bg-white shadow-xl shadow-blue-900/5 border border-gray-100 overflow-hidden">
-          <div className="bg-[#1A365D] px-10 py-6 text-white">
+          <div className="bg-[#1A365D] px-6 md:px-10 py-5 md:py-6 text-white">
             <h3 className="text-lg font-bold">Formulir Pengajuan Semester Antara</h3>
             <p className="text-xs text-blue-200 mt-1">Pastikan seluruh data mahasiswa valid sebelum dikirimkan ke Kaprodi.</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-10 flex flex-col gap-10">
+          <form onSubmit={handleSubmit} className="p-5 md:p-10 flex flex-col gap-8 md:gap-10">
 
             {/* Section 1: Identitas Mahasiswa */}
             <div className="flex flex-col gap-6">
@@ -297,7 +297,7 @@ function PengisianFormulirSAInner() {
                 <h4 className="text-sm font-black text-gray-900 uppercase tracking-widest">Identitas Mahasiswa</h4>
               </div>
 
-              <div className="grid grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
                 <div className="flex flex-col gap-2">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Nama Lengkap Mahasiswa</label>
                   <input
@@ -383,9 +383,9 @@ function PengisianFormulirSAInner() {
 
               <div className="flex flex-col gap-4">
                 {items.map((item, index) => (
-                  <div key={index} className="rounded-2xl border border-dashed border-gray-200 p-6 bg-gray-50/30">
-                    <div className="grid grid-cols-12 gap-6 items-end">
-                      <div className="col-span-8 flex flex-col gap-2">
+                  <div key={index} className="rounded-2xl border border-dashed border-gray-200 p-4 md:p-6 bg-gray-50/30">
+                    <div className="flex flex-col md:flex-row gap-4 items-end">
+                      <div className="flex-1 flex flex-col gap-2 w-full">
                         <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Pilih Mata Kuliah {index + 1}</label>
                         <select
                           value={item.mk_id}
@@ -398,7 +398,7 @@ function PengisianFormulirSAInner() {
                           ))}
                         </select>
                       </div>
-                      <div className="col-span-4 flex flex-col gap-2">
+                      <div className="w-full md:w-56 shrink-0 flex flex-col gap-2">
                         <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Alasan Pengambilan</label>
                         <select
                           value={item.alasan}
@@ -434,27 +434,27 @@ function PengisianFormulirSAInner() {
             </div>
 
             {/* Checkbox Konfirmasi */}
-            <div className="flex items-start gap-4 rounded-2xl bg-blue-50/50 p-6 border border-blue-100">
+            <div className="flex items-start gap-4 rounded-2xl bg-blue-50/50 p-5 md:p-6 border border-blue-100">
               <input
                 type="checkbox"
                 checked={konfirmasi}
                 onChange={(e) => setKonfirmasi(e.target.checked)}
-                className="mt-1 h-5 w-5 rounded border-blue-300 text-blue-600 focus:ring-blue-500"
+                className="mt-1 h-5 w-5 rounded border-blue-300 text-blue-600 focus:ring-blue-500 shrink-0"
               />
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1 min-w-0">
                 <p className="text-xs font-bold text-[#1A365D]">Konfirmasi Validitas Data</p>
                 <p className="text-[10px] font-medium text-blue-600/80 leading-relaxed uppercase tracking-wide">Saya menyatakan bahwa data mahasiswa di atas telah diperiksa dan siap untuk ditinjau oleh Kaprodi.</p>
               </div>
             </div>
 
             {/* Form Actions */}
-            <div className="flex items-center justify-end gap-4 pt-6 border-t border-gray-50">
+            <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3 sm:gap-4 pt-6 border-t border-gray-50">
               {!isEditMode && (
-                <button type="button" className="rounded-xl px-8 py-3.5 text-sm font-bold text-gray-400 hover:bg-gray-100 transition-all">
+                <button type="button" className="w-full sm:w-auto rounded-xl px-8 py-3.5 text-sm font-bold text-gray-400 hover:bg-gray-100 transition-all">
                   Simpan Draft
                 </button>
               )}
-              <button type="submit" disabled={loading} className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#1A365D] to-[#0F172A] px-10 py-3.5 text-sm font-bold text-white shadow-xl shadow-blue-900/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50">
+              <button type="submit" disabled={loading} className="w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#1A365D] to-[#0F172A] px-10 py-3.5 text-sm font-bold text-white shadow-xl shadow-blue-900/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50">
                 <SendIcon /> {loading ? "Memproses Data..." : isEditMode ? "Simpan Mata Kuliah SA" : "Kirim Ke Kaprodi"}
               </button>
             </div>

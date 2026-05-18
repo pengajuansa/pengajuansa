@@ -121,6 +121,50 @@ export default function EditMahasiswaPage() {
     }
   };
 
+  const handleDelete = async () => {
+    const result = await Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: "Data mahasiswa beserta seluruh riwayat pendaftarannya akan dihapus secara permanen!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#EF4444',
+      cancelButtonColor: '#6B7280',
+      confirmButtonText: 'Ya, hapus!',
+      cancelButtonText: 'Batal'
+    });
+
+    if (!result.isConfirmed) return;
+
+    setSaving(true);
+    try {
+      // 1. Hapus dari tabel mahasiswa terlebih dahulu
+      await supabase.from('mahasiswa').delete().eq('id', studentId);
+      
+      // 2. Hapus dari tabel users
+      const { error } = await supabase.from('users').delete().eq('id', studentId);
+
+      if (error) throw error;
+
+      Swal.fire({
+        title: 'Terhapus!',
+        text: 'Mahasiswa berhasil dihapus dari sistem.',
+        icon: 'success',
+        confirmButtonColor: '#1A365D'
+      });
+      router.push('/admin/mahasiswa');
+    } catch (error: any) {
+      console.error(error);
+      Swal.fire({
+        title: 'Gagal',
+        text: 'Gagal menghapus mahasiswa: ' + error.message,
+        icon: 'error',
+        confirmButtonColor: '#1A365D'
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const topbarTitle = (
     <div className="flex items-center gap-4">
       <Link href={`/admin/mahasiswa/${studentId}`} className="h-10 w-10 rounded-full bg-white flex items-center justify-center text-gray-400 hover:text-red-600 shadow-sm border border-gray-100 transition-all">
@@ -146,7 +190,7 @@ export default function EditMahasiswaPage() {
   return (
     <AdminLayout topbarTitle={topbarTitle}>
       <div className="max-w-4xl mx-auto">
-        <div className="rounded-[3rem] bg-white p-12 shadow-sm border border-gray-50 relative overflow-hidden">
+        <div className="rounded-2xl md:rounded-[3rem] bg-white p-6 md:p-12 shadow-sm border border-gray-50 relative overflow-hidden">
            {/* Decor */}
            <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-red-50/30 -z-0"></div>
 
@@ -227,16 +271,32 @@ export default function EditMahasiswaPage() {
                     </div>
                  </div>
 
-                 <div className="mt-6 flex items-center justify-end gap-6 border-t border-gray-50 pt-10">
-                    <Link href={`/admin/mahasiswa/${studentId}`} className="text-sm font-black text-gray-400 uppercase tracking-widest hover:text-red-600 transition-colors">Batalkan</Link>
-                    <button 
-                       type="submit"
-                       disabled={saving}
-                       className="rounded-2xl bg-[#1A365D] px-12 py-5 text-sm font-black text-white shadow-2xl shadow-blue-900/30 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-3 uppercase tracking-widest disabled:opacity-50"
-                    >
-                       <CheckIcon /> {saving ? "Menyimpan..." : "Simpan Perubahan Profil"}
-                    </button>
-                 </div>
+                  <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 border-t border-gray-50 pt-8 md:pt-10">
+                     
+                      {/* Left: Delete Button */}
+                      <button
+                         type="button"
+                         onClick={handleDelete}
+                         disabled={saving}
+                         className="rounded-2xl bg-red-50 text-red-600 px-6 py-4 text-xs font-black hover:bg-red-600 hover:text-white active:scale-95 transition-all uppercase tracking-widest disabled:opacity-50 text-center flex items-center justify-center gap-2 border border-red-200"
+                      >
+                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                         Hapus Mahasiswa
+                      </button>
+
+                      {/* Right: Cancel & Save Buttons */}
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                         <Link href={`/admin/mahasiswa/${studentId}`} className="text-sm font-black text-gray-400 uppercase tracking-widest hover:text-red-600 transition-colors text-center py-2 px-4 flex items-center justify-center">Batalkan</Link>
+                         <button 
+                            type="submit"
+                            disabled={saving}
+                            className="rounded-2xl bg-[#1A365D] px-8 md:px-12 py-4 md:py-5 text-sm font-black text-white shadow-2xl shadow-blue-900/30 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 uppercase tracking-widest disabled:opacity-50"
+                         >
+                            <CheckIcon /> {saving ? "Menyimpan..." : "Simpan Perubahan Profil"}
+                         </button>
+                      </div>
+
+                  </div>
               </form>
            </div>
         </div>

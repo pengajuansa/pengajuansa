@@ -162,7 +162,98 @@ export default function PembayaranSekjur() {
           </span>
         </div>
 
-        <div className="overflow-hidden rounded-3xl bg-white shadow-sm border border-gray-50">
+        {/* Mobile View: Cards */}
+        <div className="md:hidden flex flex-col gap-4">
+          {loading ? (
+            <div className="py-20 text-center font-bold text-gray-400 uppercase tracking-widest animate-pulse">Menarik Data Pendaftaran...</div>
+          ) : payments.length > 0 ? payments.map((pay, idx) => (
+            <div key={`${pay.id}-${idx}`} className="rounded-[2rem] bg-white p-5 border border-gray-50 shadow-sm hover:shadow-md transition-all flex flex-col gap-4 relative overflow-hidden group">
+              <div className="flex items-center gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-50 to-blue-100 text-xs font-black text-blue-700 shadow-sm">
+                  {getInitials(pay.mahasiswa?.nama_mahasiswa)}
+                </div>
+                <div className="min-w-0">
+                  <h4 className="text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-1">{pay.mahasiswa?.nama_mahasiswa}</h4>
+                  <p className="text-[10px] font-medium text-gray-500">{pay.mahasiswa?.nim} • {pay.mahasiswa?.prodi || 'Sistem Informasi'}</p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3 bg-gray-50/50 rounded-2xl p-4 text-xs">
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-[9px] font-bold text-gray-400 uppercase">KODE FORM</span>
+                  <span className="font-bold text-gray-700">{pay.kode_pendaftaran || '-'}</span>
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-[9px] font-bold text-gray-400 uppercase">TOTAL BIAYA</span>
+                  <span className="font-black text-gray-900">Rp {(pay.biaya_pendaftaran || 500000).toLocaleString('id-ID')}</span>
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-[9px] font-bold text-gray-400 uppercase">SUMBER</span>
+                  <div>
+                    {pay.pembayaran && pay.pembayaran.length > 0 ? (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[8px] font-black text-blue-700 border border-blue-100 uppercase">
+                        Mahasiswa
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-purple-50 px-2 py-0.5 text-[8px] font-black text-purple-700 border border-purple-100 uppercase">
+                        Form Sekjur
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-[9px] font-bold text-gray-400 uppercase">STATUS</span>
+                  <div>
+                    <span className={`inline-flex rounded-full px-2 py-0.5 text-[8px] font-black uppercase border ${pay.status === 'Approved' ? 'bg-green-50 text-green-700 border-green-100' :
+                      pay.status === 'Pending' ? 'bg-orange-50 text-orange-700 border-orange-100' : 'bg-gray-50 text-gray-700 border-gray-100'
+                      }`}>
+                      {pay.status === 'Approved' ? 'Lunas' : pay.status === 'Pending' ? 'Butuh Cek' : pay.status}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions Footer */}
+              <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-gray-50">
+                {/* Tombol lihat bukti hanya untuk pendaftaran dari mahasiswa */}
+                {pay.pembayaran && pay.pembayaran.length > 0 && (
+                  <button
+                    onClick={() => openProofModal(pay.pembayaran?.[0]?.bukti_url)}
+                    className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-gray-100 py-2.5 text-[9px] font-black text-gray-600 hover:bg-blue-600 hover:text-white transition-all uppercase"
+                  >
+                    <EyeIcon /> Bukti
+                  </button>
+                )}
+
+                {/* Tombol Isi Formulir SA */}
+                {(!pay.items || pay.items.length === 0) && pay.pembayaran && pay.pembayaran.length > 0 && (
+                  <Link href={`/sekjur/formulir-sa?pendaftaran_id=${pay.id}`} className="flex-1">
+                    <button className="w-full flex items-center justify-center gap-1.5 rounded-xl bg-blue-600 py-2.5 text-[9px] font-black text-white shadow-md hover:scale-105 active:scale-95 transition-all uppercase">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+                      Isi Form
+                    </button>
+                  </Link>
+                )}
+
+                {pay.status !== 'Approved' && (
+                  <button
+                    onClick={() => verifyPayment(pay.id, pay.status)}
+                    className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-green-500 py-2.5 text-[9px] font-black text-white shadow-md hover:scale-105 active:scale-95 transition-all uppercase"
+                  >
+                    <CheckIcon /> Validasi
+                  </button>
+                )}
+              </div>
+            </div>
+          )) : (
+            <div className="py-20 text-center text-sm font-bold text-gray-400 uppercase tracking-widest bg-white rounded-[2rem] border border-gray-50">
+              Tidak ada data pendaftaran masuk.
+            </div>
+          )}
+        </div>
+
+        {/* Desktop View: Table */}
+        <div className="hidden md:block overflow-hidden rounded-3xl bg-white shadow-sm border border-gray-50">
           <table className="w-full text-left">
             <thead className="bg-gray-50/50">
               <tr>

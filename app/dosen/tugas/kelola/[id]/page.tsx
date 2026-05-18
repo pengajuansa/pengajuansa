@@ -166,21 +166,21 @@ export default function KelolaTugasPage() {
   return (
     <DosenLayout topbarTitle={topbarTitle}>
       <div className="max-w-4xl mx-auto">
-        <div className="rounded-[3rem] bg-white p-12 shadow-sm border border-gray-50 relative overflow-hidden">
+        <div className="rounded-2xl md:rounded-[3rem] bg-white p-6 md:p-12 shadow-sm border border-gray-50 relative overflow-hidden">
            {/* Decor */}
            <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-gray-50/50 -z-0"></div>
 
            <div className="relative z-10">
-              <div className="flex items-center justify-between mb-12">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 md:mb-12">
                  <div>
                     <span className="inline-flex rounded-full bg-gray-100 px-4 py-1 text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3 border border-gray-200">Manajemen Panel</span>
-                    <h1 className="text-3xl font-black text-[#1A365D]">Opsi Pengelolaan Tugas</h1>
+                    <h1 className="text-2xl md:text-3xl font-black text-[#1A365D]">Opsi Pengelolaan Tugas</h1>
                  </div>
                  <button 
                     onClick={handleDelete}
-                    className="flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all border border-red-100 shadow-sm"
+                    className="flex items-center gap-2 shrink-0 h-12 px-4 rounded-2xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all border border-red-100 shadow-sm text-xs font-black uppercase tracking-widest"
                  >
-                    <TrashIcon />
+                    <TrashIcon /> <span className="sm:hidden">Hapus Tugas</span>
                  </button>
               </div>
 
@@ -239,15 +239,15 @@ export default function KelolaTugasPage() {
                     </div>
                  </div>
 
-                 <div className="mt-6 flex items-center justify-end gap-6 border-t border-gray-50 pt-10">
-                    <Link href="/dosen/tugas" className="text-sm font-black text-gray-400 uppercase tracking-widest hover:text-red-600 transition-colors">Batalkan</Link>
-                    <button 
-                       type="submit"
-                       className="rounded-2xl bg-[#0B2559] px-12 py-5 text-sm font-black text-white shadow-2xl shadow-blue-900/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-3 uppercase tracking-widest"
-                    >
-                       <CheckIcon /> Simpan Perubahan
-                    </button>
-                 </div>
+                  <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-4 border-t border-gray-50 pt-8 md:pt-10">
+                     <Link href="/dosen/tugas" className="text-sm font-black text-gray-400 uppercase tracking-widest hover:text-red-600 transition-colors text-center">Batalkan</Link>
+                     <button 
+                        type="submit"
+                        className="rounded-2xl bg-[#0B2559] px-8 md:px-12 py-4 md:py-5 text-sm font-black text-white shadow-2xl shadow-blue-900/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 uppercase tracking-widest"
+                     >
+                        <CheckIcon /> Simpan Perubahan
+                     </button>
+                  </div>
               </form>
            </div>
         </div>

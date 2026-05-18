@@ -73,14 +73,13 @@ export default function AdministratorDashboard() {
       <div className="flex flex-col gap-10">
 
         {/* Large Header Section */}
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-[#0F172A] p-12 text-white shadow-2xl">
-          <div className="relative z-10 flex items-center justify-between">
+        <div className="relative overflow-hidden rounded-2xl lg:rounded-[2.5rem] bg-[#0F172A] p-6 md:p-12 text-white shadow-2xl">
+          <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div className="max-w-xl">
-              <h3 className="text-4xl font-black mb-4">Selamat Datang di Core System</h3>
-              <p className="text-gray-400 text-lg leading-relaxed font-medium">
+              <h3 className="text-2xl md:text-4xl font-black mb-3 md:mb-4">Selamat Datang di Core System</h3>
+              <p className="text-gray-400 text-sm md:text-lg leading-relaxed font-medium">
                 Anda memiliki akses penuh untuk mengelola data master mahasiswa, dosen, dan mata kuliah di seluruh sistem pendaftaran Semester Antara.
               </p>
-
             </div>
             <div className="hidden lg:block opacity-20">
               <svg width="240" height="240" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></svg>
@@ -92,54 +91,54 @@ export default function AdministratorDashboard() {
         </div>
 
         {/* Stats Row - Full Width with larger gap */}
-        <div className="grid grid-cols-3 gap-10">
-          <div className="group rounded-[2.5rem] bg-white p-10 shadow-sm border border-gray-50 flex items-center gap-8 hover:shadow-xl transition-all hover:-translate-y-1 relative overflow-hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-10">
+          <div className="group rounded-2xl lg:rounded-[2.5rem] bg-white p-6 md:p-10 shadow-sm border border-gray-50 flex items-center gap-4 md:gap-8 hover:shadow-xl transition-all hover:-translate-y-1 relative overflow-hidden">
             {loading && <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10"></div>}
-            <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-red-50 text-red-600 transition-colors group-hover:bg-red-600 group-hover:text-white">
+            <div className="flex h-14 w-14 md:h-20 md:w-20 shrink-0 items-center justify-center rounded-2xl md:rounded-3xl bg-red-50 text-red-600 transition-colors group-hover:bg-red-600 group-hover:text-white">
               <UserIcon />
             </div>
             <div>
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Total Mahasiswa</p>
-              <span className="text-4xl font-black text-[#1A365D]">{loading ? '...' : counts.mahasiswa.toLocaleString('id-ID')}</span>
+              <span className="text-3xl md:text-4xl font-black text-[#1A365D]">{loading ? '...' : counts.mahasiswa.toLocaleString('id-ID')}</span>
               <p className="text-[10px] text-green-600 font-bold mt-1 uppercase tracking-widest">Data Terverifikasi</p>
             </div>
           </div>
 
-          <div className="group rounded-[2.5rem] bg-white p-10 shadow-sm border border-gray-50 flex items-center gap-8 hover:shadow-xl transition-all hover:-translate-y-1 relative overflow-hidden">
+          <div className="group rounded-2xl lg:rounded-[2.5rem] bg-white p-6 md:p-10 shadow-sm border border-gray-50 flex items-center gap-4 md:gap-8 hover:shadow-xl transition-all hover:-translate-y-1 relative overflow-hidden">
             {loading && <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10"></div>}
-            <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
+            <div className="flex h-14 w-14 md:h-20 md:w-20 shrink-0 items-center justify-center rounded-2xl md:rounded-3xl bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
               <TeacherIcon />
             </div>
             <div>
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Total Dosen</p>
-              <span className="text-4xl font-black text-[#1A365D]">{loading ? '...' : counts.dosen.toLocaleString('id-ID')}</span>
+              <span className="text-3xl md:text-4xl font-black text-[#1A365D]">{loading ? '...' : counts.dosen.toLocaleString('id-ID')}</span>
               <p className="text-[10px] text-blue-400 font-bold mt-1 uppercase tracking-widest">Semua Departemen</p>
             </div>
           </div>
 
-          <div className="group rounded-[2.5rem] bg-white p-10 shadow-sm border border-gray-50 flex items-center gap-8 hover:shadow-xl transition-all hover:-translate-y-1 relative overflow-hidden">
+          <div className="group rounded-2xl lg:rounded-[2.5rem] bg-white p-6 md:p-10 shadow-sm border border-gray-50 flex items-center gap-4 md:gap-8 hover:shadow-xl transition-all hover:-translate-y-1 relative overflow-hidden">
             {loading && <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10"></div>}
-            <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-orange-50 text-orange-600 transition-colors group-hover:bg-orange-600 group-hover:text-white">
+            <div className="flex h-14 w-14 md:h-20 md:w-20 shrink-0 items-center justify-center rounded-2xl md:rounded-3xl bg-orange-50 text-orange-600 transition-colors group-hover:bg-orange-600 group-hover:text-white">
               <BookIcon />
             </div>
             <div>
               <p className="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 mb-2">Mata Kuliah</p>
-              <span className="text-4xl font-black text-[#1A365D]">{loading ? '...' : counts.mataKuliah.toLocaleString('id-ID')}</span>
+              <span className="text-3xl md:text-4xl font-black text-[#1A365D]">{loading ? '...' : counts.mataKuliah.toLocaleString('id-ID')}</span>
               <p className="text-[10px] text-orange-600 font-bold mt-1 uppercase tracking-widest">Katalog Master</p>
             </div>
           </div>
         </div>
 
         {/* Quick Access - Full Width */}
-        <div className="rounded-[2.5rem] bg-white p-12 shadow-sm border border-gray-50">
-          <div className="flex items-center justify-between mb-10">
+        <div className="rounded-2xl lg:rounded-[2.5rem] bg-white p-6 md:p-12 shadow-sm border border-gray-50">
+          <div className="flex items-center justify-between mb-6 md:mb-10">
             <div>
-              <h3 className="text-2xl font-black text-[#1A365D] uppercase tracking-wider">Akses Cepat Data Master</h3>
+              <h3 className="text-lg md:text-2xl font-black text-[#1A365D] uppercase tracking-wider">Akses Cepat Data Master</h3>
               <p className="text-sm font-semibold text-gray-400 mt-1">Kelola informasi utama sistem dalam satu klik</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             <Link href="/admin/mahasiswa" className="group relative cursor-pointer overflow-hidden rounded-[2rem] bg-gray-50 p-8 transition-all hover:bg-red-600">
               <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-red-600 shadow-sm transition-transform group-hover:scale-110">
                 <UserIcon />

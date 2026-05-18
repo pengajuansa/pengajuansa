@@ -110,28 +110,28 @@ export default function KaprodiDashboard() {
         )}
 
         {/* Key Stats for Kaprodi */}
-        <div className="grid grid-cols-3 gap-8">
-          <div className="rounded-[2.5rem] bg-white p-8 shadow-sm border border-gray-50 group hover:shadow-lg transition-all relative overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+          <div className="rounded-[2.5rem] bg-white p-6 md:p-8 shadow-sm border border-gray-50 group hover:shadow-lg transition-all relative overflow-hidden">
             {loading && <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10 flex items-center justify-center"><div className="h-4 w-4 border-2 border-[#1A365D] border-t-transparent rounded-full animate-spin"></div></div>}
             <div className="flex items-center justify-between mb-4">
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Menunggu Validasi</p>
               <div className="rounded-2xl bg-blue-50 p-3 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-500"><FileCheckIcon /></div>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-5xl font-black text-[#0F172A]">{stats.pendingKaprodi}</span>
+              <span className="text-4xl md:text-5xl font-black text-[#0F172A]">{stats.pendingKaprodi}</span>
               <span className="rounded-xl bg-orange-50 px-3 py-1.5 text-[10px] font-black text-orange-600 border border-orange-100">PENGAJUAN BARU</span>
             </div>
             <p className="text-[10px] text-gray-400 mt-4 font-bold uppercase tracking-wider italic">Segera validasi sebelum deadline</p>
           </div>
 
-          <div className="rounded-[2.5rem] bg-white p-8 shadow-sm border border-gray-50 group hover:shadow-lg transition-all relative overflow-hidden">
+          <div className="rounded-[2.5rem] bg-white p-6 md:p-8 shadow-sm border border-gray-50 group hover:shadow-lg transition-all relative overflow-hidden">
             {loading && <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10 flex items-center justify-center"><div className="h-4 w-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div></div>}
             <div className="flex items-center justify-between mb-4">
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Dosen Teralokasi</p>
               <div className="rounded-2xl bg-orange-50 p-3 group-hover:bg-orange-600 group-hover:text-white transition-colors duration-500"><UserPlusIcon /></div>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-5xl font-black text-[#0F172A]">{stats.alokasiMK}/{stats.totalMK}</span>
+              <span className="text-4xl md:text-5xl font-black text-[#0F172A]">{stats.alokasiMK}/{stats.totalMK}</span>
               <div className="flex items-center gap-1.5 text-[11px] font-black text-green-600 bg-green-50 px-2 py-1 rounded-lg">
                 <TrendingUpIcon /> {stats.persenAlokasi}%
               </div>
@@ -141,11 +141,11 @@ export default function KaprodiDashboard() {
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-[#0F172A] p-8 text-white shadow-2xl shadow-blue-900/10 group hover:scale-[1.02] transition-transform duration-500">
+          <div className="relative overflow-hidden rounded-[2.5rem] bg-[#0F172A] p-6 md:p-8 text-white shadow-2xl shadow-blue-900/10 group hover:scale-[1.02] transition-transform duration-500">
             {loading && <div className="absolute inset-0 bg-[#0F172A]/60 backdrop-blur-sm z-20 flex items-center justify-center"><div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div></div>}
             <div className="relative z-10">
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-300 mb-4">Total Mahasiswa SA</p>
-              <span className="text-6xl font-black">{stats.totalMahasiswa}</span>
+              <span className="text-5xl md:text-6xl font-black">{stats.totalMahasiswa}</span>
               <p className="text-[10px] text-blue-400 mt-4 font-bold uppercase tracking-widest bg-white/5 w-fit px-3 py-1 rounded-lg">TA 2023/2024 - Genap</p>
             </div>
             <div className="absolute -bottom-6 -right-6 opacity-10 group-hover:scale-125 group-hover:opacity-20 transition-all duration-700 z-0">
@@ -154,42 +154,42 @@ export default function KaprodiDashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-12 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10">
           {/* Main List: Recent Forms to Validate */}
-          <div className="col-span-8">
-            <div className="rounded-[2.5rem] bg-white p-10 shadow-sm border border-gray-50 relative">
+          <div className="col-span-1 lg:col-span-8">
+            <div className="rounded-[2.5rem] bg-white p-6 md:p-10 shadow-sm border border-gray-50 relative">
               {loading && <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10 rounded-[2.5rem]"></div>}
-              <div className="flex items-center justify-between mb-10">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 md:mb-10">
                 <div className="flex items-center gap-4">
-                   <h3 className="text-xl font-black text-[#0F172A] uppercase tracking-wider">Validasi Formulir Terbaru</h3>
+                   <h3 className="text-lg md:text-xl font-black text-[#0F172A] uppercase tracking-wider">Validasi Formulir Terbaru</h3>
                    {forms.length > 0 && <span className="h-2 w-2 rounded-full bg-blue-500 animate-pulse"></span>}
                 </div>
-                <Link href="/kaprodi/validasi-formulir" className="text-[11px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest bg-blue-50 px-4 py-2 rounded-xl transition-all">Lihat Semua</Link>
+                <Link href="/kaprodi/validasi-formulir" className="text-[11px] font-black text-blue-600 hover:text-blue-800 uppercase tracking-widest bg-blue-50 px-4 py-2 rounded-xl transition-all w-fit">Lihat Semua</Link>
               </div>
 
-              <div className="space-y-5">
+              <div className="space-y-4 md:space-y-5">
                 {forms.length > 0 ? forms.map((form, idx) => (
-                  <div key={`${form.id}-${idx}`} className="flex items-center justify-between rounded-3xl bg-gray-50/30 p-6 hover:bg-white hover:shadow-xl hover:shadow-blue-900/5 transition-all border border-transparent hover:border-blue-50 group">
-                    <div className="flex items-center gap-5">
+                  <div key={`${form.id}-${idx}`} className="flex flex-col sm:flex-row sm:items-center justify-between rounded-3xl bg-gray-50/30 p-5 md:p-6 hover:bg-white hover:shadow-xl hover:shadow-blue-900/5 transition-all border border-transparent hover:border-blue-50 group gap-4">
+                    <div className="flex items-center gap-4 md:gap-5">
                       <div className="h-12 w-12 rounded-2xl bg-blue-100 flex items-center justify-center text-[12px] font-black text-blue-800 tracking-tighter border border-white shadow-sm shrink-0">
                         {getInitials(form.mahasiswa?.nama_mahasiswa)}
                       </div>
-                      <div>
+                      <div className="min-w-0">
                         <h4 className="text-sm font-black text-gray-900 group-hover:text-blue-900 transition-colors line-clamp-1">{form.mahasiswa?.nama_mahasiswa}</h4>
                         <p className="text-[10px] font-black text-gray-400 uppercase mt-1 tracking-tight">NIM: {form.mahasiswa?.nim} • <span className="text-blue-600">{form.items?.[0]?.mata_kuliah?.nama_mk || 'Multi MK'}</span></p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-4 shrink-0">
+                    <div className="flex items-center gap-4 shrink-0 sm:self-center">
                       <Link 
                         href="/kaprodi/validasi-formulir"
-                        className="rounded-2xl bg-[#0F172A] px-6 py-3 text-[10px] font-black text-white shadow-lg hover:bg-blue-700 active:scale-95 transition-all uppercase tracking-widest"
+                        className="w-full sm:w-auto text-center rounded-2xl bg-[#0F172A] px-6 py-3 text-[10px] font-black text-white shadow-lg hover:bg-blue-700 active:scale-95 transition-all uppercase tracking-widest"
                       >
                          Buka Validasi
                       </Link>
                     </div>
                   </div>
                 )) : (
-                  <div className="py-12 flex flex-col items-center text-center justify-center border-2 border-dashed border-gray-100 rounded-3xl">
+                  <div className="py-12 flex flex-col items-center text-center justify-center border-2 border-dashed border-gray-100 rounded-3xl p-6">
                      <p className="text-sm font-black text-gray-400 uppercase tracking-widest">Antrean Kosong</p>
                      <p className="text-xs font-bold text-gray-300 mt-2">Tidak ada formulir yang menunggu validasi Kaprodi saat ini.</p>
                   </div>
@@ -199,13 +199,13 @@ export default function KaprodiDashboard() {
           </div>
 
           {/* Right Sidebar: Urgent Tasks */}
-          <div className="col-span-4">
-            <div className="h-full rounded-[2.5rem] bg-orange-50/30 p-10 border border-orange-100 relative overflow-hidden flex flex-col">
+          <div className="col-span-1 lg:col-span-4">
+            <div className="h-full rounded-[2.5rem] bg-orange-50/30 p-6 md:p-10 border border-orange-100 relative overflow-hidden flex flex-col">
               <div className="absolute top-0 right-0 h-32 w-32 bg-orange-500/5 rounded-full -mr-10 -mt-10"></div>
               
-              <h3 className="text-[11px] font-black text-orange-800 uppercase tracking-[0.2em] mb-10 relative z-10">Tugas Mendesak</h3>
+              <h3 className="text-[11px] font-black text-orange-800 uppercase tracking-[0.2em] mb-8 md:mb-10 relative z-10">Tugas Mendesak</h3>
               
-              <div className="space-y-8 relative z-10 flex-grow">
+              <div className="space-y-6 md:space-y-8 relative z-10 flex-grow">
                 <div className="relative pl-8 border-l-2 border-orange-200">
                   <div className="absolute -left-[9px] top-0 h-4 w-4 rounded-full bg-orange-500 ring-4 ring-orange-100"></div>
                   <h4 className="text-sm font-black text-[#0F172A]">Alokasi Dosen</h4>
@@ -225,7 +225,7 @@ export default function KaprodiDashboard() {
 
               <Link 
                 href="/kaprodi/alokasi"
-                className="w-full mt-12 flex items-center justify-center rounded-[1.5rem] bg-orange-500 py-5 text-[11px] font-black text-white shadow-2xl shadow-orange-500/30 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest mt-auto"
+                className="w-full mt-8 md:mt-12 flex items-center justify-center rounded-[1.5rem] bg-orange-500 py-5 text-[11px] font-black text-white shadow-2xl shadow-orange-500/30 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest mt-auto"
               >
                 Selesaikan Alokasi Dosen
               </Link>

@@ -194,7 +194,7 @@ export default function BuatTugasPage() {
   return (
     <DosenLayout topbarTitle={topbarTitle}>
       <div className="max-w-4xl mx-auto">
-        <div className="rounded-[3rem] bg-white p-12 shadow-sm border border-gray-50 relative overflow-hidden">
+        <div className="rounded-2xl md:rounded-[3rem] bg-white p-6 md:p-12 shadow-sm border border-gray-50 relative overflow-hidden">
            {/* Decor */}
            <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-blue-50/30 -z-0"></div>
 
@@ -298,20 +298,20 @@ export default function BuatTugasPage() {
                       </div>
                    </div>
 
-                   <div className="mt-6 flex items-center justify-end gap-6 border-t border-gray-50 pt-10">
-                      <Link href="/dosen/tugas" className="text-sm font-black text-gray-400 uppercase tracking-widest hover:text-red-600 transition-colors">Batalkan</Link>
-                      <button 
-                         type="submit"
-                         disabled={submitting}
-                         className={`rounded-2xl px-12 py-5 text-sm font-black text-white shadow-2xl transition-all flex items-center gap-3 uppercase tracking-widest ${submitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#0B2559] shadow-blue-900/30 hover:scale-[1.02] active:scale-95'}`}
-                      >
-                         {submitting ? (
-                           <><div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div> Memproses...</>
-                         ) : (
-                           <><CheckIcon /> Publikasikan Tugas</>
-                         )}
-                      </button>
-                   </div>
+                    <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-4 border-t border-gray-50 pt-8 md:pt-10">
+                       <Link href="/dosen/tugas" className="text-sm font-black text-gray-400 uppercase tracking-widest hover:text-red-600 transition-colors text-center">Batalkan</Link>
+                       <button 
+                          type="submit"
+                          disabled={submitting}
+                          className={`rounded-2xl px-8 md:px-12 py-4 md:py-5 text-sm font-black text-white shadow-2xl transition-all flex items-center justify-center gap-3 uppercase tracking-widest ${submitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#0B2559] shadow-blue-900/30 hover:scale-[1.02] active:scale-95'}`}
+                       >
+                          {submitting ? (
+                            <><div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div> Memproses...</>
+                          ) : (
+                            <><CheckIcon /> Publikasikan Tugas</>
+                          )}
+                       </button>
+                    </div>
                 </form>
               )}
            </div>

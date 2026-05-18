@@ -69,7 +69,54 @@ export default function LaporanSemesterPage() {
           </button>
         </div>
 
-        <div className="rounded-2xl bg-white shadow-sm border border-gray-100 overflow-hidden print:border-none print:shadow-none print:rounded-none">
+        {/* Mobile View: Cards (Hidden on print) */}
+        <div className="block md:hidden print:hidden space-y-4">
+          {loading ? (
+            <div className="py-10 text-center font-bold text-gray-400 uppercase tracking-widest animate-pulse">Memuat Data...</div>
+          ) : reportData.length > 0 ? (
+            reportData.map((item, index) => {
+              const initials = item.mahasiswa?.nama_mahasiswa?.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase() || '??';
+              return (
+                <div key={item.id} className="rounded-2xl bg-white p-5 border border-gray-50 shadow-sm flex flex-col gap-4 relative overflow-hidden group">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-50 to-blue-100 text-xs font-black text-blue-700 shadow-sm border border-white">
+                      {initials}
+                    </div>
+                    <div className="min-w-0">
+                      <span className="text-xs font-bold text-gray-400 uppercase tracking-wider block">NO. {index + 1}</span>
+                      <h4 className="text-sm font-bold text-gray-900 truncate">{item.mahasiswa?.nama_mahasiswa}</h4>
+                      <p className="text-[10px] font-medium text-gray-500">{item.mahasiswa?.nim} • {item.mahasiswa?.prodi || 'Tidak Diketahui'}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3 bg-gray-50/50 rounded-xl p-3.5 text-xs">
+                    <div className="flex flex-col gap-0.5">
+                      <span className="text-[9px] font-bold text-gray-400 uppercase">STATUS</span>
+                      <div>
+                        <span className="inline-flex rounded-lg bg-green-50 px-2 py-0.5 text-[8px] font-black text-green-700 border border-green-100 uppercase">
+                          {item.status}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-0.5 items-end">
+                      <span className="text-[9px] font-bold text-gray-400 uppercase">TANGGAL DISETUJUI</span>
+                      <span className="font-bold text-gray-800">
+                        {new Date(item.created_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' })}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          ) : (
+            <div className="py-10 text-center font-bold text-gray-400 uppercase tracking-widest bg-white rounded-2xl border border-gray-50">
+              Belum ada data yang disetujui.
+            </div>
+          )}
+        </div>
+
+        {/* Desktop & Print View: Table */}
+        <div className="hidden md:block print:block rounded-2xl bg-white shadow-sm border border-gray-100 overflow-hidden print:border-none print:shadow-none print:rounded-none">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm text-gray-600">
               <thead className="bg-gray-50 text-[10px] uppercase tracking-wider text-gray-500 font-bold print:bg-white print:text-black">

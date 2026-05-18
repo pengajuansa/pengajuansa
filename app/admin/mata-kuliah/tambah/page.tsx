@@ -125,7 +125,7 @@ export default function TambahMKPage() {
   return (
     <AdminLayout topbarTitle={topbarTitle}>
       <div className="max-w-4xl mx-auto">
-        <div className="rounded-[3rem] bg-white p-12 shadow-sm border border-gray-50 relative overflow-hidden">
+        <div className="rounded-2xl md:rounded-[3rem] bg-white p-6 md:p-12 shadow-sm border border-gray-50 relative overflow-hidden">
            {/* Decor */}
            <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-orange-50/30 -z-0"></div>
 
@@ -245,16 +245,16 @@ export default function TambahMKPage() {
                     </div>
                  </div>
 
-                 <div className="mt-6 flex items-center justify-end gap-6 border-t border-gray-50 pt-10">
-                    <Link href="/admin/mata-kuliah" className="text-sm font-black text-gray-400 uppercase tracking-widest hover:text-orange-600 transition-colors">Batalkan</Link>
-                    <button 
-                       type="submit"
-                       disabled={loading}
-                       className="rounded-2xl bg-orange-600 px-12 py-5 text-sm font-black text-white shadow-2xl shadow-orange-600/30 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-3 uppercase tracking-widest disabled:opacity-50"
-                    >
-                       <CheckIcon /> {loading ? "Menyimpan..." : "Simpan Mata Kuliah"}
-                    </button>
-                 </div>
+                  <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-4 border-t border-gray-50 pt-8 md:pt-10">
+                     <Link href="/admin/mata-kuliah" className="text-sm font-black text-gray-400 uppercase tracking-widest hover:text-orange-600 transition-colors text-center">Batalkan</Link>
+                     <button 
+                        type="submit"
+                        disabled={loading}
+                        className="rounded-2xl bg-orange-600 px-8 md:px-12 py-4 md:py-5 text-sm font-black text-white shadow-2xl shadow-orange-600/30 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 uppercase tracking-widest disabled:opacity-50"
+                     >
+                        <CheckIcon /> {loading ? "Menyimpan..." : "Simpan Mata Kuliah"}
+                     </button>
+                  </div>
               </form>
            </div>
         </div>

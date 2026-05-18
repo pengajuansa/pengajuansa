@@ -14,6 +14,7 @@ interface AdminLayoutProps {
 export default function AdminLayout({ children, topbarTitle }: AdminLayoutProps) {
   const router = useRouter();
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -37,16 +38,24 @@ export default function AdminLayout({ children, topbarTitle }: AdminLayoutProps)
       </div>
     );
   }
+
   return (
     <div className="flex min-h-screen bg-[#F8F9FB] font-sans text-gray-900">
-      <AdminSidebar />
-      <div className="ml-[260px] flex flex-grow flex-col">
-        <Topbar title={topbarTitle} />
-        <main className="flex-grow p-8">
+      <AdminSidebar
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
+      <div className="flex flex-grow flex-col lg:ml-[260px]">
+        <Topbar
+          title={topbarTitle}
+          onMenuToggle={() => setIsMobileMenuOpen((prev) => !prev)}
+          isMobileMenuOpen={isMobileMenuOpen}
+        />
+        <main className="flex-grow p-4 md:p-8">
           {children}
         </main>
 
-        <footer className="mt-8 flex items-center justify-between border-t border-gray-200 py-8 px-8 text-[10px] font-bold text-gray-400">
+        <footer className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between border-t border-gray-200 py-6 px-4 md:px-8 text-[10px] font-bold text-gray-400 gap-2">
           <p className="uppercase tracking-widest">
             © 2026 POLITEKNIK NEGERI MANADO. CORE ADMINISTRATION SYSTEM.
           </p>

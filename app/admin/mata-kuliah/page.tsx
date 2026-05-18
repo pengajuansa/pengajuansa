@@ -144,8 +144,8 @@ export default function DataMKAdmin() {
       <div className="flex flex-col gap-8">
         
         {/* Table Header / Toolbar */}
-        <div className="flex items-center justify-between rounded-[2rem] bg-white p-8 shadow-sm border border-gray-50">
-          <div className="flex gap-4 flex-grow max-w-md">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-[2rem] bg-white p-5 md:p-8 shadow-sm border border-gray-50">
+          <div className="flex gap-4 w-full sm:flex-grow sm:max-w-md">
             <input 
               type="text" 
               placeholder="Cari Kode atau Mata Kuliah..." 
@@ -154,7 +154,7 @@ export default function DataMKAdmin() {
               className="w-full rounded-2xl bg-gray-50 border border-gray-100 px-6 py-4 text-sm font-bold outline-none focus:ring-2 focus:ring-orange-100 focus:bg-white transition-all shadow-inner"
             />
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3">
             <input 
               type="file" 
               id="csvMK" 
@@ -164,25 +164,64 @@ export default function DataMKAdmin() {
             />
             <label 
               htmlFor="csvMK"
-              className="group flex items-center gap-3 rounded-2xl border-2 border-[#1A365D] px-8 py-4 text-xs font-black text-[#1A365D] hover:bg-gray-50 transition-all uppercase tracking-widest cursor-pointer"
+              className="group flex items-center gap-2 rounded-2xl border-2 border-[#1A365D] px-5 py-3 text-xs font-black text-[#1A365D] hover:bg-gray-50 transition-all uppercase tracking-widest cursor-pointer"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
               IMPORT CSV
             </label>
             <Link 
               href="/admin/mata-kuliah/tambah"
-              className="flex items-center gap-3 rounded-2xl bg-[#1A365D] px-10 py-4 text-sm font-black text-white shadow-xl shadow-blue-900/20 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest"
+              className="flex items-center gap-2 rounded-2xl bg-[#1A365D] px-5 py-3 text-sm font-black text-white shadow-xl shadow-blue-900/20 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest whitespace-nowrap"
             >
-              <PlusIcon /> TAMBAH MATA KULIAH
+              <PlusIcon /> TAMBAH MK
             </Link>
           </div>
         </div>
 
-        {/* Data Table */}
-        <div className="rounded-[2rem] bg-white shadow-sm border border-gray-50 overflow-hidden">
-          <table className="w-full text-left">
+        {/* ── MOBILE: Card List ── */}
+        <div className="md:hidden flex flex-col gap-2">
+          {loading ? (
+            <div className="py-16 text-center font-bold text-gray-300 uppercase tracking-widest animate-pulse">Menghubungkan ke Database...</div>
+          ) : filteredMK.length > 0 ? filteredMK.map((course) => (
+            <div key={`m-${course.id}`} className="rounded-2xl bg-white border border-gray-50 shadow-sm p-4 flex flex-col gap-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[10px] font-black text-[#1A365D] uppercase tracking-tighter bg-blue-50 px-2 py-0.5 rounded">{course.kode_mk}</span>
+                    <span className="text-[10px] font-black text-blue-700 bg-blue-50 px-2 py-0.5 rounded">{course.sks} SKS</span>
+                    <span className="text-[10px] font-bold text-gray-400">Sem {course.semester_asal}</span>
+                  </div>
+                  <p className="text-sm font-bold text-gray-900 line-clamp-2">{course.nama_mk}</p>
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-tight mt-0.5">
+                    {course.jurusan || '-'} • {course.prodi || '-'}
+                  </p>
+                </div>
+                <div className="flex gap-2 shrink-0">
+                  <Link
+                    href={`/admin/mata-kuliah/edit/${course.id}`}
+                    className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-gray-400 hover:bg-blue-600 hover:text-white transition-all border border-gray-100 shadow-sm"
+                  >
+                    <EditIcon />
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(course.id)}
+                    className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-gray-400 hover:bg-red-600 hover:text-white transition-all border border-gray-100 shadow-sm"
+                  >
+                    <TrashIcon />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )) : (
+            <div className="py-12 text-center font-bold text-gray-300 uppercase tracking-widest">Mata kuliah tidak ditemukan</div>
+          )}
+        </div>
+
+        {/* ── DESKTOP: Table ── */}
+        <div className="hidden md:block overflow-x-auto rounded-[2rem] bg-white shadow-sm border border-gray-50">
+          <table className="w-full min-w-[640px] text-left">
             <thead>
-                <tr className="bg-gray-50/50">
+              <tr className="bg-gray-50/50">
                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-gray-400">KODE</th>
                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-gray-400">MATA KULIAH</th>
                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-gray-400 text-center">SKS</th>
@@ -197,7 +236,7 @@ export default function DataMKAdmin() {
                   <td colSpan={6} className="px-8 py-20 text-center font-bold text-gray-300 uppercase tracking-widest animate-pulse">Menghubungkan ke Database...</td>
                 </tr>
               ) : filteredMK.map((course) => (
-                <tr key={course.id} className="hover:bg-gray-50/30 transition-all group">
+                <tr key={`d-${course.id}`} className="hover:bg-gray-50/30 transition-all group">
                   <td className="px-8 py-6">
                     <span className="text-sm font-black text-[#1A365D] uppercase tracking-tighter">{course.kode_mk}</span>
                   </td>
@@ -217,14 +256,14 @@ export default function DataMKAdmin() {
                     </div>
                   </td>
                   <td className="px-8 py-6 text-right">
-                    <div className="flex items-center justify-end gap-3 transition-all">
-                      <Link 
+                    <div className="flex items-center justify-end gap-3">
+                      <Link
                         href={`/admin/mata-kuliah/edit/${course.id}`}
                         className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-gray-400 hover:bg-blue-600 hover:text-white transition-all border border-gray-100 shadow-sm hover:shadow-lg hover:shadow-blue-200"
                       >
                         <EditIcon />
                       </Link>
-                      <button 
+                      <button
                         onClick={() => handleDelete(course.id)}
                         className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-gray-400 hover:bg-red-600 hover:text-white transition-all border border-gray-100 shadow-sm hover:shadow-lg hover:shadow-red-200"
                       >
@@ -236,14 +275,14 @@ export default function DataMKAdmin() {
               ))}
             </tbody>
           </table>
-          
+
           {!loading && filteredMK.length === 0 && (
-             <div className="p-32 text-center text-gray-400">
-                <p className="text-sm font-black uppercase tracking-[0.2em] text-gray-300">Mata kuliah tidak ditemukan</p>
-             </div>
+            <div className="p-32 text-center">
+              <p className="text-sm font-black uppercase tracking-[0.2em] text-gray-300">Mata kuliah tidak ditemukan</p>
+            </div>
           )}
 
-          <div className="bg-gray-50/30 p-8 flex items-center justify-between border-t border-gray-50">
+          <div className="bg-gray-50/30 p-6 md:p-8 flex items-center justify-between border-t border-gray-50">
             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Total Kurikulum Master: {filteredMK.length} MK</p>
           </div>
         </div>

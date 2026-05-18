@@ -68,34 +68,34 @@ export default function BantuanPage() {
           </p>
         </div>
 
-        <div className="flex gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
           
           {/* Left Column */}
-          <div className="flex w-2/3 flex-col gap-8">
+          <div className="w-full lg:w-2/3 flex flex-col gap-6 md:gap-8">
             
             {/* FAQ Section */}
-            <div className="rounded-2xl bg-gray-50 p-8 border border-gray-100">
+            <div className="rounded-2xl bg-gray-50 p-5 md:p-8 border border-gray-100">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-bold text-gray-900">Pertanyaan Umum (FAQ)</h2>
+                <h2 className="text-base md:text-lg font-bold text-gray-900">Pertanyaan Umum (FAQ)</h2>
                 <button className="text-xs font-bold text-[#1A365D] hover:underline">Lihat Semua</button>
               </div>
 
               <div className="flex flex-col gap-4">
-                <div className="flex items-center justify-between rounded-xl bg-white p-5 shadow-sm cursor-pointer hover:shadow-md transition-shadow">
-                  <span className="font-bold text-gray-800">Bagaimana cara reset password portal?</span>
-                  <div className="text-gray-400">
+                <div className="flex items-center justify-between rounded-xl bg-white p-4 md:p-5 shadow-sm cursor-pointer hover:shadow-md transition-shadow gap-4">
+                  <span className="font-bold text-xs md:text-sm text-gray-800">Bagaimana cara reset password portal?</span>
+                  <div className="text-gray-400 shrink-0">
                     <ChevronDownIcon />
                   </div>
                 </div>
-                <div className="flex items-center justify-between rounded-xl bg-white p-5 shadow-sm cursor-pointer hover:shadow-md transition-shadow">
-                  <span className="font-bold text-gray-800">Masalah pengisian KRS online?</span>
-                  <div className="text-gray-400">
+                <div className="flex items-center justify-between rounded-xl bg-white p-4 md:p-5 shadow-sm cursor-pointer hover:shadow-md transition-shadow gap-4">
+                  <span className="font-bold text-xs md:text-sm text-gray-800">Masalah pengisian KRS online?</span>
+                  <div className="text-gray-400 shrink-0">
                     <ChevronDownIcon />
                   </div>
                 </div>
-                <div className="flex items-center justify-between rounded-xl bg-white p-5 shadow-sm cursor-pointer hover:shadow-md transition-shadow">
-                  <span className="font-bold text-gray-800">Jadwal UTS/UAS belum muncul?</span>
-                  <div className="text-gray-400">
+                <div className="flex items-center justify-between rounded-xl bg-white p-4 md:p-5 shadow-sm cursor-pointer hover:shadow-md transition-shadow gap-4">
+                  <span className="font-bold text-xs md:text-sm text-gray-800">Jadwal UTS/UAS belum muncul?</span>
+                  <div className="text-gray-400 shrink-0">
                     <ChevronDownIcon />
                   </div>
                 </div>
@@ -103,26 +103,26 @@ export default function BantuanPage() {
             </div>
 
             {/* Contact Cards */}
-            <div className="flex gap-6">
-              <div className="flex-1 rounded-2xl bg-[#0F4C81] p-8 text-white shadow-md">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+              <div className="rounded-2xl bg-[#0F4C81] p-6 md:p-8 text-white shadow-md">
                 <div className="mb-4 text-blue-200">
                   <HeadsetIcon />
                 </div>
-                <h3 className="text-xl font-bold mb-1">Bantuan Akademik</h3>
-                <p className="text-xs text-blue-200 mb-6">Senin - Jumat | 08:00 - 16:00</p>
-                <div className="flex items-center gap-2 text-sm font-bold">
+                <h3 className="text-lg md:text-xl font-bold mb-1">Bantuan Akademik</h3>
+                <p className="text-[10px] md:text-xs text-blue-200 mb-6">Senin - Jumat | 08:00 - 16:00</p>
+                <div className="flex items-center gap-2 text-xs md:text-sm font-bold mt-auto">
                   <PhoneIcon />
                   (0431) 888 123
                 </div>
               </div>
 
-              <div className="flex-1 rounded-2xl bg-[#87781F] p-8 text-white shadow-md">
+              <div className="rounded-2xl bg-[#87781F] p-6 md:p-8 text-white shadow-md">
                 <div className="mb-4 text-yellow-200/60">
                   <TerminalIcon />
                 </div>
-                <h3 className="text-xl font-bold mb-1 text-white">Technical Support IT</h3>
-                <p className="text-xs text-yellow-100/60 mb-6">Layanan Gangguan Sistem</p>
-                <div className="flex items-center gap-2 text-sm font-bold text-yellow-100/80">
+                <h3 className="text-lg md:text-xl font-bold mb-1 text-white">Technical Support IT</h3>
+                <p className="text-[10px] md:text-xs text-yellow-100/60 mb-6">Layanan Gangguan Sistem</p>
+                <div className="flex items-center gap-2 text-xs md:text-sm font-bold text-yellow-100/80 mt-auto">
                   <MailIcon />
                   it.support@polimdo.ac.id
                 </div>
@@ -130,23 +130,23 @@ export default function BantuanPage() {
             </div>
 
             {/* Image Banner */}
-            <div className="relative overflow-hidden rounded-2xl h-64 flex items-center shadow-md mt-4">
+            <div className="relative overflow-hidden rounded-2xl min-h-[320px] md:h-64 flex items-center shadow-md mt-4">
               <div 
                 className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: "url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop')" }}
               ></div>
               <div className="absolute inset-0 bg-[#0A1A36]/70"></div>
               
-              <div className="relative z-10 flex w-full items-center justify-between p-10">
-                <p className="max-w-xs text-xl font-medium italic leading-relaxed text-white">
+              <div className="relative z-10 flex flex-col md:flex-row w-full items-stretch md:items-center justify-between p-6 md:p-10 gap-6 md:gap-10">
+                <p className="max-w-xs text-base md:text-lg font-medium italic leading-relaxed text-white">
                   "Pendidikan adalah senjata paling ampuh untuk mengubah dunia."
                 </p>
-                <div className="max-w-sm pl-12 border-l border-white/20 text-white">
-                  <h3 className="text-2xl font-bold mb-4">Panduan Pengguna Terpadu</h3>
-                  <p className="text-sm text-gray-300 leading-relaxed mb-6">
+                <div className="max-w-sm pl-0 md:pl-8 border-l-0 md:border-l border-white/20 text-white">
+                  <h3 className="text-lg md:text-xl font-bold mb-4">Panduan Pengguna Terpadu</h3>
+                  <p className="text-[11px] md:text-xs text-gray-300 leading-relaxed mb-6">
                     Unduh panduan lengkap penggunaan Portal Akademik Polimdo untuk mahasiswa. Dokumentasi mencakup tutorial video dan langkah-langkah tertulis.
                   </p>
-                  <button className="flex items-center gap-2 font-bold text-white hover:text-gray-200">
+                  <button className="flex items-center gap-2 font-bold text-xs md:text-sm text-white hover:text-gray-200">
                     Unduh PDF Panduan (12MB)
                     <DownloadIcon />
                   </button>
@@ -157,16 +157,16 @@ export default function BantuanPage() {
           </div>
 
           {/* Right Column (Support Form) */}
-          <div className="w-1/3">
-            <div className="rounded-2xl bg-gray-200/50 p-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Kirim Tiket Bantuan</h3>
-              <p className="text-sm text-gray-600 mb-8 leading-relaxed">
+          <div className="w-full lg:w-1/3">
+            <div className="rounded-2xl bg-gray-200/50 p-5 md:p-8">
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">Kirim Tiket Bantuan</h3>
+              <p className="text-xs text-gray-600 mb-6 md:mb-8 leading-relaxed">
                 Tim kami akan merespons dalam waktu maksimal 1×24 jam kerja.
               </p>
 
               <form className="flex flex-col gap-5">
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-gray-600">
+                  <label className="text-[9px] font-bold uppercase tracking-wider text-gray-600 ml-1">
                     KATEGORI MASALAH
                   </label>
                   <div className="relative">
@@ -183,7 +183,7 @@ export default function BantuanPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-gray-600">
+                  <label className="text-[9px] font-bold uppercase tracking-wider text-gray-600 ml-1">
                     SUBJEK
                   </label>
                   <input 
@@ -194,7 +194,7 @@ export default function BantuanPage() {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] font-bold uppercase tracking-wider text-gray-600">
+                  <label className="text-[9px] font-bold uppercase tracking-wider text-gray-600 ml-1">
                     DETAIL PESAN
                   </label>
                   <textarea 

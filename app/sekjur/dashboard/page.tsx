@@ -101,7 +101,7 @@ export default function SekjurDashboard() {
       <div className="flex flex-col gap-8">
 
         {/* Stats Row */}
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-50 relative overflow-hidden">
             {loading && <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10 flex items-center justify-center"><div className="h-4 w-4 border-2 border-[#1A365D] border-t-transparent rounded-full animate-spin"></div></div>}
             <p className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-3">TOTAL PESERTA SA</p>
@@ -139,71 +139,97 @@ export default function SekjurDashboard() {
           </div>
         </div>
 
-        <div className="flex gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
           {/* Left Column */}
-          <div className="flex flex-col gap-8 flex-grow">
+          <div className="flex flex-col gap-6 md:gap-8 flex-grow min-w-0">
 
             {/* Urgent Verification Table */}
-            <div className="rounded-2xl bg-white p-8 shadow-sm border border-gray-50 relative">
+            <div className="rounded-2xl bg-white p-5 md:p-8 shadow-sm border border-gray-50 relative">
               {loading && <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10 rounded-2xl"></div>}
-              <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center justify-between mb-6 md:mb-8">
                 <div className="flex items-center gap-3">
                   <div className="h-2 w-2 rounded-full bg-red-600 animate-pulse"></div>
-                  <h3 className="text-lg font-bold text-gray-900">Verifikasi Pembayaran Mendesak</h3>
+                  <h3 className="text-base md:text-lg font-bold text-gray-900">Verifikasi Pembayaran Mendesak</h3>
                 </div>
                 <Link href="/sekjur/pembayaran" className="text-xs font-bold text-blue-600 hover:underline">Lihat Semua</Link>
               </div>
 
-              <table className="w-full">
-                <thead>
-                  <tr className="text-left text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                    <th className="pb-4">MAHASISWA</th>
-                    <th className="pb-4">PROGRAM STUDI</th>
-                    <th className="pb-4">STATUS</th>
-                    <th className="pb-4 text-right">AKSI</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-50">
-                  {urgentVerifications.length > 0 ? urgentVerifications.map((item) => (
-                    <tr key={item.id}>
-                      <td className="py-4">
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-800">
-                            {getInitials(item.mahasiswa?.nama_mahasiswa)}
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-gray-900 line-clamp-1">{item.mahasiswa?.nama_mahasiswa}</p>
-                            <p className="text-[10px] font-medium text-gray-400">NIM: {item.mahasiswa?.nim}</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-4 text-sm font-semibold text-gray-600">{item.mahasiswa?.prodi || 'Sistem Informasi'}</td>
-                      <td className="py-4">
-                        <span className="inline-flex flex-col items-center rounded-lg bg-orange-50 px-2.5 py-1 text-[9px] font-bold text-orange-700">
-                          <span>BUTUH</span>
-                          <span>VALIDASI</span>
-                        </span>
-                      </td>
-                      <td className="py-4 text-right">
-                        <Link href="/sekjur/pembayaran" className="rounded-lg bg-[#0F172A] px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-gray-800">Verifikasi</Link>
-                      </td>
-                    </tr>
-                  )) : (
-                    <tr>
-                      <td colSpan={4} className="py-10 text-center text-sm font-bold text-gray-400 uppercase tracking-widest">
-                        {loading ? 'Memuat Data...' : 'Tidak ada verifikasi mendesak'}
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+              {/* Mobile View: Card List */}
+              <div className="md:hidden flex flex-col gap-3">
+                {urgentVerifications.length > 0 ? urgentVerifications.map((item, idx) => (
+                  <div key={`m-${item.id}-${idx}`} className="rounded-2xl border border-gray-50 bg-gray-50/20 p-4 flex flex-col gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-800">
+                        {getInitials(item.mahasiswa?.nama_mahasiswa)}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold text-gray-900 line-clamp-1">{item.mahasiswa?.nama_mahasiswa}</p>
+                        <p className="text-[10px] font-medium text-gray-400">NIM: {item.mahasiswa?.nim} • {item.mahasiswa?.prodi || 'Sistem Informasi'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between mt-1">
+                      <span className="inline-flex rounded-lg bg-orange-50 px-2.5 py-1 text-[9px] font-black text-orange-700 tracking-wider">
+                        BUTUH VALIDASI
+                      </span>
+                      <Link href="/sekjur/pembayaran" className="rounded-lg bg-[#0F172A] px-4 py-2 text-xs font-bold text-white transition-colors hover:bg-gray-800">Verifikasi</Link>
+                    </div>
+                  </div>
+                )) : (
+                  <p className="py-6 text-center text-xs font-bold text-gray-400 uppercase">Tidak ada verifikasi mendesak</p>
+                )}
+              </div>
 
-            {/* Formulir SA Recent Activity */}
-            <div className="rounded-2xl bg-white p-8 shadow-sm border border-gray-50 relative">
+              {/* Desktop View: Table */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="text-left text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                      <th className="pb-4">MAHASISWA</th>
+                      <th className="pb-4">PROGRAM STUDI</th>
+                      <th className="pb-4">STATUS</th>
+                      <th className="pb-4 text-right">AKSI</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-50">
+                    {urgentVerifications.length > 0 ? urgentVerifications.map((item) => (
+                      <tr key={item.id}>
+                        <td className="py-4">
+                          <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-800">
+                              {getInitials(item.mahasiswa?.nama_mahasiswa)}
+                            </div>
+                            <div>
+                              <p className="text-sm font-bold text-gray-900 line-clamp-1">{item.mahasiswa?.nama_mahasiswa}</p>
+                              <p className="text-[10px] font-medium text-gray-400">NIM: {item.mahasiswa?.nim}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-4 text-sm font-semibold text-gray-600">{item.mahasiswa?.prodi || 'Sistem Informasi'}</td>
+                        <td className="py-4">
+                          <span className="inline-flex flex-col items-center rounded-lg bg-orange-50 px-2.5 py-1 text-[9px] font-bold text-orange-700">
+                            <span>BUTUH</span>
+                            <span>VALIDASI</span>
+                          </span>
+                        </td>
+                        <td className="py-4 text-right">
+                          <Link href="/sekjur/pembayaran" className="rounded-lg bg-[#0F172A] px-5 py-2 text-xs font-bold text-white transition-colors hover:bg-gray-800">Verifikasi</Link>
+                        </td>
+                      </tr>
+                    )) : (
+                      <tr>
+                        <td colSpan={4} className="py-10 text-center text-sm font-bold text-gray-400 uppercase tracking-widest">
+                          {loading ? 'Memuat Data...' : 'Tidak ada verifikasi mendesak'}
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>            {/* Formulir SA Recent Activity */}
+            <div className="rounded-2xl bg-white p-5 md:p-8 shadow-sm border border-gray-50 relative">
               {loading && <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10 rounded-2xl"></div>}
-              <div className="flex items-center justify-between mb-8">
-                <h3 className="text-lg font-bold text-gray-900">Aktivitas Formulir SA (Terbaru)</h3>
+              <div className="flex items-center justify-between mb-6 md:mb-8">
+                <h3 className="text-base md:text-lg font-bold text-gray-900">Aktivitas Formulir SA (Terbaru)</h3>
                 <span className="rounded-full bg-blue-50 px-3 py-1 text-[9px] font-black text-blue-700 uppercase tracking-widest">Real-Time</span>
               </div>
 
@@ -211,15 +237,16 @@ export default function SekjurDashboard() {
                 {recentActivities.length > 0 ? recentActivities.map((activity) => (
                   <Link href="/sekjur/pembayaran" key={activity.id} className="block">
                     <div className="flex items-center justify-between rounded-xl border border-gray-50 p-4 hover:bg-gray-50 transition-all cursor-pointer">
-                      <div className="flex items-center gap-4">
-                        <div className={`h-10 w-10 rounded-full flex items-center justify-center ${activity.status === 'Approved' ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'}`}>
+                      <div className="flex items-center gap-4 min-w-0">
+                        <div className={`h-10 w-10 rounded-full flex items-center justify-center shrink-0 ${activity.status === 'Approved' ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600'}`}>
                           {activity.status === 'Approved' ? <ClipboardIcon /> : <SendIcon />}
                         </div>
-                        <div>
-                          <h4 className="text-sm font-bold text-gray-900">
+                        <div className="min-w-0">
+                          <h4 className="text-sm font-bold text-gray-900 truncate">
                             {activity.status === 'Approved' ? 'Formulir Disetujui (Lunas)' : 'Formulir Masuk (Menunggu Verifikasi)'}
                           </h4>
-                          <p className="text-[10px] text-gray-400">Mahasiswa: <span className="font-bold">{activity.mahasiswa?.nama_mahasiswa} ({activity.mahasiswa?.nim})</span> • {getTimeAgo(activity.created_at)}</p>
+                          <p className="text-[10px] text-gray-400 truncate">Mahasiswa: <span className="font-bold">{activity.mahasiswa?.nama_mahasiswa} ({activity.mahasiswa?.nim})</span></p>
+                          <p className="text-[9px] text-gray-400/80 mt-0.5">{getTimeAgo(activity.created_at)}</p>
                         </div>
                       </div>
                       <ChevronRightIcon />
@@ -236,11 +263,11 @@ export default function SekjurDashboard() {
           </div>
 
           {/* Right Column */}
-          <div className="w-[340px] shrink-0 flex flex-col gap-8">
+          <div className="w-full lg:w-[340px] lg:shrink-0 flex flex-col gap-6 md:gap-8">
 
             {/* Timeline Semester Antara */}
-            <div className="rounded-2xl bg-gray-100 p-8 shadow-sm border border-gray-50 relative">
-              <h3 className="text-lg font-bold text-[#1A365D] mb-8">Status Alur Kerja SA</h3>
+            <div className="rounded-2xl bg-gray-100 p-6 md:p-8 shadow-sm border border-gray-50 relative">
+              <h3 className="text-base md:text-lg font-bold text-[#1A365D] mb-6 md:mb-8">Status Alur Kerja SA</h3>
 
               <div className="relative pl-6 space-y-10">
                 <div className="absolute left-[2px] top-1.5 bottom-1.5 w-[2px] bg-gray-200"></div>

@@ -226,10 +226,10 @@ export default function MataKuliahPage() {
       <div className="flex flex-col gap-8">
 
         {/* Banner Area */}
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-[#0B2559] p-12 text-white shadow-2xl">
+        <div className="relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] bg-[#0B2559] p-8 md:p-12 text-white shadow-2xl">
           <div className="relative z-10 max-w-2xl">
-            <h1 className="mb-4 text-4xl font-black tracking-tight leading-tight">Data Mata Kuliah <br />Semester Antara</h1>
-            <p className="mb-8 text-blue-200 font-medium">Berikut adalah daftar lengkap Mata Kuliah yang telah disetujui beserta alokasi dosen pengampunya.</p>
+            <h1 className="mb-3 text-2xl md:text-4xl font-black tracking-tight leading-tight">Data Mata Kuliah <br />Semester Antara</h1>
+            <p className="mb-6 md:mb-8 text-xs md:text-sm text-blue-200 font-medium">Berikut adalah daftar lengkap Mata Kuliah yang telah disetujui beserta alokasi dosen pengampunya.</p>
           </div>
           <div className="absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-white/5 blur-3xl"></div>
         </div>
@@ -240,7 +240,7 @@ export default function MataKuliahPage() {
             <div className="col-span-full h-32 w-full rounded-2xl bg-gray-50 animate-pulse"></div>
           ) : courses.length > 0 ? (
             courses.map((item) => (
-              <div key={item.id} className="relative flex flex-col rounded-3xl bg-white p-8 shadow-sm border border-gray-50 transition-all hover:shadow-xl hover:-translate-y-1">
+              <div key={item.id} className="relative flex flex-col rounded-3xl bg-white p-6 md:p-8 shadow-sm border border-gray-50 transition-all hover:shadow-xl hover:-translate-y-1">
                 <div className="absolute left-0 top-8 bottom-8 w-1.5 rounded-r-full" style={{ backgroundColor: item.color }}></div>
                 
                 <div className="flex items-center justify-between mb-4">
@@ -253,10 +253,10 @@ export default function MataKuliahPage() {
                   </div>
                 </div>
 
-                <h4 className="mb-4 text-xl font-black text-[#1A365D] leading-tight line-clamp-2">{item.title}</h4>
+                <h4 className="mb-4 text-lg md:text-xl font-black text-[#1A365D] leading-tight line-clamp-2">{item.title}</h4>
                 
-                <div className="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between gap-4">
-                  <div className="flex-grow">
+                <div className="mt-auto pt-4 border-t border-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex-grow min-w-0">
                     <p className="mb-1 text-[9px] font-black uppercase tracking-widest text-gray-400">Dosen Pengampu</p>
                     <p className={`text-sm font-bold truncate ${item.status === 'AKTIF' ? 'text-gray-800' : 'text-gray-400 italic'}`}>
                       {item.dosen}
@@ -265,7 +265,7 @@ export default function MataKuliahPage() {
                   {item.status === 'AKTIF' && (
                     <button 
                       onClick={() => handleDownloadKHS(item)}
-                      className="shrink-0 flex items-center justify-center rounded-xl bg-blue-50 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-blue-700 hover:bg-[#1A365D] hover:text-white transition-all shadow-sm"
+                      className="shrink-0 w-full sm:w-auto flex items-center justify-center rounded-xl bg-blue-50 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-blue-700 hover:bg-[#1A365D] hover:text-white transition-all shadow-sm"
                     >
                       Unduh KHS
                     </button>
@@ -281,8 +281,8 @@ export default function MataKuliahPage() {
         </div>
 
         {/* Footer Info */}
-        <div className="rounded-3xl bg-white p-8 shadow-sm border border-gray-50 flex items-center justify-between">
-          <div className="flex gap-8">
+        <div className="rounded-3xl bg-white p-5 md:p-8 shadow-sm border border-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
             <div className="flex items-center gap-2">
               <div className="h-3 w-3 rounded-full bg-green-500"></div>
               <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Aktif (Dialokasi)</span>

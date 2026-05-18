@@ -210,28 +210,38 @@ export default function RegisterPage() {
             {/* Jurusan & Prodi */}
             <div className="flex flex-col gap-2">
               <label className="text-[10px] font-black uppercase tracking-widest text-gray-500">JURUSAN</label>
-              <select
-                required
-                value={formData.jurusan}
-                onChange={(e) => setFormData({...formData, jurusan: e.target.value})}
-                className="w-full rounded-xl bg-[#262c3a] py-3.5 px-5 text-sm text-white outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none cursor-pointer"
-              >
-                <option value="">Pilih Jurusan</option>
-                {jurusanList.map(j => <option key={j.id} value={j.nama_jurusan}>{j.nama_jurusan}</option>)}
-              </select>
+              <div className="relative group">
+                <select
+                  required
+                  value={formData.jurusan}
+                  onChange={(e) => setFormData({...formData, jurusan: e.target.value})}
+                  className="w-full rounded-xl bg-[#262c3a] py-3.5 pl-5 pr-10 text-sm text-white outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none cursor-pointer"
+                >
+                  <option value="">Pilih Jurusan</option>
+                  {jurusanList.map(j => <option key={j.id} value={j.nama_jurusan}>{j.nama_jurusan}</option>)}
+                </select>
+                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+              </div>
             </div>
             <div className="flex flex-col gap-2">
               <label className="text-[10px] font-black uppercase tracking-widest text-gray-500">PRODI</label>
-              <select
-                required
-                disabled={!formData.jurusan}
-                value={formData.prodi}
-                onChange={(e) => setFormData({...formData, prodi: e.target.value})}
-                className="w-full rounded-xl bg-[#262c3a] py-3.5 px-5 text-sm text-white outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none cursor-pointer disabled:opacity-50"
-              >
-                <option value="">Pilih Prodi</option>
-                {filteredProdi.map(p => <option key={p.id} value={p.nama_prodi}>{p.nama_prodi}</option>)}
-              </select>
+              <div className="relative group">
+                <select
+                  required
+                  disabled={!formData.jurusan}
+                  value={formData.prodi}
+                  onChange={(e) => setFormData({...formData, prodi: e.target.value})}
+                  className="w-full rounded-xl bg-[#262c3a] py-3.5 pl-5 pr-10 text-sm text-white outline-none focus:ring-2 focus:ring-blue-500/50 appearance-none cursor-pointer disabled:opacity-50"
+                >
+                  <option value="">Pilih Prodi</option>
+                  {filteredProdi.map(p => <option key={p.id} value={p.nama_prodi}>{p.nama_prodi}</option>)}
+                </select>
+                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-500">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </div>
+              </div>
             </div>
 
             {/* IPK & Semester */}

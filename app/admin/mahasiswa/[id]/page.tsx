@@ -109,11 +109,11 @@ export default function StudentProfileDetail() {
       <div className="flex flex-col gap-8">
         
         {/* Profile Header Card */}
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-white p-12 shadow-sm border border-gray-50">
-           <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
+        <div className="relative overflow-hidden rounded-2xl md:rounded-[2.5rem] bg-white p-6 md:p-12 shadow-sm border border-gray-50">
+           <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 md:gap-12">
               {/* Avatar Large */}
-              <div className="relative">
-                 <div className="h-40 w-40 rounded-[2.5rem] bg-red-50 flex items-center justify-center text-5xl font-black text-red-600 shadow-inner">
+              <div className="relative shrink-0">
+                 <div className="h-28 w-28 md:h-40 md:w-40 rounded-[2rem] md:rounded-[2.5rem] bg-red-50 flex items-center justify-center text-4xl md:text-5xl font-black text-red-600 shadow-inner">
                     {getInitials(student.nama_mahasiswa)}
                  </div>
                  <div className="absolute -bottom-2 -right-2 h-10 w-10 rounded-2xl bg-green-500 border-4 border-white flex items-center justify-center shadow-lg">
@@ -123,23 +123,23 @@ export default function StudentProfileDetail() {
 
               {/* Identity Info */}
               <div className="flex-grow text-center md:text-left">
-                 <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
-                    <h1 className="text-4xl font-black text-[#1A365D]">{student.nama_mahasiswa}</h1>
+                 <div className="flex flex-col md:flex-row md:items-center gap-3 mb-3">
+                    <h1 className="text-2xl md:text-4xl font-black text-[#1A365D]">{student.nama_mahasiswa}</h1>
                  </div>
-                 <p className="text-lg font-bold text-gray-400 mb-8 italic">{student.prodi} ({student.jurusan})</p>
+                 <p className="text-base md:text-lg font-bold text-gray-400 mb-6 italic">{student.prodi} ({student.jurusan})</p>
                  
-                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                     <div className="flex flex-col">
                        <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">NIM MAHASISWA</span>
-                       <span className="text-lg font-black text-[#1A365D]">{student.nim_nip}</span>
+                       <span className="text-sm md:text-lg font-black text-[#1A365D]">{student.nim_nip}</span>
                     </div>
                     <div className="flex flex-col">
                        <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">STATUS</span>
-                       <span className="text-lg font-black text-green-600">Aktif</span>
+                       <span className="text-sm md:text-lg font-black text-green-600">Aktif</span>
                     </div>
                     <div className="flex flex-col">
                        <span className="text-[10px] font-black text-gray-300 uppercase tracking-widest">EMAIL INSTITUSI</span>
-                       <div className="flex items-center gap-2 text-gray-600 font-bold text-sm">
+                       <div className="flex items-center gap-2 text-gray-600 font-bold text-xs md:text-sm flex-wrap">
                           <MailIcon /> {student.email}
                        </div>
                     </div>
@@ -158,44 +158,44 @@ export default function StudentProfileDetail() {
         </div>
 
         {/* Details Grid */}
-        <div className="grid grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
            {/* Left: Academic History */}
-           <div className="col-span-8 flex flex-col gap-8">
-              <div className="rounded-[2rem] bg-white p-10 shadow-sm border border-gray-50">
-                 <h3 className="text-xl font-black text-[#1A365D] uppercase tracking-widest mb-8 flex items-center gap-3">
+           <div className="lg:col-span-2 flex flex-col gap-8">
+              <div className="rounded-[2rem] bg-white p-6 md:p-10 shadow-sm border border-gray-50">
+                 <h3 className="text-lg md:text-xl font-black text-[#1A365D] uppercase tracking-widest mb-6 md:mb-8 flex items-center gap-3">
                     <span className="h-2 w-8 bg-red-600 rounded-full"></span>
                     Riwayat Pendaftaran SA
                  </h3>
 
-                 <div className="space-y-6">
+                 <div className="space-y-4 md:space-y-6">
                     {history.length > 0 ? history.map((item) => (
-                      <div key={item.id} className="rounded-3xl border border-gray-50 bg-gray-50/30 p-8 flex items-center justify-between group hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all">
-                         <div className="flex items-center gap-6">
-                            <div className={`h-14 w-14 rounded-2xl flex items-center justify-center text-white shadow-lg ${
+                      <div key={item.id} className="rounded-3xl border border-gray-50 bg-gray-50/30 p-5 md:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 group hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all">
+                         <div className="flex items-center gap-5">
+                            <div className={`h-12 w-12 md:h-14 md:w-14 shrink-0 rounded-2xl flex items-center justify-center text-white shadow-lg ${
                               item.status === 'Approved' ? 'bg-green-600 shadow-green-200' : 
                               item.status === 'Pending' ? 'bg-orange-500 shadow-orange-200' : 'bg-gray-400 shadow-gray-200'
                             }`}>
-                               <span className="text-xl font-black">SA</span>
+                               <span className="text-lg font-black">SA</span>
                             </div>
                             <div>
-                               <h4 className="text-lg font-black text-[#1A365D]">{item.kode_pendaftaran}</h4>
+                               <h4 className="text-base md:text-lg font-black text-[#1A365D]">{item.kode_pendaftaran}</h4>
                                <p className="text-xs font-bold text-gray-400 mt-1 uppercase">
-                                  {item.pendaftaran_items?.length || 0} Mata Kuliah Terdaftar • Rp {(item.biaya_pendaftaran || 0).toLocaleString('id-ID')}
+                                  {item.pendaftaran_items?.length || 0} MK Terdaftar • Rp {(item.biaya_pendaftaran || 0).toLocaleString('id-ID')}
                                </p>
                             </div>
                          </div>
-                         <div className="text-right">
+                         <div className="text-left sm:text-right shrink-0">
                             <span className={`inline-flex rounded-full px-4 py-1.5 text-[9px] font-black uppercase tracking-widest border ${
                               item.status === 'Approved' ? 'bg-green-50 text-green-700 border-green-100' : 
                               item.status === 'Pending' ? 'bg-orange-50 text-orange-700 border-orange-100' : 'bg-gray-50 text-gray-700 border-gray-100'
                             }`}>
                               {item.status}
                             </span>
-                            <p className="text-[10px] font-bold text-gray-300 mt-2">Dibuat pada {new Date(item.created_at).toLocaleDateString('id-ID')}</p>
+                            <p className="text-[10px] font-bold text-gray-300 mt-2">{new Date(item.created_at).toLocaleDateString('id-ID')}</p>
                          </div>
                       </div>
                     )) : (
-                      <div className="rounded-3xl border border-dashed border-gray-200 p-8 flex items-center justify-center text-gray-400 italic font-medium">
+                      <div className="rounded-3xl border border-dashed border-gray-200 p-8 flex items-center justify-center text-gray-400 italic font-medium text-sm text-center">
                          Mahasiswa ini belum pernah mendaftar Semester Antara.
                       </div>
                     )}
@@ -204,10 +204,10 @@ export default function StudentProfileDetail() {
            </div>
 
            {/* Right: Summary Statistics */}
-           <div className="col-span-4 flex flex-col gap-8">
-              <div className="rounded-[2rem] bg-[#0F172A] p-10 text-white shadow-xl">
-                 <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-red-400 mb-10">Status Sistem</h4>
-                 <div className="space-y-6">
+           <div className="flex flex-col gap-8">
+              <div className="rounded-[2rem] bg-[#0F172A] p-8 md:p-10 text-white shadow-xl">
+                 <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-red-400 mb-8 md:mb-10">Status Sistem</h4>
+                 <div className="space-y-5 md:space-y-6">
                     <div className="flex items-center gap-4">
                        <div className="h-3 w-3 rounded-full bg-green-500 animate-pulse"></div>
                        <span className="text-sm font-bold text-white">Akun Aktif Terverifikasi</span>

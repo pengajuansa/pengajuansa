@@ -138,21 +138,21 @@ export default function ManajemenTugasDosen() {
       <div className="flex flex-col gap-10 relative">
         
         {/* Header Section */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="max-w-xl">
-            <h1 className="text-4xl font-black text-[#1A365D] mb-2 tracking-tight">Penugasan Mahasiswa</h1>
+            <h1 className="text-3xl md:text-4xl font-black text-[#1A365D] mb-2 tracking-tight">Penugasan Mahasiswa</h1>
             <p className="text-sm font-semibold text-gray-400">Kelola daftar tugas untuk setiap mata kuliah secara real-time.</p>
           </div>
           <Link 
             href="/dosen/tugas/buat"
-            className="flex items-center gap-3 rounded-2xl bg-[#0B2559] px-10 py-5 text-sm font-black text-white shadow-2xl shadow-blue-900/20 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest"
+            className="flex items-center gap-3 rounded-2xl bg-[#0B2559] px-6 md:px-10 py-4 md:py-5 text-sm font-black text-white shadow-2xl shadow-blue-900/20 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest whitespace-nowrap"
           >
-            <PlusIcon /> BUAT TUGAS BARU
+            <PlusIcon /> BUAT TUGAS
           </Link>
         </div>
 
         {/* Stats Area */}
-        <div className="grid grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
            <div className="rounded-[2rem] bg-white p-7 shadow-sm border border-gray-50 flex flex-col gap-1 group hover:shadow-lg transition-all relative overflow-hidden">
               {loading && <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10 flex items-center justify-center"></div>}
               <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">TUGAS AKTIF</span>
@@ -175,55 +175,104 @@ export default function ManajemenTugasDosen() {
            </div>
         </div>
 
-        {/* Tasks Table */}
+        {/* Tasks Section */}
         <div className="rounded-[2.5rem] bg-white shadow-sm border border-gray-50 overflow-hidden relative min-h-[400px]">
           {loading && (
              <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/50 backdrop-blur-sm">
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
              </div>
           )}
-          <div className="px-10 py-8 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
-            <h3 className="text-xl font-black text-[#1A365D] uppercase tracking-wider">Daftar Penugasan</h3>
+          <div className="px-6 md:px-10 py-6 md:py-8 border-b border-gray-50 flex items-center justify-between bg-gray-50/30">
+            <h3 className="text-lg md:text-xl font-black text-[#1A365D] uppercase tracking-wider">Daftar Penugasan</h3>
             <div className="flex gap-2">
                <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Live System</span>
             </div>
           </div>
 
-          <table className="w-full text-left">
+          {/* ── MOBILE: Card List (hidden on md+) ── */}
+          <div className="md:hidden divide-y divide-gray-50">
+            {paginatedTasks.length > 0 ? paginatedTasks.map((task, idx) => (
+              <div key={`m-${task.id}-${idx}`} className="p-5 flex flex-col gap-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-grow min-w-0">
+                    <span className="inline-flex mb-1 text-[9px] font-black text-[#114093] uppercase tracking-tight bg-blue-50 px-2.5 py-1 rounded-lg border border-blue-100 line-clamp-1">
+                      {task.mk}
+                    </span>
+                    <p className="text-sm font-black text-[#1A365D] leading-tight line-clamp-2">{task.judul}</p>
+                    <p className="text-[10px] font-bold text-gray-400 mt-0.5 line-clamp-1">{task.mahasiswa}</p>
+                  </div>
+                  <span className={`shrink-0 inline-flex items-center gap-1 rounded-full px-3 py-1 text-[9px] font-black tracking-widest border ${
+                    task.status === 'AKTIF' ? 'bg-green-50 text-green-700 border-green-100' : 'bg-gray-100 text-gray-600 border-gray-200'
+                  }`}>
+                    <span className={`h-1.5 w-1.5 rounded-full ${task.status === 'AKTIF' ? 'bg-green-500' : 'bg-gray-400'}`}></span>
+                    {task.status}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-1.5 text-[10px] font-black text-gray-500 uppercase">
+                      <CalendarIcon /> {task.deadline}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-black text-gray-900">{task.pengumpul}</span>
+                      <div className="h-1.5 w-16 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-blue-600 rounded-full" style={{ width: `${task.progressPersen}%` }}></div>
+                      </div>
+                    </div>
+                  </div>
+                  <Link
+                    href={`/dosen/tugas/kelola/${task.id}`}
+                    className="rounded-xl bg-gray-100 px-4 py-2.5 text-[10px] font-black text-gray-600 hover:bg-[#1A365D] hover:text-white transition-all uppercase tracking-widest"
+                  >
+                    Kelola
+                  </Link>
+                </div>
+              </div>
+            )) : (
+              <div className="py-16 text-center text-sm font-black text-gray-400 uppercase tracking-widest">
+                Belum Ada Penugasan
+              </div>
+            )}
+          </div>
+
+          {/* ── DESKTOP: Table (hidden on mobile) ── */}
+          <div className="hidden md:block overflow-x-auto">
+          <table className="w-full min-w-[700px] text-left">
             <thead>
               <tr className="text-[10px] font-black uppercase tracking-[0.15em] text-gray-400 bg-gray-50/50 border-b border-gray-50">
-                <th className="px-10 py-6">MATA KULIAH</th>
-                <th className="px-10 py-6">MAHASISWA</th>
-                <th className="px-10 py-6">DETAIL TUGAS</th>
-                <th className="px-10 py-6">BATAS WAKTU</th>
-                <th className="px-10 py-6 text-center">PENGUMPULAN</th>
-                <th className="px-10 py-6 text-center">STATUS</th>
-                <th className="px-10 py-6 text-right">AKSI</th>
+                <th className="px-6 py-5">MATA KULIAH</th>
+                <th className="px-6 py-5">MAHASISWA</th>
+                <th className="px-6 py-5">DETAIL TUGAS</th>
+                <th className="px-6 py-5">BATAS WAKTU</th>
+                <th className="px-6 py-5 text-center">PENGUMPULAN</th>
+                <th className="px-6 py-5 text-center">STATUS</th>
+                <th className="px-6 py-5 text-right">AKSI</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
               {paginatedTasks.length > 0 ? paginatedTasks.map((task, idx) => (
-                <tr key={`${task.id}-${idx}`} className="transition-all hover:bg-blue-50/30 group">
-                  <td className="px-10 py-8">
+                <tr key={`d-${task.id}-${idx}`} className="transition-all hover:bg-blue-50/30 group">
+                  <td className="px-6 py-6">
                      <span className="text-[10px] font-black text-[#114093] uppercase tracking-tight bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100 line-clamp-1">
                         {task.mk}
                      </span>
                   </td>
-                  <td className="px-10 py-8">
+                  <td className="px-6 py-6">
                      <p className="text-sm font-bold text-gray-900 line-clamp-1">{task.mahasiswa}</p>
                   </td>
-                  <td className="px-10 py-8">
+                  <td className="px-6 py-6">
                     <p className="text-sm font-bold text-gray-900 mb-1 group-hover:text-[#114093] transition-colors">{task.judul}</p>
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter line-clamp-1 max-w-[250px]">{task.desc}</p>
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-tighter line-clamp-1 max-w-[200px]">{task.desc}</p>
                   </td>
-                  <td className="px-10 py-8">
-                    <div className="flex items-center gap-3 text-[10px] font-black text-gray-600 bg-gray-100/50 w-fit px-4 py-2 rounded-xl border border-gray-100 uppercase tracking-widest whitespace-nowrap">
+                  <td className="px-6 py-6">
+                    <div className="flex items-center gap-2 text-[10px] font-black text-gray-600 bg-gray-100/50 w-fit px-3 py-2 rounded-xl border border-gray-100 uppercase tracking-widest whitespace-nowrap">
                        <CalendarIcon />
                        {task.deadline}
                     </div>
                   </td>
-                  <td className="px-10 py-8 text-center">
+                  <td className="px-6 py-6 text-center">
                     <div className="flex flex-col items-center gap-1.5">
                        <span className="text-xs font-black text-gray-900">{task.pengumpul}</span>
                        <div className="h-1.5 w-16 bg-gray-100 rounded-full overflow-hidden">
@@ -231,16 +280,16 @@ export default function ManajemenTugasDosen() {
                        </div>
                     </div>
                   </td>
-                  <td className="px-10 py-8 text-center">
+                  <td className="px-6 py-6 text-center">
                     <span className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-[9px] font-black tracking-[0.2em] border ${task.status === 'AKTIF' ? 'bg-green-50 text-green-700 border-green-100' : 'bg-gray-100 text-gray-600 border-gray-200'}`}>
                        <span className={`h-1.5 w-1.5 rounded-full ${task.status === 'AKTIF' ? 'bg-green-600' : 'bg-gray-400'}`}></span>
                        {task.status}
                     </span>
                   </td>
-                  <td className="px-10 py-8 text-right">
+                  <td className="px-6 py-6 text-right">
                     <Link 
                       href={`/dosen/tugas/kelola/${task.id}`}
-                      className="rounded-xl bg-gray-100 px-6 py-3 text-[10px] font-black text-gray-600 hover:bg-[#1A365D] hover:text-white transition-all uppercase tracking-widest"
+                      className="rounded-xl bg-gray-100 px-5 py-3 text-[10px] font-black text-gray-600 hover:bg-[#1A365D] hover:text-white transition-all uppercase tracking-widest"
                     >
                       Kelola
                     </Link>
@@ -255,8 +304,9 @@ export default function ManajemenTugasDosen() {
               )}
             </tbody>
           </table>
+          </div>
 
-          <div className="flex items-center justify-between border-t border-gray-50 bg-gray-50/50 px-10 py-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-gray-50 bg-gray-50/50 px-6 md:px-10 py-5 md:py-6">
             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Menampilkan {paginatedTasks.length} dari {tasks.length} Tugas</p>
             <div className="flex items-center gap-3">
               <button 

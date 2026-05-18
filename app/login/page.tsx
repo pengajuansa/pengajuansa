@@ -94,7 +94,14 @@ export default function LoginPage() {
         />
         <div className="absolute inset-0 bg-[#0f172a]/80" />
 
-        <div className="absolute bottom-24 left-16 right-16 flex flex-col items-start text-white">
+        <div className="absolute top-1/2 left-16 right-16 -translate-y-1/2 flex flex-col items-start text-white">
+          <div className="mb-8 rounded-2xl bg-white/10 p-4 backdrop-blur-md border border-white/10">
+            <img 
+              src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop" 
+              alt="Decoration" 
+              className="h-32 w-48 object-cover rounded-xl"
+            />
+          </div>
           <span className="mb-4 text-xs font-bold uppercase tracking-widest text-[#FACC15]">
             Portal Semester Antara POLIMDO
           </span>
@@ -105,6 +112,11 @@ export default function LoginPage() {
           <p className="max-w-xl text-lg leading-relaxed text-gray-200">
             Optimalkan masa studi Anda dengan kurikulum yang fleksibel dan terstruktur untuk pencapaian akademik yang maksimal di Politeknik Negeri Manado.
           </p>
+        </div>
+
+        {/* Decorative Badge */}
+        <div className="absolute bottom-12 right-12 flex h-24 w-24 items-center justify-center rounded-full bg-white/5 backdrop-blur-xl border border-white/10 text-white animate-spin-slow">
+            <p className="text-[8px] font-black uppercase text-center tracking-widest">Digital • Portal • Polimdo • SA</p>
         </div>
       </div>
 

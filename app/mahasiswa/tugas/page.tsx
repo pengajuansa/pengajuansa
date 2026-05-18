@@ -101,12 +101,12 @@ export default function TugasMahasiswa() {
 
     return (
       <MainLayout topbarTitle={topbarTitle}>
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6 md:gap-8 max-w-5xl mx-auto">
           {/* Banner */}
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-[#0F172A] p-12 text-white shadow-xl">
+          <div className="relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] bg-[#0F172A] p-8 md:p-12 text-white shadow-xl">
             <div className="relative z-10 max-w-2xl">
-              <h1 className="text-4xl font-black mb-4">Pusat Tugas & Penilaian</h1>
-              <p className="text-gray-400 font-medium leading-relaxed">
+              <h1 className="text-2xl md:text-4xl font-black mb-3 md:mb-4">Pusat Tugas & Penilaian</h1>
+              <p className="text-xs md:text-sm text-gray-400 font-medium leading-relaxed">
                 Daftar tugas akademik untuk mata kuliah Semester Antara Anda.
                 Pastikan mengumpulkan tepat waktu untuk mendapatkan nilai maksimal.
               </p>
@@ -115,29 +115,29 @@ export default function TugasMahasiswa() {
           </div>
 
           {/* Info Card */}
-          <div className="flex flex-col items-center gap-6 rounded-[2rem] bg-white py-20 px-10 text-center shadow-sm border border-gray-50">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-50 text-4xl border border-gray-100">
+          <div className="flex flex-col items-center gap-6 rounded-[2rem] bg-white py-12 md:py-20 px-6 md:px-10 text-center shadow-sm border border-gray-50">
+            <div className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-full bg-gray-50 text-3xl md:text-4xl border border-gray-100">
               {icon}
             </div>
             <div>
-              <h2 className="text-2xl font-black text-[#1A365D] mb-3">{title}</h2>
-              <p className="text-sm text-gray-500 max-w-md leading-relaxed">{desc}</p>
+              <h2 className="text-xl md:text-2xl font-black text-[#1A365D] mb-2">{title}</h2>
+              <p className="text-xs md:text-sm text-gray-500 max-w-md leading-relaxed">{desc}</p>
             </div>
 
             {/* Progress Steps */}
-            <div className="flex items-center gap-3 mt-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-3 mt-4 w-full">
               <StatusStep done={saStatus.sudahDaftar} label="Daftar SA" />
-              <div className="h-px w-12 bg-gray-200" />
+              <div className="hidden sm:block h-px w-8 md:w-12 bg-gray-200" />
               <StatusStep done={saStatus.sudahDisetujui} label="Disetujui Sekjur" />
-              <div className="h-px w-12 bg-gray-200" />
+              <div className="hidden sm:block h-px w-8 md:w-12 bg-gray-200" />
               <StatusStep done={saStatus.sudahAdaDosen} label="Dosen Dialokasikan" />
-              <div className="h-px w-12 bg-gray-200" />
-              <StatusStep done={false} label="Tugas Aktif" />
+              <div className="hidden sm:block h-px w-8 md:w-12 bg-gray-200" />
+              <StatusStep done={false} label="Tugas Pengajuan" />
             </div>
 
             <Link
               href={!saStatus.sudahDaftar ? '/mahasiswa/pendaftaran' : '/mahasiswa/riwayat'}
-              className="mt-4 rounded-xl bg-[#1A365D] px-8 py-4 text-xs font-black text-white uppercase tracking-widest shadow-lg shadow-blue-900/20 hover:scale-105 transition-all"
+              className="mt-6 rounded-xl bg-[#1A365D] px-8 py-4 text-xs font-black text-white uppercase tracking-widest shadow-lg shadow-blue-900/20 hover:scale-[1.02] active:scale-95 transition-all"
             >
               {!saStatus.sudahDaftar ? 'Daftar Semester Antara' : 'Pantau Status Pendaftaran'} →
             </Link>
@@ -149,12 +149,12 @@ export default function TugasMahasiswa() {
 
   return (
     <MainLayout topbarTitle={topbarTitle}>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-6 md:gap-8 max-w-5xl mx-auto">
         {/* Banner Area */}
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-[#0F172A] p-12 text-white shadow-xl">
+        <div className="relative overflow-hidden rounded-[2rem] md:rounded-[2.5rem] bg-[#0F172A] p-8 md:p-12 text-white shadow-xl">
           <div className="relative z-10 max-w-2xl">
-            <h1 className="text-4xl font-black mb-4">Pusat Tugas & Penilaian</h1>
-            <p className="text-gray-400 font-medium leading-relaxed">
+            <h1 className="text-2xl md:text-4xl font-black mb-3 md:mb-4">Pusat Tugas & Penilaian</h1>
+            <p className="text-xs md:text-sm text-gray-400 font-medium leading-relaxed">
               Daftar tugas akademik untuk mata kuliah Semester Antara Anda. 
               Pastikan mengumpulkan tepat waktu untuk mendapatkan nilai maksimal.
             </p>
@@ -163,12 +163,12 @@ export default function TugasMahasiswa() {
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex gap-10 border-b border-gray-50 px-4">
+        <div className="flex gap-8 md:gap-10 border-b border-gray-50 px-4">
           {['BELUM SELESAI', 'SELESAI'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`pb-5 text-[11px] font-black tracking-[0.2em] transition-all uppercase ${
+              className={`pb-4 md:pb-5 text-[10px] md:text-[11px] font-black tracking-[0.2em] transition-all uppercase ${
                 activeTab === tab ? 'border-b-4 border-[#1A365D] text-[#1A365D]' : 'text-gray-300 hover:text-gray-500'
               }`}
             >
@@ -178,42 +178,42 @@ export default function TugasMahasiswa() {
         </div>
 
         {/* Tasks Grid */}
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {loading || saStatus.loading ? (
-            <div className="col-span-2 py-20 text-center font-bold text-gray-300 uppercase tracking-widest">Sinkronisasi Database...</div>
+            <div className="col-span-full py-20 text-center font-bold text-gray-300 uppercase tracking-widest">Sinkronisasi Database...</div>
           ) : filteredTasks.length > 0 ? (
             filteredTasks.map((task) => (
-              <div key={task.id} className="group relative rounded-[2rem] bg-white p-8 shadow-sm border border-gray-50 transition-all hover:shadow-xl">
+              <div key={task.id} className="group relative rounded-[2rem] bg-white p-6 md:p-8 shadow-sm border border-gray-50 transition-all hover:shadow-xl">
                 <div className="mb-6 flex items-center justify-between">
-                  <span className="rounded-lg bg-blue-50 px-3 py-1 text-[10px] font-black text-blue-700 uppercase tracking-widest">
+                  <span className="rounded-lg bg-blue-50 px-3 py-1 text-[10px] font-black text-blue-700 uppercase tracking-widest truncate max-w-[60%]">
                     {task.mata_kuliah?.nama_mk || 'MK SA'}
                   </span>
-                  <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                  <div className="flex items-center gap-2 text-[9px] md:text-[10px] font-bold text-gray-400 uppercase tracking-widest shrink-0">
                     <ClockIcon />
                     {new Date(task.deadline).toLocaleDateString('id-ID')}
                   </div>
                 </div>
 
-                <h3 className="mb-10 text-xl font-bold text-gray-900 leading-tight group-hover:text-blue-900 transition-colors">
+                <h3 className="mb-8 md:mb-10 text-lg md:text-xl font-bold text-gray-900 leading-tight group-hover:text-blue-900 transition-colors line-clamp-2">
                   {task.judul}
                 </h3>
 
-                <div className="flex items-center justify-between border-t border-gray-50 pt-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-gray-50 pt-6">
                   <div>
                     {activeTab === 'SELESAI' ? (
                       <div className="flex flex-col">
                         <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">NILAI ANDA</span>
-                        <span className="text-lg font-black text-green-600">
+                        <span className="text-base md:text-lg font-black text-green-600">
                           {submissions.find(s => s.tugas_id === task.id)?.nilai || 'Proses'}
                         </span>
                       </div>
                     ) : (
-                      <span className="text-[10px] font-black text-red-500 uppercase tracking-widest">BELUM DIKUMPULKAN</span>
+                      <span className="text-[9px] md:text-[10px] font-black text-red-500 uppercase tracking-widest">BELUM DIKUMPULKAN</span>
                     )}
                   </div>
-                  <Link href={`/mahasiswa/tugas/${task.id}`}>
-                    <button className={`rounded-xl px-6 py-3 text-xs font-black uppercase tracking-widest transition-all ${
-                      activeTab === 'SELESAI' ? 'bg-gray-50 text-gray-400 hover:bg-gray-100' : 'bg-[#1A365D] text-white shadow-lg shadow-blue-900/20 hover:scale-105 active:scale-95'
+                  <Link href={`/mahasiswa/tugas/${task.id}`} className="w-full sm:w-auto">
+                    <button className={`w-full sm:w-auto flex items-center justify-center rounded-xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest transition-all ${
+                      activeTab === 'SELESAI' ? 'bg-gray-50 text-gray-400 hover:bg-gray-100' : 'bg-[#1A365D] text-white shadow-lg shadow-blue-900/20 hover:scale-[1.02] active:scale-95'
                     }`}>
                       {activeTab === 'SELESAI' ? 'Lihat Detail' : 'Upload Tugas'}
                     </button>
@@ -222,7 +222,7 @@ export default function TugasMahasiswa() {
               </div>
             ))
           ) : (
-            <div className="col-span-2 py-20 text-center">
+            <div className="col-span-full py-20 text-center bg-white rounded-3xl border border-gray-50 shadow-sm">
               <p className="text-sm font-bold text-gray-300 uppercase tracking-widest">Tidak ada tugas dalam kategori ini.</p>
             </div>
           )}
@@ -234,7 +234,7 @@ export default function TugasMahasiswa() {
 
 function StatusStep({ done, label }: { done: boolean; label: string }) {
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-1.5 w-full sm:w-auto">
       <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-black transition-colors ${done ? 'bg-[#1A365D] text-white' : 'bg-gray-100 text-gray-400'}`}>
         {done ? '✓' : '○'}
       </div>

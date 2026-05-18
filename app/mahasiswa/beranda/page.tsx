@@ -74,9 +74,9 @@ export default function Beranda() {
 
   return (
     <MainLayout topbarTitle={topbarTitle}>
-      <div className="flex gap-6">
+      <div className="flex flex-col xl:flex-row gap-6">
         {/* Left Main Content */}
-        <div className="flex w-2/3 flex-col gap-6">
+        <div className="flex flex-1 flex-col gap-6 min-w-0">
           <WelcomeBanner user={user} />
 
           {/* Portal Akademik — hanya jika sudah daftar & disetujui & ada dosen */}
@@ -95,7 +95,7 @@ export default function Beranda() {
         </div>
 
         {/* Right Sidebar */}
-        <div className="w-1/3 shrink-0">
+        <div className="w-full xl:w-[320px] shrink-0">
           <RightSidebar user={user} saStatus={saStatus} />
         </div>
       </div>
