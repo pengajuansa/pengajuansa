@@ -55,6 +55,38 @@ function PengisianFormulirSAInner() {
     }
   }, [pendaftaranId]);
 
+  // Auto-fill student data when NIM is entered
+  useEffect(() => {
+    if (!formData.nim || isEditMode) return;
+
+    const delayDebounce = setTimeout(async () => {
+      if (formData.nim.length < 5) return;
+
+      try {
+        const { data: mhs, error } = await supabase
+          .from('mahasiswa')
+          .select('nama_mahasiswa, jurusan, prodi, ipk, semester')
+          .eq('nim', formData.nim)
+          .maybeSingle();
+
+        if (!error && mhs) {
+          setFormData(prev => ({
+            ...prev,
+            nama: mhs.nama_mahasiswa || prev.nama,
+            jurusan: mhs.jurusan || prev.jurusan,
+            prodi: mhs.prodi || prev.prodi,
+            ipk: mhs.ipk !== null && mhs.ipk !== undefined ? mhs.ipk.toString() : prev.ipk,
+            semester: mhs.semester !== null && mhs.semester !== undefined ? mhs.semester.toString() : prev.semester
+          }));
+        }
+      } catch (err) {
+        console.error("Error auto-filling student:", err);
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [formData.nim, isEditMode]);
+
   // Ambil data mahasiswa dari pendaftaran yang sudah ada (mode pre-fill)
   const fetchExistingPendaftaran = async (id: string) => {
     const { data, error } = await supabase
