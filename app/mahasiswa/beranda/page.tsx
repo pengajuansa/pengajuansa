@@ -151,17 +151,22 @@ function PendaftaranBanner({ saStatus }: { saStatus: ReturnType<typeof useSAStat
 
       <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
 
-      {/* Progress steps — scrollable horizontally on tiny screens */}
-      <div className="overflow-x-auto pb-1">
-        <div className="flex items-center justify-between gap-1 sm:gap-2 min-w-max">
-          <Step done={saStatus.sudahDaftar} label="Daftar SA" />
-          <div className="h-px w-4 sm:w-10 md:w-12 bg-gray-200 shrink-0" />
-          <Step done={saStatus.sudahDisetujui} label="Disetujui Sekjur" />
-          <div className="h-px w-4 sm:w-10 md:w-12 bg-gray-200 shrink-0" />
-          <Step done={saStatus.sudahAdaDosen} label="Dosen Dialokasikan" />
-          <div className="h-px w-4 sm:w-10 md:w-12 bg-gray-200 shrink-0" />
-          <Step done={false} label="Portal & Tugas Aktif" />
-        </div>
+      {/* Progress steps — Vertical on Mobile, Horizontal on md+ */}
+      <div className="md:hidden flex flex-col gap-3 pl-2">
+        <StepVertical done={saStatus.sudahDaftar} label="Daftar SA" isLast={false} />
+        <StepVertical done={saStatus.sudahDisetujui} label="Disetujui Sekjur" isLast={false} />
+        <StepVertical done={saStatus.sudahAdaDosen} label="Dosen Dialokasikan" isLast={false} />
+        <StepVertical done={false} label="Portal & Tugas Aktif" isLast={true} />
+      </div>
+
+      <div className="hidden md:flex items-center justify-between gap-1 sm:gap-2">
+        <Step done={saStatus.sudahDaftar} label="Daftar SA" />
+        <div className="h-px flex-grow bg-gray-200" />
+        <Step done={saStatus.sudahDisetujui} label="Disetujui Sekjur" />
+        <div className="h-px flex-grow bg-gray-200" />
+        <Step done={saStatus.sudahAdaDosen} label="Dosen Dialokasikan" />
+        <div className="h-px flex-grow bg-gray-200" />
+        <Step done={false} label="Portal & Tugas Aktif" />
       </div>
 
       <Link
@@ -181,6 +186,24 @@ function Step({ done, label }: { done: boolean; label: string }) {
         {done ? '✓' : '○'}
       </div>
       <span className={`text-[8px] sm:text-[9px] font-black uppercase tracking-wider text-center leading-tight ${done ? 'text-[#1A365D]' : 'text-gray-300'}`}>
+        {label}
+      </span>
+    </div>
+  );
+}
+
+function StepVertical({ done, label, isLast }: { done: boolean; label: string; isLast: boolean }) {
+  return (
+    <div className="flex items-start gap-4">
+      <div className="flex flex-col items-center">
+        <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-black transition-colors z-10 ${done ? 'bg-[#1A365D] text-white' : 'bg-gray-100 text-gray-400'}`}>
+          {done ? '✓' : '○'}
+        </div>
+        {!isLast && (
+          <div className={`w-0.5 h-6 -my-0.5 ${done ? 'bg-[#1A365D]' : 'bg-gray-100'}`} />
+        )}
+      </div>
+      <span className={`text-[9px] font-black uppercase tracking-wider mt-2 ${done ? 'text-[#1A365D]' : 'text-gray-400'}`}>
         {label}
       </span>
     </div>

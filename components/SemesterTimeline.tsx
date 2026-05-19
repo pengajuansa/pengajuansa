@@ -113,9 +113,49 @@ export default function SemesterTimeline() {
         </span>
       </div>
 
-      <div className="overflow-x-auto pb-2">
+      {/* Vertical Timeline on Mobile */}
+      <div className="md:hidden flex flex-col gap-5 pl-2 py-2">
+        {steps.map((step, idx) => {
+          const stepStatus = getStepStatus(step.id);
+          const isLast = idx === steps.length - 1;
+          return (
+            <div key={step.id} className="flex items-start gap-4">
+              <div className="flex flex-col items-center">
+                <div 
+                  className={`flex h-8 w-8 items-center justify-center rounded-full ring-8 ring-white transition-all duration-500 z-10 ${
+                    stepStatus === 'completed' ? 'bg-[#1A365D] text-white' : 
+                    stepStatus === 'current' ? 'bg-[#1A365D] text-white shadow-xl' : 
+                    'bg-gray-100 text-gray-300'
+                  }`}
+                >
+                  {stepStatus === 'completed' ? (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  ) : (
+                    <div className={`h-2.5 w-2.5 rounded-full ${stepStatus === 'current' ? 'bg-white animate-pulse' : 'bg-gray-300'}`}></div>
+                  )}
+                </div>
+                {!isLast && (
+                  <div className={`w-0.5 h-8 -my-1 ${stepStatus === 'completed' ? 'bg-[#1A365D]' : 'bg-gray-100'}`} />
+                )}
+              </div>
+              <div className="flex flex-col mt-1">
+                <span 
+                  className={`text-[10px] font-black uppercase tracking-[0.15em] transition-colors duration-500 ${
+                    stepStatus === 'current' ? 'text-[#1A365D]' :
+                    stepStatus === 'completed' ? 'text-gray-600' : 'text-gray-400'
+                  }`}
+                >
+                  {step.label}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
-        <div className="relative flex justify-between px-5 pb-2 min-w-[400px]">
+      {/* Horizontal Timeline on Desktop */}
+      <div className="hidden md:block overflow-x-auto pb-2">
+        <div className="relative flex justify-between px-5 pb-2 min-w-[500px]">
           {/* Container Garis Timeline */}
           <div className="absolute left-[30px] right-[30px] top-[14px] z-[1] h-1.5">
             <div className="h-full w-full rounded-full bg-gray-50"></div>
