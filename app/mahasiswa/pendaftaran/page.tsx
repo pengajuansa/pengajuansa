@@ -93,19 +93,19 @@ export default function PendaftaranPage() {
 
   return (
     <MainLayout topbarTitle={topbarTitle}>
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-8 w-full max-w-full overflow-x-hidden min-w-0">
         {/* Kolom Kiri: Form Upload */}
-        <div className="flex-1 flex flex-col gap-6 min-w-0">
-          <div className="rounded-3xl bg-white p-10 shadow-sm border border-gray-50">
+        <div className="flex-1 flex flex-col gap-6 min-w-0 w-full">
+          <div className="rounded-3xl bg-white p-5 md:p-10 shadow-sm border border-gray-50 min-w-0">
             <h3 className="text-xl font-bold text-[#1A365D] mb-4">Lengkapi Berkas Pendaftaran</h3>
             <p className="text-sm text-gray-500 mb-8 leading-relaxed">
               Silakan unggah bukti transfer pembayaran Semester Antara Anda di bawah ini untuk proses verifikasi.
             </p>
 
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 w-full min-w-0">
               {!selectedFile ? (
                 <div 
-                  className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-blue-100 bg-blue-50/30 py-16 px-10 text-center cursor-pointer hover:bg-blue-50 transition-colors"
+                  className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-blue-100 bg-blue-50/30 py-12 px-6 md:px-10 text-center cursor-pointer hover:bg-blue-50 transition-colors"
                   onClick={() => document.getElementById('file-upload')?.click()}
                 >
                   <input 
@@ -126,17 +126,17 @@ export default function PendaftaranPage() {
                   <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">JPG, PNG, atau PDF (Maks 2MB)</p>
                 </div>
               ) : (
-                <div className="rounded-2xl border border-green-100 bg-green-50/50 p-8 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-green-100 text-green-700 font-black text-xl">✓</div>
-                    <div>
-                      <h4 className="text-sm font-bold text-gray-900">{selectedFile.name}</h4>
-                      <p className="text-[10px] font-bold text-green-600 uppercase tracking-widest">
+                <div className="rounded-2xl border border-green-100 bg-green-50/50 p-4 md:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 w-full min-w-0">
+                  <div className="flex items-center gap-4 w-full min-w-0">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-100 text-green-700 font-black text-xl">✓</div>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="text-sm font-bold text-gray-900 truncate" title={selectedFile.name}>{selectedFile.name}</h4>
+                      <p className="text-[10px] font-bold text-green-600 uppercase tracking-widest mt-0.5">
                         UKURAN: {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                       </p>
                     </div>
                   </div>
-                  <button onClick={() => setSelectedFile(null)} className="text-xs font-bold text-red-500 hover:underline uppercase">Hapus</button>
+                  <button onClick={() => setSelectedFile(null)} className="text-xs font-bold text-red-500 hover:text-red-700 hover:underline uppercase shrink-0">Hapus</button>
                 </div>
               )}
 
