@@ -403,7 +403,7 @@ export default function AlokasiDosenKaprodi() {
 
           <div className="flex flex-col gap-8">
             {courses.length > 0 ? courses.map((c, idx) => (
-              <div key={`${c.id}-${idx}`} className={`rounded-2xl md:rounded-[2.5rem] bg-white p-4 md:p-10 shadow-sm border transition-all ${c.status === 'ALLOCATED' ? 'border-blue-100' : 'border-gray-50'} group hover:shadow-xl hover:shadow-blue-900/5 relative overflow-hidden`}>
+              <div key={`${c.id}-${idx}`} className={`rounded-2xl md:rounded-[2.5rem] bg-white p-4 md:p-10 shadow-sm border transition-all ${c.status === 'ALLOCATED' ? 'border-blue-100' : 'border-gray-50'} group hover:shadow-xl hover:shadow-blue-900/5 relative`}>
                 <div className="flex flex-col lg:flex-row items-start justify-between gap-4 md:gap-6 relative z-10">
                   <div className="flex-grow w-full">
                     <div className="flex items-center gap-3 mb-4">
@@ -469,7 +469,10 @@ export default function AlokasiDosenKaprodi() {
                     )}
                   </div>
                 </div>
-                <div className="absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-blue-50/20 -z-0 group-hover:scale-150 transition-transform duration-1000"></div>
+                {/* Decorative background circle inside an overflow-hidden relative container */}
+                <div className="absolute inset-0 rounded-[inherit] overflow-hidden pointer-events-none z-0">
+                  <div className="absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-blue-50/20 group-hover:scale-150 transition-transform duration-1000"></div>
+                </div>
               </div>
             )) : (
               <div className="py-20 text-center font-bold text-gray-400 uppercase tracking-widest">
