@@ -14,18 +14,42 @@ export default function ResetPasswordPage() {
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
   useEffect(() => {
-    // Supabase handles the recovery session automatically when clicking the email link
-    // but we can check if we have a session
-    const checkSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!data.session) {
+    const handleRecovery = async () => {
+      try {
+        // 1. Dapatkan parameter 'code' dari URL (Supabase PKCE flow)
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+
+        if (code) {
+          // Exchange code untuk mendapatkan sesi otentikasi aktif
+          const { error } = await supabase.auth.exchangeCodeForSession(code);
+          if (error) {
+            setMessage({
+              type: 'error',
+              text: 'Gagal memproses sesi pemulihan: ' + error.message
+            });
+            return;
+          }
+        }
+
+        // 2. Cek apakah sekarang sudah memiliki sesi aktif
+        const { data } = await supabase.auth.getSession();
+        if (!data.session) {
+          setMessage({
+            type: 'error',
+            text: 'Sesi pemulihan tidak valid atau telah kedaluwarsa. Silakan minta tautan baru.'
+          });
+        }
+      } catch (err: any) {
+        console.error("Recovery session error:", err);
         setMessage({
           type: 'error',
-          text: 'Sesi pemulihan tidak valid atau telah kedaluwarsa. Silakan minta tautan baru.'
+          text: 'Terjadi kesalahan saat memverifikasi sesi pemulihan Anda.'
         });
       }
     };
-    checkSession();
+
+    handleRecovery();
   }, []);
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
