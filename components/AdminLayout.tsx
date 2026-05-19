@@ -45,7 +45,7 @@ export default function AdminLayout({ children, topbarTitle }: AdminLayoutProps)
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
       />
-      <div className="flex flex-grow flex-col lg:ml-[260px]">
+      <div className="flex flex-grow flex-col lg:ml-[260px] min-w-0 overflow-x-hidden w-full max-w-full">
         <Topbar
           title={topbarTitle}
           onMenuToggle={() => setIsMobileMenuOpen((prev) => !prev)}

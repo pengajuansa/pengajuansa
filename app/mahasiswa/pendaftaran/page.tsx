@@ -140,10 +140,10 @@ export default function PendaftaranPage() {
                 </div>
               )}
 
-              <button 
+               <button 
                 onClick={handleSubmit}
                 disabled={loading}
-                className="w-full rounded-2xl bg-[#1A365D] py-5 text-sm font-black text-white shadow-xl shadow-blue-900/20 hover:scale-[1.01] active:scale-95 transition-all uppercase tracking-widest disabled:opacity-50"
+                className="w-full rounded-2xl bg-[#1A365D] py-4 px-4 text-xs sm:text-sm font-black text-white shadow-xl shadow-blue-900/20 hover:scale-[1.01] active:scale-95 transition-all uppercase tracking-wider disabled:opacity-50 whitespace-normal break-words"
               >
                 {loading ? "Menyimpan ke Database..." : "Kirim Pengajuan Pendaftaran"}
               </button>
