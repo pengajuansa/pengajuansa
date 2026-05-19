@@ -74,7 +74,7 @@ export default function Beranda() {
 
   return (
     <MainLayout topbarTitle={topbarTitle}>
-      <div className="flex flex-col xl:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         {/* Left Main Content */}
         <div className="flex flex-1 flex-col gap-6 min-w-0">
           <WelcomeBanner user={user} />
@@ -94,8 +94,8 @@ export default function Beranda() {
           <SemesterTimeline />
         </div>
 
-        {/* Right Sidebar — full-width on mobile, fixed-width on xl */}
-        <div className="w-full xl:w-[320px] xl:shrink-0">
+        {/* Right Sidebar — full-width on mobile, fixed-width on lg */}
+        <div className="w-full lg:w-[320px] lg:shrink-0">
           <RightSidebar user={user} saStatus={saStatus} />
         </div>
       </div>

@@ -99,7 +99,7 @@ export default function RightSidebar({ user, saStatus }: RightSidebarProps) {
     }
 
     return (
-      <aside className="xl:sticky xl:top-[100px] flex flex-col gap-5 rounded-2xl bg-[#F8F9FA] border border-gray-100 p-5 md:p-6 shadow-sm">
+      <aside className="lg:sticky lg:top-[100px] flex flex-col gap-5 rounded-2xl bg-[#F8F9FA] border border-gray-100 p-5 md:p-6 shadow-sm">
         <div className="flex items-center justify-between mb-1">
           <h3 className="m-0 text-lg md:text-xl font-bold text-[#1A365D]">Tugas Mendatang</h3>
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-xs font-bold text-gray-400">0</span>
@@ -136,7 +136,7 @@ export default function RightSidebar({ user, saStatus }: RightSidebarProps) {
   }
 
   return (
-    <aside className="xl:sticky xl:top-[100px] flex flex-col gap-5">
+    <aside className="lg:sticky lg:top-[100px] flex flex-col gap-5">
       
       {/* Tugas Selesai Stats Card */}
       <div className="rounded-2xl bg-[#1A365D] p-6 text-white shadow-lg relative overflow-hidden">
