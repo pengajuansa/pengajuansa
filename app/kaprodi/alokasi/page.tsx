@@ -302,7 +302,7 @@ export default function AlokasiDosenKaprodi() {
 
         {/* Top Header Cards */}
         <div className="flex flex-col lg:flex-row gap-4 md:gap-8">
-          <div className="flex-grow rounded-2xl md:rounded-[2.5rem] bg-white p-5 md:p-10 shadow-sm border border-gray-50 group hover:shadow-lg transition-all relative overflow-hidden">
+          <div className="flex-grow rounded-2xl md:rounded-[2.5rem] bg-white p-4 sm:p-5 md:p-10 shadow-sm border border-gray-50 group hover:shadow-lg transition-all relative overflow-hidden">
             <div className="absolute top-0 right-0 h-40 w-40 bg-blue-50/50 rounded-full -mr-16 -mt-16"></div>
 
             <div className="relative z-10">
@@ -338,7 +338,7 @@ export default function AlokasiDosenKaprodi() {
             </div>
           </div>
 
-          <div className="w-full lg:w-[420px] rounded-2xl md:rounded-[2.5rem] bg-white p-5 md:p-10 shadow-sm border border-gray-50 flex flex-col justify-between">
+          <div className="w-full lg:w-[420px] rounded-2xl md:rounded-[2.5rem] bg-white p-4 sm:p-5 md:p-10 shadow-sm border border-gray-50 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-5 md:mb-10">
                 <h3 className="text-xs font-black text-[#0F172A] uppercase tracking-[0.2em]">Kapasitas Beban Dosen TI</h3>
@@ -350,12 +350,12 @@ export default function AlokasiDosenKaprodi() {
               <div className="space-y-5 md:space-y-8 mb-5 md:mb-10">
                 {bebanDosen.length > 0 ? bebanDosen.map((dosen, idx) => (
                   <div key={`${dosen.id}-${idx}`} className="flex flex-col gap-3 group">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className={`h-10 w-10 rounded-2xl flex items-center justify-center text-[11px] font-black border border-white shadow-sm ${dosen.load > 8 ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800'}`}>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-4 min-w-0">
+                        <div className={`h-10 w-10 shrink-0 rounded-2xl flex items-center justify-center text-[11px] font-black border border-white shadow-sm ${dosen.load > 8 ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800'}`}>
                           {dosen.initials}
                         </div>
-                        <span className="text-sm font-black text-gray-800 line-clamp-1">{dosen.name}</span>
+                        <span className="text-sm font-black text-gray-800 line-clamp-1 truncate">{dosen.name}</span>
                       </div>
                       <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest shrink-0">{dosen.load}/16 SKS</span>
                     </div>
@@ -502,12 +502,12 @@ export default function AlokasiDosenKaprodi() {
             <div className="p-5 md:p-8 overflow-y-auto flex-grow bg-gray-50/50 space-y-4 md:space-y-6">
               {allBebanDosen.map((dosen, idx) => (
                 <div key={`${dosen.id}-${idx}`} className="flex flex-col gap-3 group bg-white p-4 md:p-5 rounded-2xl border border-gray-100 shadow-sm">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className={`h-11 w-11 md:h-12 md:w-12 rounded-2xl flex items-center justify-center text-xs font-black border border-white shadow-sm ${dosen.load > 8 ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800'}`}>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-4 min-w-0">
+                      <div className={`h-11 w-11 md:h-12 md:w-12 shrink-0 rounded-2xl flex items-center justify-center text-xs font-black border border-white shadow-sm ${dosen.load > 8 ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800'}`}>
                         {dosen.initials}
                       </div>
-                      <span className="text-sm md:text-base font-black text-gray-800 line-clamp-1">{dosen.name}</span>
+                      <span className="text-sm md:text-base font-black text-gray-800 line-clamp-1 truncate">{dosen.name}</span>
                     </div>
                     <span className="text-xs font-black text-gray-500 uppercase tracking-widest shrink-0">{dosen.load}/16 SKS</span>
                   </div>
