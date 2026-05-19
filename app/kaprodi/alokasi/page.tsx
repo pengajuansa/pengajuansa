@@ -448,20 +448,20 @@ export default function AlokasiDosenKaprodi() {
                         </div>
                       </div>
                     ) : (
-                      <div className="flex items-center justify-end gap-4 w-full">
-                        <div className="flex-grow flex items-center gap-4 rounded-[2rem] border border-blue-50 bg-blue-50/20 p-4 shadow-sm group/card hover:bg-blue-50 transition-all min-w-0">
-                          <div className="h-14 w-14 shrink-0 rounded-[1.2rem] bg-blue-600 flex items-center justify-center text-white font-black text-xl shadow-lg border-4 border-white/20">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 sm:gap-4 w-full">
+                        <div className="flex-grow flex items-center gap-4 rounded-[1.5rem] md:rounded-[2rem] border border-blue-50 bg-blue-50/20 p-3 md:p-4 shadow-sm group/card hover:bg-blue-50 transition-all min-w-0">
+                          <div className="h-12 w-12 md:h-14 md:w-14 shrink-0 rounded-[1rem] md:rounded-[1.2rem] bg-blue-600 flex items-center justify-center text-white font-black text-base md:text-xl shadow-lg border-2 md:border-4 border-white/20">
                             {c.lecturer?.initials}
                           </div>
                           <div className="overflow-hidden">
-                            <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">DOSEN PENGAJAR</p>
-                            <h4 className="text-base md:text-lg font-black text-[#0F172A] truncate">{c.lecturer?.name}</h4>
-                            <p className="text-[11px] font-black text-blue-600 mt-1 uppercase tracking-tighter">Total Beban: {c.lecturer?.load} SKS</p>
+                            <p className="text-[9px] md:text-[10px] font-black text-blue-400 uppercase tracking-widest mb-0.5 md:mb-1">DOSEN PENGAJAR</p>
+                            <h4 className="text-sm md:text-lg font-black text-[#0F172A] truncate">{c.lecturer?.name}</h4>
+                            <p className="text-[10px] md:text-[11px] font-black text-blue-600 mt-0.5 md:mt-1 uppercase tracking-tighter">Total Beban: {c.lecturer?.load} SKS</p>
                           </div>
                         </div>
                         <button
                           onClick={() => handleReset(c.lecturer?.alokasi_id)}
-                          className="shrink-0 rounded-2xl bg-gray-50 px-4 py-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-600 border border-transparent hover:border-red-100 transition-all active:scale-95 shadow-sm"
+                          className="shrink-0 rounded-xl md:rounded-2xl bg-gray-50 py-3.5 sm:py-4 px-4 text-[9px] md:text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-600 border border-transparent hover:border-red-100 transition-all active:scale-95 shadow-sm text-center w-full sm:w-auto"
                         >
                           RESET
                         </button>
