@@ -300,7 +300,7 @@ export default function AlokasiDosenKaprodi() {
 
   return (
     <KaprodiLayout topbarTitle={topbarTitle}>
-      <div className="flex flex-col gap-6 md:gap-10 relative">
+      <div className="flex flex-col gap-6 md:gap-10 relative w-full max-w-full overflow-x-hidden min-w-0">
 
         {/* Loading Overlay */}
         {loading && (
