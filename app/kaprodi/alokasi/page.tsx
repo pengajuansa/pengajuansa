@@ -84,6 +84,7 @@ export default function AlokasiDosenKaprodi() {
   const [showBebanModal, setShowBebanModal] = useState(false);
   const [allocatedMkIds, setAllocatedMkIds] = useState<string[]>([]);
   const [selectedLecturers, setSelectedLecturers] = useState<Record<string, string>>({});
+  const [activeCardId, setActiveCardId] = useState<string | null>(null);
 
   const [allocatedCount, setAllocatedCount] = useState(0);
   const [totalMK, setTotalMK] = useState(0);
@@ -301,7 +302,7 @@ export default function AlokasiDosenKaprodi() {
         )}
 
         {/* Top Header Cards */}
-        <div className="flex flex-col lg:flex-row gap-4 md:gap-8">
+        <div className="flex flex-col xl:flex-row gap-4 md:gap-8">
           <div className="flex-grow rounded-2xl md:rounded-[2.5rem] bg-white p-4 sm:p-5 md:p-10 shadow-sm border border-gray-50 group hover:shadow-lg transition-all relative overflow-hidden">
             <div className="absolute top-0 right-0 h-40 w-40 bg-blue-50/50 rounded-full -mr-16 -mt-16"></div>
 
@@ -314,18 +315,18 @@ export default function AlokasiDosenKaprodi() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-4 sm:gap-16 mb-6 md:mb-10">
-                <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">TOTAL PENGAJUAN</span>
-                  <span className="text-2xl md:text-3xl font-black text-[#0F172A]">{totalMK}</span>
+              <div className="grid grid-cols-3 gap-2 sm:gap-16 mb-6 md:mb-10">
+                <div className="flex flex-col gap-1 min-w-0">
+                  <span className="text-[8px] sm:text-[10px] font-black text-gray-400 uppercase tracking-wider sm:tracking-widest truncate">TOTAL PENGAJUAN</span>
+                  <span className="text-xl sm:text-3xl font-black text-[#0F172A]">{totalMK}</span>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">TERALOKASI</span>
-                  <span className="text-2xl md:text-3xl font-black text-green-600">{allocatedCount}</span>
+                <div className="flex flex-col gap-1 min-w-0">
+                  <span className="text-[8px] sm:text-[10px] font-black text-gray-400 uppercase tracking-wider sm:tracking-widest truncate">TERALOKASI</span>
+                  <span className="text-xl sm:text-3xl font-black text-green-600">{allocatedCount}</span>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">SISA</span>
-                  <span className="text-2xl md:text-3xl font-black text-red-600">{totalMK - allocatedCount}</span>
+                <div className="flex flex-col gap-1 min-w-0">
+                  <span className="text-[8px] sm:text-[10px] font-black text-gray-400 uppercase tracking-wider sm:tracking-widest truncate">SISA</span>
+                  <span className="text-xl sm:text-3xl font-black text-red-600">{totalMK - allocatedCount}</span>
                 </div>
               </div>
 
@@ -338,7 +339,7 @@ export default function AlokasiDosenKaprodi() {
             </div>
           </div>
 
-          <div className="w-full lg:w-[420px] rounded-2xl md:rounded-[2.5rem] bg-white p-4 sm:p-5 md:p-10 shadow-sm border border-gray-50 flex flex-col justify-between">
+          <div className="w-full xl:w-[420px] shrink-0 rounded-2xl md:rounded-[2.5rem] bg-white p-4 sm:p-5 md:p-10 shadow-sm border border-gray-50 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-5 md:mb-10">
                 <h3 className="text-xs font-black text-[#0F172A] uppercase tracking-[0.2em]">Kapasitas Beban Dosen TI</h3>
@@ -402,10 +403,19 @@ export default function AlokasiDosenKaprodi() {
           </div>
 
           <div className="flex flex-col gap-8">
-            {courses.length > 0 ? courses.map((c, idx) => (
-              <div key={`${c.id}-${idx}`} className={`rounded-2xl md:rounded-[2.5rem] bg-white p-4 md:p-10 shadow-sm border transition-all ${c.status === 'ALLOCATED' ? 'border-blue-100' : 'border-gray-50'} group hover:shadow-xl hover:shadow-blue-900/5 relative`}>
-                <div className="flex flex-col lg:flex-row items-start justify-between gap-4 md:gap-6 relative z-10">
-                  <div className="flex-grow w-full">
+            {courses.length > 0 ? courses.map((c, idx) => {
+              const isActive = activeCardId === c.id;
+              return (
+                <div 
+                  key={`${c.id}-${idx}`} 
+                  className={`rounded-2xl md:rounded-[2.5rem] bg-white p-4 sm:p-6 md:p-10 shadow-sm border transition-all ${
+                    c.status === 'ALLOCATED' ? 'border-blue-100' : 'border-gray-50'
+                  } group hover:shadow-xl hover:shadow-blue-900/5 relative ${
+                    isActive ? 'z-35 shadow-xl ring-2 ring-blue-100' : 'z-10'
+                  }`}
+                >
+                  <div className="flex flex-col lg:flex-row items-start justify-between gap-4 md:gap-6 relative z-10">
+                    <div className="flex-grow w-full">
                     <div className="flex items-center gap-3 mb-4">
                       {c.status === 'PENDING' ? (
                         <span className="rounded-xl bg-orange-50 px-3 py-1.5 text-[9px] font-black text-orange-700 uppercase tracking-[0.15em] border border-orange-100 animate-pulse">BELUM DIALOKASI</span>
@@ -437,6 +447,7 @@ export default function AlokasiDosenKaprodi() {
                               placeholder={c.availableLecturers?.length > 0 ? "-- Pilih Dosen Pengampu --" : "Tidak ada pengampu terdaftar"}
                               value={selectedLecturers[c.id] || ""}
                               onChange={(val) => setSelectedLecturers({ ...selectedLecturers, [c.id]: val })}
+                              onOpenChange={(open) => setActiveCardId(open ? c.id : null)}
                             />
                           </div>
                           <button
@@ -475,7 +486,8 @@ export default function AlokasiDosenKaprodi() {
                   <div className="absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-blue-50/20 group-hover:scale-150 transition-transform duration-1000"></div>
                 </div>
               </div>
-            )) : (
+              );
+            }) : (
               <div className="py-20 text-center font-bold text-gray-400 uppercase tracking-widest">
                 Belum ada pengajuan SA yang tersedia.
               </div>
