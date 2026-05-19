@@ -70,13 +70,34 @@ function PengisianFormulirSAInner() {
           .maybeSingle();
 
         if (!error && mhs) {
+          let ipkVal = mhs.ipk !== null && mhs.ipk !== undefined ? mhs.ipk.toString() : "";
+          let semVal = mhs.semester !== null && mhs.semester !== undefined ? mhs.semester.toString() : "";
+
+          // Fallback ke tabel users jika IPK/Semester kosong di tabel mahasiswa
+          if (!ipkVal || !semVal) {
+            const { data: userData } = await supabase
+              .from('users')
+              .select('ipk, semester')
+              .eq('nim_nip', formData.nim)
+              .maybeSingle();
+
+            if (userData) {
+              if (!ipkVal && userData.ipk !== null && userData.ipk !== undefined) {
+                ipkVal = userData.ipk.toString();
+              }
+              if (!semVal && userData.semester !== null && userData.semester !== undefined) {
+                semVal = userData.semester.toString();
+              }
+            }
+          }
+
           setFormData(prev => ({
             ...prev,
             nama: mhs.nama_mahasiswa || prev.nama,
             jurusan: mhs.jurusan || prev.jurusan,
             prodi: mhs.prodi || prev.prodi,
-            ipk: mhs.ipk !== null && mhs.ipk !== undefined ? mhs.ipk.toString() : prev.ipk,
-            semester: mhs.semester !== null && mhs.semester !== undefined ? mhs.semester.toString() : prev.semester
+            ipk: ipkVal || prev.ipk,
+            semester: semVal || prev.semester
           }));
         }
       } catch (err) {
@@ -94,7 +115,7 @@ function PengisianFormulirSAInner() {
       .select(`
         catatan_sekjur,
         mahasiswa:mahasiswa_id(
-          nim, nama_mahasiswa, jurusan, prodi, ipk, semester
+          id, nim, nama_mahasiswa, jurusan, prodi, ipk, semester
         ),
         items:pendaftaran_items(mk_id, nilai_lama)
       `)
@@ -104,13 +125,34 @@ function PengisianFormulirSAInner() {
     if (error || !data) return;
 
     const mhs = data.mahasiswa as any;
+    let ipkVal = mhs?.ipk?.toString() || '';
+    let semVal = mhs?.semester?.toString() || '';
+
+    // Fallback ke tabel users jika IPK/Semester kosong di tabel mahasiswa
+    if (mhs?.id && (!ipkVal || !semVal)) {
+      const { data: userData } = await supabase
+        .from('users')
+        .select('ipk, semester')
+        .eq('id', mhs.id)
+        .maybeSingle();
+
+      if (userData) {
+        if (!ipkVal && userData.ipk !== null && userData.ipk !== undefined) {
+          ipkVal = userData.ipk.toString();
+        }
+        if (!semVal && userData.semester !== null && userData.semester !== undefined) {
+          semVal = userData.semester.toString();
+        }
+      }
+    }
+
     setFormData({
       nama: mhs?.nama_mahasiswa || '',
       nim: mhs?.nim || '',
       jurusan: mhs?.jurusan || '',
       prodi: mhs?.prodi || '',
-      ipk: mhs?.ipk?.toString() || '',
-      semester: mhs?.semester?.toString() || ''
+      ipk: ipkVal,
+      semester: semVal
     });
     setCatatan((data as any).catatan_sekjur || '');
     const existingItems = (data as any).items;

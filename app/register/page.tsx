@@ -91,10 +91,10 @@ export default function RegisterPage() {
 
       if (userError) throw userError;
 
-      // 3. Sinkronisasi manual ke tabel mahasiswa
+      // 3. Sinkronisasi manual ke tabel mahasiswa (menggunakan upsert agar memperbarui IPK & Semester jika baris sudah dibuat oleh trigger)
       const { error: mhsError } = await supabase
         .from('mahasiswa')
-        .insert({
+        .upsert({
           id: authUserId,
           nim: formData.nim,
           nama_mahasiswa: formData.nama,
