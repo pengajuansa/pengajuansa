@@ -141,7 +141,7 @@ function PendaftaranBanner({ saStatus }: { saStatus: ReturnType<typeof useSAStat
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gray-50 text-2xl border border-gray-100">
           {icon}
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 min-w-0">
           <span className={`inline-flex items-center rounded-full border px-3 py-1 text-[9px] font-black uppercase tracking-widest ${badgeClass}`}>
             {badgeText}
           </span>
@@ -153,13 +153,13 @@ function PendaftaranBanner({ saStatus }: { saStatus: ReturnType<typeof useSAStat
 
       {/* Progress steps — scrollable horizontally on tiny screens */}
       <div className="overflow-x-auto pb-1">
-        <div className="flex items-center gap-2 min-w-max">
+        <div className="flex items-center justify-between gap-1 sm:gap-2 min-w-max">
           <Step done={saStatus.sudahDaftar} label="Daftar SA" />
-          <div className="h-px w-6 md:w-12 bg-gray-200 shrink-0" />
+          <div className="h-px w-4 sm:w-10 md:w-12 bg-gray-200 shrink-0" />
           <Step done={saStatus.sudahDisetujui} label="Disetujui Sekjur" />
-          <div className="h-px w-6 md:w-12 bg-gray-200 shrink-0" />
+          <div className="h-px w-4 sm:w-10 md:w-12 bg-gray-200 shrink-0" />
           <Step done={saStatus.sudahAdaDosen} label="Dosen Dialokasikan" />
-          <div className="h-px w-6 md:w-12 bg-gray-200 shrink-0" />
+          <div className="h-px w-4 sm:w-10 md:w-12 bg-gray-200 shrink-0" />
           <Step done={false} label="Portal & Tugas Aktif" />
         </div>
       </div>
@@ -176,11 +176,11 @@ function PendaftaranBanner({ saStatus }: { saStatus: ReturnType<typeof useSAStat
 
 function Step({ done, label }: { done: boolean; label: string }) {
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-1.5 w-16 sm:w-20 shrink-0">
       <div className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-black transition-colors ${done ? 'bg-[#1A365D] text-white' : 'bg-gray-100 text-gray-400'}`}>
         {done ? '✓' : '○'}
       </div>
-      <span className={`text-[9px] font-black uppercase tracking-wider whitespace-nowrap ${done ? 'text-[#1A365D]' : 'text-gray-300'}`}>
+      <span className={`text-[8px] sm:text-[9px] font-black uppercase tracking-wider text-center leading-tight ${done ? 'text-[#1A365D]' : 'text-gray-300'}`}>
         {label}
       </span>
     </div>
