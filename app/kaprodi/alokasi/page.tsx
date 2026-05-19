@@ -13,12 +13,31 @@ const CheckIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
 );
 
-const SearchableSelect = ({ options, placeholder, value, onChange }: { options: any[], placeholder: string, value: string, onChange: (val: string) => void }) => {
+const SearchableSelect = ({ 
+  options, 
+  placeholder, 
+  value, 
+  onChange,
+  onOpenChange 
+}: { 
+  options: any[], 
+  placeholder: string, 
+  value: string, 
+  onChange: (val: string) => void,
+  onOpenChange?: (open: boolean) => void 
+}) => {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const selectedItem = options.find(o => o.id === value);
   const filtered = options.filter(o => o.nama_lengkap.toLowerCase().includes(query.toLowerCase()));
+
+  // Lapor status open/close ke parent component
+  useEffect(() => {
+    if (onOpenChange) {
+      onOpenChange(isOpen);
+    }
+  }, [isOpen, onOpenChange]);
 
   // Tutup dropdown jika klik di luar
   useEffect(() => {
