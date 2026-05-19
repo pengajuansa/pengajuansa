@@ -51,12 +51,12 @@ export default function MainLayout({ children, topbarTitle }: MainLayoutProps) {
           onMenuToggle={() => setIsMobileMenuOpen((prev) => !prev)}
           isMobileMenuOpen={isMobileMenuOpen}
         />
-        <div className="flex flex-grow flex-col p-4 md:p-8">
+        <div className="flex flex-grow flex-col p-3 sm:p-4 md:p-8">
           {children}
         </div>
 
         {/* Footer */}
-        <footer className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between border-t border-gray-200 py-6 px-4 md:px-8 text-xs font-semibold text-gray-400 gap-2">
+        <footer className="mt-8 md:mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between border-t border-gray-200 py-4 md:py-6 px-3 sm:px-4 md:px-8 text-xs font-semibold text-gray-400 gap-2">
           <p className="uppercase tracking-wider text-center sm:text-left">
             © 2026 POLITEKNIK NEGERI MANADO. EXCELLENCE IN VOCATIONAL EDUCATION.
           </p>

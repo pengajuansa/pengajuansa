@@ -94,8 +94,8 @@ export default function Beranda() {
           <SemesterTimeline />
         </div>
 
-        {/* Right Sidebar */}
-        <div className="w-full xl:w-[320px] shrink-0">
+        {/* Right Sidebar — full-width on mobile, fixed-width on xl */}
+        <div className="w-full xl:w-[320px] xl:shrink-0">
           <RightSidebar user={user} saStatus={saStatus} />
         </div>
       </div>
@@ -135,35 +135,38 @@ function PendaftaranBanner({ saStatus }: { saStatus: ReturnType<typeof useSAStat
   }
 
   return (
-    <div className="rounded-2xl bg-white p-8 shadow-sm border border-gray-100 flex flex-col gap-6">
-      <div className="flex items-center gap-4">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-50 text-3xl border border-gray-100">
+    <div className="rounded-2xl bg-white p-5 md:p-8 shadow-sm border border-gray-100 flex flex-col gap-5">
+      {/* Header: icon + badge + title */}
+      <div className="flex items-start gap-4">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gray-50 text-2xl border border-gray-100">
           {icon}
         </div>
-        <div>
+        <div className="flex flex-col gap-1">
           <span className={`inline-flex items-center rounded-full border px-3 py-1 text-[9px] font-black uppercase tracking-widest ${badgeClass}`}>
             {badgeText}
           </span>
-          <h3 className="mt-2 text-lg font-black text-[#1A365D]">{title}</h3>
+          <h3 className="mt-1 text-base md:text-lg font-black text-[#1A365D] leading-snug">{title}</h3>
         </div>
       </div>
 
       <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
 
-      {/* Progress steps */}
-      <div className="flex items-center gap-3">
-        <Step done={saStatus.sudahDaftar} label="Daftar SA" />
-        <div className="h-px flex-1 bg-gray-100" />
-        <Step done={saStatus.sudahDisetujui} label="Disetujui Sekjur" />
-        <div className="h-px flex-1 bg-gray-100" />
-        <Step done={saStatus.sudahAdaDosen} label="Dosen Dialokasikan" />
-        <div className="h-px flex-1 bg-gray-100" />
-        <Step done={false} label="Portal & Tugas Aktif" />
+      {/* Progress steps — scrollable horizontally on tiny screens */}
+      <div className="overflow-x-auto pb-1">
+        <div className="flex items-center gap-2 min-w-max">
+          <Step done={saStatus.sudahDaftar} label="Daftar SA" />
+          <div className="h-px w-6 md:w-12 bg-gray-200 shrink-0" />
+          <Step done={saStatus.sudahDisetujui} label="Disetujui Sekjur" />
+          <div className="h-px w-6 md:w-12 bg-gray-200 shrink-0" />
+          <Step done={saStatus.sudahAdaDosen} label="Dosen Dialokasikan" />
+          <div className="h-px w-6 md:w-12 bg-gray-200 shrink-0" />
+          <Step done={false} label="Portal & Tugas Aktif" />
+        </div>
       </div>
 
       <Link
         href={actionHref}
-        className="inline-flex w-fit items-center gap-2 rounded-xl bg-[#1A365D] px-6 py-3 text-xs font-black text-white uppercase tracking-widest shadow-lg shadow-blue-900/20 hover:scale-105 active:scale-95 transition-all"
+        className="flex sm:inline-flex w-full sm:w-fit items-center justify-center gap-2 rounded-xl bg-[#1A365D] px-6 py-3.5 text-xs font-black text-white uppercase tracking-widest shadow-lg shadow-blue-900/20 hover:scale-105 active:scale-95 transition-all"
       >
         {actionLabel} →
       </Link>
