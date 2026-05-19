@@ -430,8 +430,8 @@ export default function AlokasiDosenKaprodi() {
                     {c.status === 'PENDING' ? (
                       <div className="flex flex-col gap-2 w-full">
                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em]">PILIH DOSEN PENGAJAR</p>
-                        <div className="flex items-center gap-3 w-full">
-                          <div className="flex-grow min-w-0">
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full">
+                          <div className="flex-grow min-w-0 w-full">
                             <SearchableSelect
                               options={c.availableLecturers || []}
                               placeholder={c.availableLecturers?.length > 0 ? "-- Pilih Dosen Pengampu --" : "Tidak ada pengampu terdaftar"}
@@ -441,8 +441,9 @@ export default function AlokasiDosenKaprodi() {
                           </div>
                           <button
                             onClick={() => handleAllocate(c.id, selectedLecturers[c.id] || "")}
-                            className="flex shrink-0 h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-2xl bg-[#0F172A] text-white shadow-2xl shadow-blue-900/20 hover:bg-green-600 hover:scale-105 active:scale-95 transition-all"
+                            className="flex shrink-0 h-12 w-full sm:w-12 md:w-14 items-center justify-center rounded-2xl bg-[#0F172A] text-white shadow-2xl shadow-blue-900/20 hover:bg-green-600 hover:scale-[1.02] sm:hover:scale-105 active:scale-95 transition-all gap-2 py-3.5 sm:py-0"
                           >
+                            <span className="inline sm:hidden text-[10px] font-black tracking-widest uppercase">Konfirmasi Alokasi</span>
                             <CheckIcon />
                           </button>
                         </div>
