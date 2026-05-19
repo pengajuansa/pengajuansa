@@ -51,7 +51,7 @@ export default function KaprodiLayout({ children, topbarTitle }: KaprodiLayoutPr
           onMenuToggle={() => setIsMobileMenuOpen((prev) => !prev)}
           isMobileMenuOpen={isMobileMenuOpen}
         />
-        <main className="flex-grow p-4 md:p-8">
+        <main className="flex-grow p-3 sm:p-4 md:p-8">
           {children}
         </main>
 

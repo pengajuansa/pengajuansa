@@ -134,22 +134,22 @@ export default function AlokasiDosenKaprodi() {
 
     const mappedCourses = filteredApplications.flatMap((app: any) => {
       const requestedItems = app.items || [];
-      
+
       return requestedItems.map((item: any) => {
         const isAllocated = allocatedPairs.includes(`${item.mk_id}-${app.id}`);
         const allocation = alokasis?.find((a: any) => a.mk_id === item.mk_id && a.pendaftaran_id === app.id);
-        
+
         let lecturerObj = null;
         if (allocation && allocation.dosen) {
           const dosenData = Array.isArray(allocation.dosen)
             ? allocation.dosen[0] as { nama_lengkap: string }
             : allocation.dosen as { nama_lengkap: string };
-            
+
           const loadSKS = alokasis?.filter((a: any) => a.dosen_id === allocation.dosen_id).reduce((sum: number, a: any) => {
             const reqItem = allRequestedItems.find((i: any) => i.mk_id === a.mk_id);
             return sum + (reqItem?.mata_kuliah?.sks || 0);
           }, 0) || 0;
-          
+
           lecturerObj = {
             id: allocation.dosen_id,
             alokasi_id: allocation.id,
@@ -245,11 +245,11 @@ export default function AlokasiDosenKaprodi() {
       fetchAlokasiData();
     } else {
       Swal.fire({
-      title: 'Gagal',
-      text: "Gagal alokasi: " + error.message,
-      icon: 'error',
-      confirmButtonColor: '#1A365D'
-    });
+        title: 'Gagal',
+        text: "Gagal alokasi: " + error.message,
+        icon: 'error',
+        confirmButtonColor: '#1A365D'
+      });
     }
   };
 
@@ -261,26 +261,26 @@ export default function AlokasiDosenKaprodi() {
       fetchAlokasiData();
     } else {
       Swal.fire({
-      title: 'Gagal',
-      text: "Gagal mereset alokasi: " + error.message,
-      icon: 'error',
-      confirmButtonColor: '#1A365D'
-    });
+        title: 'Gagal',
+        text: "Gagal mereset alokasi: " + error.message,
+        icon: 'error',
+        confirmButtonColor: '#1A365D'
+      });
     }
   };
 
   const completionRate = totalMK > 0 ? Math.round((allocatedCount / totalMK) * 100) : 0;
 
   const topbarTitle = (
-    <div className="flex items-center gap-4">
-      <h2 className="m-0 text-xl font-extrabold text-[#0F172A]">Alokasi Dosen Pengajar</h2>
-      <span className="rounded-full bg-yellow-100 px-4 py-1.5 text-[10px] font-black tracking-[0.2em] text-yellow-800 uppercase border border-yellow-200">SEMESTER ANTARA 2024</span>
+    <div className="flex flex-wrap items-center gap-2">
+      <h2 className="m-0 text-base md:text-xl font-extrabold text-[#0F172A]">Alokasi Dosen Pengajar</h2>
+      <span className="rounded-full bg-yellow-100 px-3 py-1 text-[9px] md:text-[10px] font-black tracking-[0.15em] text-yellow-800 uppercase border border-yellow-200">SEMESTER ANTARA 2024</span>
     </div>
   );
 
   return (
     <KaprodiLayout topbarTitle={topbarTitle}>
-      <div className="flex flex-col gap-10 relative">
+      <div className="flex flex-col gap-6 md:gap-10 relative">
 
         {/* Loading Overlay */}
         {loading && (
@@ -301,31 +301,31 @@ export default function AlokasiDosenKaprodi() {
         )}
 
         {/* Top Header Cards */}
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="flex-grow rounded-[2.5rem] bg-white p-10 shadow-sm border border-gray-50 group hover:shadow-lg transition-all relative overflow-hidden">
+        <div className="flex flex-col lg:flex-row gap-4 md:gap-8">
+          <div className="flex-grow rounded-2xl md:rounded-[2.5rem] bg-white p-5 md:p-10 shadow-sm border border-gray-50 group hover:shadow-lg transition-all relative overflow-hidden">
             <div className="absolute top-0 right-0 h-40 w-40 bg-blue-50/50 rounded-full -mr-16 -mt-16"></div>
 
             <div className="relative z-10">
-              <div className="flex items-baseline gap-5 mb-12">
+              <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-5 mb-6 md:mb-12">
                 <span className="text-[11px] font-black text-gray-400 uppercase tracking-[0.25em]">Status Alokasi Departemen</span>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-6xl font-black text-[#0F172A] tracking-tighter">{completionRate}%</span>
-                  <span className="text-xl font-black text-gray-400 uppercase tracking-widest">Selesai</span>
+                  <span className="text-4xl md:text-6xl font-black text-[#0F172A] tracking-tighter">{completionRate}%</span>
+                  <span className="text-base md:text-xl font-black text-gray-400 uppercase tracking-widest">Selesai</span>
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-6 sm:gap-16 mb-10">
+              <div className="flex flex-wrap gap-4 sm:gap-16 mb-6 md:mb-10">
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">TOTAL PENGAJUAN</span>
-                  <span className="text-3xl font-black text-[#0F172A]">{totalMK}</span>
+                  <span className="text-2xl md:text-3xl font-black text-[#0F172A]">{totalMK}</span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">TERALOKASI</span>
-                  <span className="text-3xl font-black text-green-600">{allocatedCount}</span>
+                  <span className="text-2xl md:text-3xl font-black text-green-600">{allocatedCount}</span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">SISA</span>
-                  <span className="text-3xl font-black text-red-600">{totalMK - allocatedCount}</span>
+                  <span className="text-2xl md:text-3xl font-black text-red-600">{totalMK - allocatedCount}</span>
                 </div>
               </div>
 
@@ -338,22 +338,22 @@ export default function AlokasiDosenKaprodi() {
             </div>
           </div>
 
-          <div className="w-full lg:w-[420px] rounded-[2.5rem] bg-white p-6 md:p-10 shadow-sm border border-gray-50 flex flex-col justify-between">
+          <div className="w-full lg:w-[420px] rounded-2xl md:rounded-[2.5rem] bg-white p-5 md:p-10 shadow-sm border border-gray-50 flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between mb-10">
+              <div className="flex items-center justify-between mb-5 md:mb-10">
                 <h3 className="text-xs font-black text-[#0F172A] uppercase tracking-[0.2em]">Kapasitas Beban Dosen TI</h3>
                 <div className="p-2.5 rounded-xl bg-blue-50 text-blue-600 shadow-inner">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
                 </div>
               </div>
 
-              <div className="space-y-8 mb-10">
+              <div className="space-y-5 md:space-y-8 mb-5 md:mb-10">
                 {bebanDosen.length > 0 ? bebanDosen.map((dosen, idx) => (
                   <div key={`${dosen.id}-${idx}`} className="flex flex-col gap-3 group">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
                         <div className={`h-10 w-10 rounded-2xl flex items-center justify-center text-[11px] font-black border border-white shadow-sm ${dosen.load > 8 ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800'}`}>
-                           {dosen.initials}
+                          {dosen.initials}
                         </div>
                         <span className="text-sm font-black text-gray-800 line-clamp-1">{dosen.name}</span>
                       </div>
@@ -380,21 +380,21 @@ export default function AlokasiDosenKaprodi() {
 
         {/* Main Content Area */}
         <div>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 md:mb-10 bg-gray-50/50 p-4 md:p-6 rounded-[2rem] border border-gray-100">
+          <div className="flex flex-col gap-4 mb-6 md:mb-10 bg-gray-50/50 p-4 md:p-6 rounded-2xl md:rounded-[2rem] border border-gray-100">
             <div>
-              <h2 className="text-lg md:text-2xl font-black text-[#0F172A] mb-1 tracking-tight">Daftar Pengajuan Mahasiswa SA</h2>
-              <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Menampilkan pengajuan yang diteruskan dari menu Formulir SA.</p>
+              <h2 className="text-base md:text-2xl font-black text-[#0F172A] mb-1 tracking-tight">Daftar Pengajuan Mahasiswa SA</h2>
+              <p className="text-[10px] md:text-[11px] font-bold text-gray-400 uppercase tracking-widest">Menampilkan pengajuan yang diteruskan dari menu Formulir SA.</p>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => fetchAlokasiData()}
-                className="flex items-center gap-2 rounded-2xl border border-gray-200 bg-white px-5 py-3 text-xs font-black text-[#0F172A] shadow-sm hover:bg-gray-50 transition-all uppercase tracking-widest"
+                className="flex items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white px-5 py-3 text-xs font-black text-[#0F172A] shadow-sm hover:bg-gray-50 transition-all uppercase tracking-widest w-full sm:w-auto"
               >
                 Refresh Data
               </button>
               <button
                 onClick={() => showNotify("Seluruh draf alokasi saat ini telah sinkron dengan Supabase!")}
-                className="flex items-center gap-2 rounded-2xl bg-[#0F172A] px-5 py-3 text-xs font-black text-white shadow-2xl shadow-blue-900/20 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest"
+                className="flex items-center justify-center gap-2 rounded-2xl bg-[#0F172A] px-5 py-3 text-xs font-black text-white shadow-2xl shadow-blue-900/20 hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-widest w-full sm:w-auto"
               >
                 Data Tersinkronisasi
               </button>
@@ -403,70 +403,72 @@ export default function AlokasiDosenKaprodi() {
 
           <div className="flex flex-col gap-8">
             {courses.length > 0 ? courses.map((c, idx) => (
-              <div key={`${c.id}-${idx}`} className={`rounded-[2.5rem] bg-white p-5 md:p-10 shadow-sm border transition-all ${c.status === 'ALLOCATED' ? 'border-blue-100' : 'border-gray-50'} group hover:shadow-xl hover:shadow-blue-900/5 relative overflow-hidden`}>
-              <div className="flex flex-col lg:flex-row items-start justify-between gap-6 relative z-10">
-                <div className="flex-grow w-full">
-                  <div className="flex items-center gap-4 mb-6">
-                    {c.status === 'PENDING' ? (
-                      <span className="rounded-xl bg-orange-50 px-4 py-2 text-[10px] font-black text-orange-700 uppercase tracking-[0.2em] border border-orange-100 animate-pulse">BELUM DIALOKASI</span>
-                    ) : (
-                      <span className="rounded-xl bg-green-50 px-4 py-2 text-[10px] font-black text-green-700 uppercase tracking-[0.2em] border border-green-100">TERALOKASI</span>
-                    )}
-                    <span className="text-[10px] font-black text-gray-300 tracking-[0.25em] uppercase italic">SA-2024</span>
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-black text-[#0F172A] mb-2 tracking-tight group-hover:text-blue-900 transition-colors">{c.studentName}</h3>
-                  <p className="text-sm font-bold text-gray-500 mb-4">{c.mkName}</p>
-                  <div className="flex flex-wrap items-center gap-3 text-[11px] font-black text-gray-400 uppercase tracking-widest">
-                    <div className="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
-                      Bobot MK: <span className="text-blue-600">{c.sks} SKS</span>
+              <div key={`${c.id}-${idx}`} className={`rounded-2xl md:rounded-[2.5rem] bg-white p-4 md:p-10 shadow-sm border transition-all ${c.status === 'ALLOCATED' ? 'border-blue-100' : 'border-gray-50'} group hover:shadow-xl hover:shadow-blue-900/5 relative overflow-hidden`}>
+                <div className="flex flex-col lg:flex-row items-start justify-between gap-4 md:gap-6 relative z-10">
+                  <div className="flex-grow w-full">
+                    <div className="flex items-center gap-3 mb-4">
+                      {c.status === 'PENDING' ? (
+                        <span className="rounded-xl bg-orange-50 px-3 py-1.5 text-[9px] font-black text-orange-700 uppercase tracking-[0.15em] border border-orange-100 animate-pulse">BELUM DIALOKASI</span>
+                      ) : (
+                        <span className="rounded-xl bg-green-50 px-3 py-1.5 text-[9px] font-black text-green-700 uppercase tracking-[0.15em] border border-green-100">TERALOKASI</span>
+                      )}
+                      <span className="text-[10px] font-black text-gray-300 tracking-[0.25em] uppercase italic">SA-2024</span>
                     </div>
-                    <div className="flex items-center gap-2 bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
-                      Program Studi: <span className="text-gray-900">{c.prodi}</span>
+                    <h3 className="text-lg md:text-2xl font-black text-[#0F172A] mb-1 md:mb-2 tracking-tight group-hover:text-blue-900 transition-colors">{c.studentName}</h3>
+                    <p className="text-sm font-bold text-gray-500 mb-3">{c.mkName}</p>
+                    <div className="flex flex-wrap items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                      <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-xl border border-gray-100">
+                        Bobot MK: <span className="text-blue-600">{c.sks} SKS</span>
+                      </div>
+                      <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-xl border border-gray-100">
+                        Prodi: <span className="text-gray-900">{c.prodi}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex flex-col items-stretch gap-6 shrink-0 w-full lg:w-[400px]">
-                  {c.status === 'PENDING' ? (
-                    <div className="flex items-center gap-4 w-full">
-                      <div className="relative flex-grow min-w-0">
-                        <p className="absolute -top-7 right-0 text-[10px] font-black text-gray-400 uppercase tracking-[0.15em] mb-1">PILIH DOSEN PENGAJAR</p>
-                        <SearchableSelect
-                          options={c.availableLecturers || []}
-                          placeholder={c.availableLecturers?.length > 0 ? "-- Pilih Dosen Pengampu --" : "Tidak ada pengampu terdaftar"}
-                          value={selectedLecturers[c.id] || ""}
-                          onChange={(val) => setSelectedLecturers({ ...selectedLecturers, [c.id]: val })}
-                        />
-                      </div>
-                      <button
-                        onClick={() => handleAllocate(c.id, selectedLecturers[c.id] || "")}
-                        className="flex shrink-0 h-14 w-14 items-center justify-center rounded-2xl bg-[#0F172A] text-white shadow-2xl shadow-blue-900/20 hover:bg-green-600 hover:scale-105 active:scale-95 transition-all animate-in zoom-in-50 duration-350"
-                      >
-                        <CheckIcon />
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-end gap-4 w-full">
-                      <div className="flex-grow flex items-center gap-4 rounded-[2rem] border border-blue-50 bg-blue-50/20 p-4 shadow-sm group/card hover:bg-blue-50 transition-all min-w-0">
-                        <div className="h-14 w-14 shrink-0 rounded-[1.2rem] bg-blue-600 flex items-center justify-center text-white font-black text-xl shadow-lg border-4 border-white/20">
-                          {c.lecturer?.initials}
-                        </div>
-                        <div className="overflow-hidden">
-                          <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">DOSEN PENGAJAR</p>
-                          <h4 className="text-base md:text-lg font-black text-[#0F172A] truncate">{c.lecturer?.name}</h4>
-                          <p className="text-[11px] font-black text-blue-600 mt-1 uppercase tracking-tighter">Total Beban: {c.lecturer?.load} SKS</p>
+                  <div className="flex flex-col items-stretch gap-4 shrink-0 w-full lg:w-[400px]">
+                    {c.status === 'PENDING' ? (
+                      <div className="flex flex-col gap-2 w-full">
+                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.15em]">PILIH DOSEN PENGAJAR</p>
+                        <div className="flex items-center gap-3 w-full">
+                          <div className="flex-grow min-w-0">
+                            <SearchableSelect
+                              options={c.availableLecturers || []}
+                              placeholder={c.availableLecturers?.length > 0 ? "-- Pilih Dosen Pengampu --" : "Tidak ada pengampu terdaftar"}
+                              value={selectedLecturers[c.id] || ""}
+                              onChange={(val) => setSelectedLecturers({ ...selectedLecturers, [c.id]: val })}
+                            />
+                          </div>
+                          <button
+                            onClick={() => handleAllocate(c.id, selectedLecturers[c.id] || "")}
+                            className="flex shrink-0 h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-2xl bg-[#0F172A] text-white shadow-2xl shadow-blue-900/20 hover:bg-green-600 hover:scale-105 active:scale-95 transition-all"
+                          >
+                            <CheckIcon />
+                          </button>
                         </div>
                       </div>
-                      <button
-                        onClick={() => handleReset(c.lecturer?.alokasi_id)}
-                        className="shrink-0 rounded-2xl bg-gray-50 px-4 py-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-600 border border-transparent hover:border-red-100 transition-all active:scale-95 shadow-sm"
-                      >
-                        RESET
-                      </button>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="flex items-center justify-end gap-4 w-full">
+                        <div className="flex-grow flex items-center gap-4 rounded-[2rem] border border-blue-50 bg-blue-50/20 p-4 shadow-sm group/card hover:bg-blue-50 transition-all min-w-0">
+                          <div className="h-14 w-14 shrink-0 rounded-[1.2rem] bg-blue-600 flex items-center justify-center text-white font-black text-xl shadow-lg border-4 border-white/20">
+                            {c.lecturer?.initials}
+                          </div>
+                          <div className="overflow-hidden">
+                            <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">DOSEN PENGAJAR</p>
+                            <h4 className="text-base md:text-lg font-black text-[#0F172A] truncate">{c.lecturer?.name}</h4>
+                            <p className="text-[11px] font-black text-blue-600 mt-1 uppercase tracking-tighter">Total Beban: {c.lecturer?.load} SKS</p>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => handleReset(c.lecturer?.alokasi_id)}
+                          className="shrink-0 rounded-2xl bg-gray-50 px-4 py-4 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] hover:bg-red-50 hover:text-red-600 border border-transparent hover:border-red-100 transition-all active:scale-95 shadow-sm"
+                        >
+                          RESET
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
                 <div className="absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-blue-50/20 -z-0 group-hover:scale-150 transition-transform duration-1000"></div>
               </div>
             )) : (
@@ -485,31 +487,31 @@ export default function AlokasiDosenKaprodi() {
           <div className="bg-white rounded-3xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between border-b border-gray-100 px-6 md:px-8 py-5 md:py-6">
               <h3 className="text-lg md:text-xl font-black text-[#1A365D]">Detail Kapasitas Beban Dosen</h3>
-              <button 
+              <button
                 onClick={() => setShowBebanModal(false)}
                 className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-900 transition-colors"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
               </button>
             </div>
-            
+
             <div className="p-5 md:p-8 overflow-y-auto flex-grow bg-gray-50/50 space-y-4 md:space-y-6">
-                {allBebanDosen.map((dosen, idx) => (
-                  <div key={`${dosen.id}-${idx}`} className="flex flex-col gap-3 group bg-white p-4 md:p-5 rounded-2xl border border-gray-100 shadow-sm">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className={`h-11 w-11 md:h-12 md:w-12 rounded-2xl flex items-center justify-center text-xs font-black border border-white shadow-sm ${dosen.load > 8 ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800'}`}>
-                          {dosen.initials}
-                        </div>
-                        <span className="text-sm md:text-base font-black text-gray-800 line-clamp-1">{dosen.name}</span>
+              {allBebanDosen.map((dosen, idx) => (
+                <div key={`${dosen.id}-${idx}`} className="flex flex-col gap-3 group bg-white p-4 md:p-5 rounded-2xl border border-gray-100 shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className={`h-11 w-11 md:h-12 md:w-12 rounded-2xl flex items-center justify-center text-xs font-black border border-white shadow-sm ${dosen.load > 8 ? 'bg-orange-100 text-orange-800' : 'bg-blue-100 text-blue-800'}`}>
+                        {dosen.initials}
                       </div>
-                      <span className="text-xs font-black text-gray-500 uppercase tracking-widest shrink-0">{dosen.load}/16 SKS</span>
+                      <span className="text-sm md:text-base font-black text-gray-800 line-clamp-1">{dosen.name}</span>
                     </div>
-                    <div className="h-3 w-full rounded-full bg-gray-50 overflow-hidden border border-gray-100 mt-2">
-                      <div className={`h-full rounded-full transition-all duration-1000 ${dosen.load > 8 ? 'bg-orange-500 group-hover:bg-orange-600' : 'bg-[#0F172A] group-hover:bg-blue-600'}`} style={{ width: `${Math.min((dosen.load / 16) * 100, 100)}%` }}></div>
-                    </div>
+                    <span className="text-xs font-black text-gray-500 uppercase tracking-widest shrink-0">{dosen.load}/16 SKS</span>
                   </div>
-                ))}
+                  <div className="h-3 w-full rounded-full bg-gray-50 overflow-hidden border border-gray-100 mt-2">
+                    <div className={`h-full rounded-full transition-all duration-1000 ${dosen.load > 8 ? 'bg-orange-500 group-hover:bg-orange-600' : 'bg-[#0F172A] group-hover:bg-blue-600'}`} style={{ width: `${Math.min((dosen.load / 16) * 100, 100)}%` }}></div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
