@@ -430,7 +430,7 @@ export default function AlokasiDosenKaprodi() {
                   className={`rounded-2xl md:rounded-[2.5rem] bg-white p-4 sm:p-6 md:p-10 shadow-sm border transition-all ${
                     c.status === 'ALLOCATED' ? 'border-blue-100' : 'border-gray-50'
                   } group hover:shadow-xl hover:shadow-blue-900/5 relative ${
-                    isActive ? 'z-35 shadow-xl ring-2 ring-blue-100' : 'z-10'
+                    isActive ? 'z-40 shadow-xl ring-2 ring-blue-100' : 'z-10'
                   }`}
                 >
                   <div className="flex flex-col lg:flex-row items-start justify-between gap-4 md:gap-6 relative z-10">
