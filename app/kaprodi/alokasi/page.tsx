@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import KaprodiLayout from '../../../components/KaprodiLayout';
 import { supabase } from '../../../supabase/lib/supabase';
 import Swal from 'sweetalert2';
@@ -28,6 +28,7 @@ const SearchableSelect = ({
 }) => {
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const selectedItem = options.find(o => o.id === value);
   const filtered = options.filter(o => o.nama_lengkap.toLowerCase().includes(query.toLowerCase()));
@@ -41,15 +42,19 @@ const SearchableSelect = ({
 
   // Tutup dropdown jika klik di luar
   useEffect(() => {
-    const handleClickOutside = () => setIsOpen(false);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
     if (isOpen) {
-      document.addEventListener('click', handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
     }
-    return () => document.removeEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
   return (
-    <div className="relative w-full" onClick={(e) => e.stopPropagation()}>
+    <div ref={dropdownRef} className="relative w-full">
       <div
         className="w-full rounded-2xl bg-gray-50 px-6 py-4.5 text-sm font-black text-gray-700 border border-gray-100 flex items-center justify-between cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
@@ -62,11 +67,11 @@ const SearchableSelect = ({
           <div className="p-3 sticky top-0 bg-white border-b border-gray-50 shrink-0">
             <input
               type="text"
-              className="w-full rounded-xl bg-gray-100 px-4 py-3 text-xs font-bold outline-none ring-2 ring-transparent focus:ring-blue-100 transition-all"
+              className="w-full rounded-xl bg-gray-100 px-4 py-3 text-xs font-bold outline-none ring-2 ring-transparent focus:ring-blue-100 transition-all text-gray-800"
               placeholder="Ketik nama dosen..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              onClick={(e) => e.stopPropagation()}
+              autoFocus
             />
           </div>
           <div className="overflow-y-auto">
@@ -430,8 +435,9 @@ export default function AlokasiDosenKaprodi() {
                   className={`rounded-2xl md:rounded-[2.5rem] bg-white p-4 sm:p-6 md:p-10 shadow-sm border transition-all ${
                     c.status === 'ALLOCATED' ? 'border-blue-100' : 'border-gray-50'
                   } group hover:shadow-xl hover:shadow-blue-900/5 relative ${
-                    isActive ? 'z-40 shadow-xl ring-2 ring-blue-100' : 'z-10'
+                    isActive ? 'shadow-xl ring-2 ring-blue-100' : ''
                   }`}
+                  style={{ zIndex: isActive ? 200 : (100 - idx) }}
                 >
                   <div className="flex flex-col lg:flex-row items-start justify-between gap-4 md:gap-6 relative z-10">
                     <div className="flex-grow w-full">
