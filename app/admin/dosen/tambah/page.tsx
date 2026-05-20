@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../../../components/AdminLayout';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { supabase } from '../../../../supabase/lib/supabase';
+import { supabase, supabaseAuthClient } from '../../../../supabase/lib/supabase';
 import Swal from 'sweetalert2';
 
 // Icons
@@ -76,8 +76,8 @@ export default function TambahDosenPage() {
       const emailGenerated = `${formData.nidn.replace(/\s+/g, '')}@polimdo.ac.id`;
       const passwordDefault = 'dosen123';
 
-      // 1. DAFTARKAN KE AUTHENTICATION
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      // 1. DAFTARKAN KE AUTHENTICATION (Menggunakan supabaseAuthClient agar session admin tidak tertimpa)
+      const { data: authData, error: authError } = await supabaseAuthClient.auth.signUp({
         email: emailGenerated,
         password: passwordDefault,
         options: {
@@ -93,6 +93,15 @@ export default function TambahDosenPage() {
 
       let userId = authData.user?.id;
 
+      if (!userId) {
+        // Coba dapatkan User ID via sign-in dengan supabaseAuthClient jika sudah terdaftar di auth tapi belum di public.users
+        const { data: signInData } = await supabaseAuthClient.auth.signInWithPassword({
+          email: emailGenerated,
+          password: passwordDefault
+        }).catch(() => ({ data: { user: null } }));
+        userId = signInData?.user?.id;
+      }
+
       // Jika user sudah ada di Auth, ambil ID-nya dari tabel users
       if (!userId) {
         const { data: existingUser } = await supabase
@@ -103,7 +112,7 @@ export default function TambahDosenPage() {
         userId = existingUser?.id;
       }
 
-      if (!userId) throw new Error("Gagal mengidentifikasi User ID.");
+      if (!userId) throw new Error("Gagal mengidentifikasi User ID. Email sudah terdaftar tetapi sandi tidak cocok atau data rusak.");
 
       // 2. SIMPAN/UPDATE KE TABEL USERS (Gunakan UPSERT agar tidak error duplicate)
       const { error: userError } = await supabase

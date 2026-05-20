@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import AdminLayout from '../../../components/AdminLayout';
 import Link from 'next/link';
-import { supabase } from '../../../supabase/lib/supabase';
+import { supabase, supabaseAuthClient } from '../../../supabase/lib/supabase';
 import Swal from 'sweetalert2';
 
 // Icons
@@ -162,7 +162,7 @@ export default function DataDosenAdmin() {
             if (mkData) mkId = mkData.id;
           }
 
-          const { data: authData, error: authError } = await supabase.auth.signUp({
+          const { data: authData, error: authError } = await supabaseAuthClient.auth.signUp({
             email: email,
             password: password,
             options: { data: { nama_lengkap: nama, role: 'dosen' } }
@@ -170,7 +170,15 @@ export default function DataDosenAdmin() {
 
           if (authError && !authError.message.includes("already registered")) throw authError;
 
-          const userId = authData.user?.id;
+          let userId = authData.user?.id;
+          if (!userId && authError?.message.includes("already registered")) {
+            const { data: signInData } = await supabaseAuthClient.auth.signInWithPassword({
+              email: email,
+              password: password
+            }).catch(() => ({ data: { user: null } }));
+            userId = signInData?.user?.id;
+          }
+
           if (userId || authError?.message.includes("already registered")) {
             // Dapatkan ID User (baik baru maupun yang sudah ada)
             const targetId = userId || (await supabase.from('users').select('id').eq('email', email).single()).data?.id;
