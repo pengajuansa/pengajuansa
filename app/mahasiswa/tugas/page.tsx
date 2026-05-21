@@ -100,7 +100,7 @@ export default function TugasMahasiswa() {
         ]);
       }
     }
-    
+
     if (!subsError) {
       if (submissionsData && submissionsData.length > 0) {
         setSubmissions(submissionsData);
@@ -204,7 +204,7 @@ export default function TugasMahasiswa() {
           <div className="relative z-10 max-w-2xl">
             <h1 className="text-2xl md:text-4xl font-black mb-3 md:mb-4">Pusat Tugas & Penilaian</h1>
             <p className="text-xs md:text-sm text-gray-400 font-medium leading-relaxed">
-              Daftar tugas akademik untuk mata kuliah Semester Antara Anda. 
+              Daftar tugas akademik untuk mata kuliah Semester Antara Anda.
               Pastikan mengumpulkan tepat waktu untuk mendapatkan nilai maksimal.
             </p>
           </div>
@@ -217,9 +217,8 @@ export default function TugasMahasiswa() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`pb-4 md:pb-5 text-[10px] md:text-[11px] font-black tracking-[0.2em] transition-all uppercase ${
-                activeTab === tab ? 'border-b-4 border-[#1A365D] text-[#1A365D]' : 'text-gray-300 hover:text-gray-500'
-              }`}
+              className={`pb-4 md:pb-5 text-[10px] md:text-[11px] font-black tracking-[0.2em] transition-all uppercase ${activeTab === tab ? 'border-b-4 border-[#1A365D] text-[#1A365D]' : 'text-gray-300 hover:text-gray-500'
+                }`}
             >
               {tab}
             </button>
@@ -261,9 +260,8 @@ export default function TugasMahasiswa() {
                     )}
                   </div>
                   <Link href={`/mahasiswa/tugas/${task.id}`} className="w-full sm:w-auto">
-                    <button className={`w-full sm:w-auto flex items-center justify-center rounded-xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest transition-all ${
-                      activeTab === 'SELESAI' ? 'bg-gray-50 text-gray-400 hover:bg-gray-100' : 'bg-[#1A365D] text-white shadow-lg shadow-blue-900/20 hover:scale-[1.02] active:scale-95'
-                    }`}>
+                    <button className={`w-full sm:w-auto flex items-center justify-center rounded-xl px-6 py-3.5 text-[10px] font-black uppercase tracking-widest transition-all ${activeTab === 'SELESAI' ? 'bg-gray-50 text-gray-400 hover:bg-gray-100' : 'bg-[#1A365D] text-white shadow-lg shadow-blue-900/20 hover:scale-[1.02] active:scale-95'
+                      }`}>
                       {activeTab === 'SELESAI' ? 'Lihat Detail' : 'Upload Tugas'}
                     </button>
                   </Link>
