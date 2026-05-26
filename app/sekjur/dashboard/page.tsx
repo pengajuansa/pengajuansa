@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import SekjurLayout from '../../../components/SekjurLayout';
 import { supabase } from '../../../supabase/lib/supabase';
+import { fetchPengaturan } from '../../../supabase/lib/pengaturan';
 import Link from 'next/link';
 
 const TrendingUpIcon = () => (
@@ -23,12 +24,20 @@ const ClipboardIcon = () => (
 
 export default function SekjurDashboard() {
   const [loading, setLoading] = useState(true);
+  const [sekjurName, setSekjurName] = useState('Bagian Sekretaris Jurusan');
   const [stats, setStats] = useState({ totalPeserta: 0, lunas: 0, pending: 0, percentageLunas: 0, totalPendaftaran: 0 });
   const [urgentVerifications, setUrgentVerifications] = useState<any[]>([]);
   const [recentActivities, setRecentActivities] = useState<any[]>([]);
 
   useEffect(() => {
     fetchDashboardData();
+    const loadPejabat = async () => {
+      const p = await fetchPengaturan();
+      if (p.sekjur_nama) {
+        setSekjurName(p.sekjur_nama);
+      }
+    };
+    loadPejabat();
   }, []);
 
   const fetchDashboardData = async () => {
@@ -92,7 +101,7 @@ export default function SekjurDashboard() {
   const topbarTitle = (
     <div>
       <h2 className="m-0 text-xl font-extrabold text-[#1A365D]">Dashboard Terpadu Sekjur & Admin</h2>
-      <p className="text-xs font-semibold text-gray-500">Selamat datang kembali, Bagian Sekretaris Jurusan</p>
+      <p className="text-xs font-semibold text-gray-500">Selamat datang kembali, {sekjurName}</p>
     </div>
   );
 

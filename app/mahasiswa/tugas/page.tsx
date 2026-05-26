@@ -230,8 +230,8 @@ export default function TugasMahasiswa() {
           {loading || saStatus.loading ? (
             <div className="col-span-full py-20 text-center font-bold text-gray-300 uppercase tracking-widest">Sinkronisasi Database...</div>
           ) : filteredTasks.length > 0 ? (
-            filteredTasks.map((task) => (
-              <div key={task.id} className="group relative rounded-[2rem] bg-white p-6 md:p-8 shadow-sm border border-gray-50 transition-all hover:shadow-xl">
+            filteredTasks.map((task, idx) => (
+              <div key={`${task.id}-${idx}`} className="group relative rounded-[2rem] bg-white p-6 md:p-8 shadow-sm border border-gray-50 transition-all hover:shadow-xl">
                 <div className="mb-6 flex items-center justify-between">
                   <span className="rounded-lg bg-blue-50 px-3 py-1 text-[10px] font-black text-blue-700 uppercase tracking-widest truncate max-w-[60%]">
                     {task.mata_kuliah?.nama_mk || 'MK SA'}

@@ -65,7 +65,12 @@ export default function LoginPage() {
         }
       }
 
-      // 3. Simpan ke localStorage untuk UI yang sudah ada
+      // 3. Override role jika email adalah milik bagian akademik
+      if (userProfile.email === 'akademik@polimdo.ac.id') {
+        userProfile.role = 'akademik';
+      }
+
+      // 4. Simpan ke localStorage untuk UI yang sudah ada
       localStorage.setItem('user', JSON.stringify(userProfile));
 
       const roleRedirects = {
@@ -73,7 +78,8 @@ export default function LoginPage() {
         dosen: '/dosen/dashboard',
         sekjur: '/sekjur/dashboard',
         kaprodi: '/kaprodi/dashboard',
-        mahasiswa: '/mahasiswa/beranda'
+        mahasiswa: '/mahasiswa/beranda',
+        akademik: '/akademik/dashboard'
       };
 
       router.push(roleRedirects[userProfile.role as keyof typeof roleRedirects] || '/mahasiswa/beranda');

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
 import AdminLayout from '../../../components/AdminLayout';
-import { supabase, supabaseAuthClient } from '../../../supabase/lib/supabase';
+import { supabase } from '../../../supabase/lib/supabase';
 import Link from 'next/link';
 
 export default function AdminMahasiswa() {
@@ -75,8 +75,8 @@ export default function AdminMahasiswa() {
     setIsSubmitting(true);
 
     try {
-      // 1. Register ke Supabase Auth (Menggunakan supabaseAuthClient agar session admin tidak tertimpa)
-      const { data: authData, error: authError } = await supabaseAuthClient.auth.signUp({
+      // 1. Register ke Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
         options: {
@@ -92,15 +92,6 @@ export default function AdminMahasiswa() {
       let userId = authData.user?.id;
 
       if (!userId) {
-        // Coba dapatkan User ID via sign-in dengan supabaseAuthClient jika sudah terdaftar di auth tapi belum di public.users
-        const { data: signInData } = await supabaseAuthClient.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password
-        }).catch(() => ({ data: { user: null } }));
-        userId = signInData?.user?.id;
-      }
-
-      if (!userId) {
         const { data: existingUser } = await supabase
           .from('users')
           .select('id')
@@ -109,7 +100,7 @@ export default function AdminMahasiswa() {
         userId = existingUser?.id;
       }
 
-      if (!userId) throw new Error("Gagal mengidentifikasi User ID. Email sudah terdaftar tetapi sandi tidak cocok atau data rusak.");
+      if (!userId) throw new Error("Gagal mengidentifikasi User ID.");
 
       // 2. Simpan ke Tabel Users (Gunakan UPSERT)
       const { error: userError } = await supabase.from('users').upsert({
@@ -135,7 +126,8 @@ export default function AdminMahasiswa() {
         jurusan: formData.jurusan,
         prodi: formData.prodi,
         ipk: parseFloat(formData.ipk) || 0,
-        semester: parseInt(formData.semester) || 1
+        semester: parseInt(formData.semester) || 1,
+        email: formData.email
       }, { onConflict: 'id' });
 
       if (mhsError) throw mhsError;
@@ -163,11 +155,11 @@ export default function AdminMahasiswa() {
 
     setIsSubmitting(true);
     const reader = new FileReader();
-    
+
     reader.onload = async (event) => {
       const csvData = event.target?.result as string;
       const lines = csvData.split(/\r?\n/);
-      
+
       if (lines.length < 2) {
         showNotify("File CSV kosong atau tidak valid", "error");
         setIsSubmitting(false);
@@ -177,7 +169,7 @@ export default function AdminMahasiswa() {
       // Deteksi Delimiter
       const firstLine = lines[0];
       const delimiters = [',', ';', '\t'];
-      const delimiter = delimiters.reduce((prev, curr) => 
+      const delimiter = delimiters.reduce((prev, curr) =>
         (firstLine.split(curr).length > firstLine.split(prev).length) ? curr : prev
       );
 
@@ -192,10 +184,10 @@ export default function AdminMahasiswa() {
         return results;
       };
 
-      const rawHeaders = parseCSVLine(firstLine, delimiter).map(h => 
+      const rawHeaders = parseCSVLine(firstLine, delimiter).map(h =>
         h.replace(/[^\x20-\x7E]/g, "").toLowerCase()
       );
-      
+
       console.log("Headers Detected:", rawHeaders);
 
       let successCount = 0;
@@ -204,7 +196,7 @@ export default function AdminMahasiswa() {
       for (let i = 1; i < lines.length; i++) {
         const line = lines[i].trim();
         if (!line) continue;
-        
+
         const values = parseCSVLine(line, delimiter);
         const row: any = {};
         rawHeaders.forEach((header, index) => {
@@ -219,7 +211,7 @@ export default function AdminMahasiswa() {
         const nama = (namaIdx !== -1 ? values[namaIdx] : row.nama) || "Mahasiswa Baru";
         const nim = (nimIdx !== -1 ? values[nimIdx] : row.nim) || "000000";
         let email = (emailIdx !== -1 ? values[emailIdx] : row.email) || "";
-        
+
         // JIKA EMAIL KOSONG: Generate dari NIM
         if (!email || !email.includes('@')) {
           email = `${nim.replace(/\s+/g, '')}@mhs.polimdo.ac.id`;
@@ -229,7 +221,7 @@ export default function AdminMahasiswa() {
         const password = row.password || "Polimdo123!";
 
         try {
-          const { data: authData, error: authError } = await supabaseAuthClient.auth.signUp({
+          const { data: authData, error: authError } = await supabase.auth.signUp({
             email: email,
             password: password,
             options: { data: { nama_lengkap: nama, role: 'mahasiswa' } }
@@ -237,15 +229,7 @@ export default function AdminMahasiswa() {
 
           if (authError && !authError.message.includes("already registered")) throw authError;
 
-          let userId = authData.user?.id;
-          if (!userId && authError?.message.includes("already registered")) {
-            const { data: signInData } = await supabaseAuthClient.auth.signInWithPassword({
-              email: email,
-              password: password
-            }).catch(() => ({ data: { user: null } }));
-            userId = signInData?.user?.id;
-          }
-
+          const userId = authData.user?.id;
           if (userId || authError?.message.includes("already registered")) {
             const targetId = userId || (await supabase.from('users').select('id').eq('email', email).single()).data?.id;
 
@@ -261,7 +245,7 @@ export default function AdminMahasiswa() {
               await supabase.from('mahasiswa').upsert({
                 id: targetId, nama_mahasiswa: nama, nim: nim,
                 jurusan: row.jurusan || "", prodi: row.prodi || "",
-                ipk: parseFloat(row.ipk) || 0, semester: parseInt(row.semester) || 1
+                ipk: parseFloat(row.ipk) || 0, semester: parseInt(row.semester) || 1, email
               }, { onConflict: 'id' });
 
               successCount++;

@@ -12,20 +12,82 @@ export default function PendaftaranPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
+  
+  // New States for Course, SKS, and Payment
+  const [mataKuliahList, setMataKuliahList] = useState<any[]>([]);
+  const [selectedMk, setSelectedMk] = useState<string>('');
+  const [sks, setSks] = useState<number>(0);
+  const [totalPembayaran, setTotalPembayaran] = useState<number>(0);
+  const [alasan, setAlasan] = useState<string>('Mengulang (Nilai D/E)');
 
   useEffect(() => {
     const userStr = localStorage.getItem('user');
     if (userStr) setUser(JSON.parse(userStr));
   }, []);
 
+  // Fetch available open courses
+  useEffect(() => {
+    const fetchMataKuliah = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('mata_kuliah')
+          .select('*')
+          .eq('status_buka', true)
+          .order('nama_mk', { ascending: true });
+        
+        if (error) throw error;
+        if (data) setMataKuliahList(data);
+      } catch (err: any) {
+        console.error('Error fetching mata kuliah:', err.message);
+      }
+    };
+
+    fetchMataKuliah();
+  }, []);
+
+  const handleMkChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const mkId = e.target.value;
+    setSelectedMk(mkId);
+    
+    const foundMk = mataKuliahList.find(mk => mk.id === mkId);
+    if (foundMk) {
+      setSks(foundMk.sks);
+      // Prefill with suggested cost (e.g. 150000 per SKS)
+      setTotalPembayaran(foundMk.sks * 150000);
+    } else {
+      setSks(0);
+      setTotalPembayaran(0);
+    }
+  };
+
   const handleSubmit = async () => {
+    if (!selectedMk) {
+      Swal.fire({
+        title: 'Informasi',
+        text: 'Harap pilih mata kuliah terlebih dahulu!',
+        icon: 'warning',
+        confirmButtonColor: '#1A365D'
+      });
+      return;
+    }
+
+    if (!totalPembayaran || totalPembayaran <= 0) {
+      Swal.fire({
+        title: 'Informasi',
+        text: 'Harap masukkan total pembayaran yang valid!',
+        icon: 'warning',
+        confirmButtonColor: '#1A365D'
+      });
+      return;
+    }
+
     if (!selectedFile) {
       Swal.fire({
-      title: 'Informasi',
-      text: 'Harap unggah berkas bukti pembayaran terlebih dahulu!',
-      icon: 'warning',
-      confirmButtonColor: '#1A365D'
-    });
+        title: 'Informasi',
+        text: 'Harap unggah berkas bukti pembayaran terlebih dahulu!',
+        icon: 'warning',
+        confirmButtonColor: '#1A365D'
+      });
       return;
     }
 
@@ -50,14 +112,25 @@ export default function PendaftaranPage() {
           mahasiswa_id: user.id,
           kode_pendaftaran: kodePendaftaran,
           status: 'Pending',
-          biaya_pendaftaran: 500000
+          biaya_pendaftaran: totalPembayaran
         })
         .select()
         .single();
 
       if (pendaftaranError) throw pendaftaranError;
 
-      // 3. Simpan tautan berkas asli ke tabel pembayaran
+      // 3. Simpan detail item pendaftaran ke tabel pendaftaran_items
+      const { error: itemError } = await supabase
+        .from('pendaftaran_items')
+        .insert({
+          pendaftaran_id: pendaftaran.id,
+          mk_id: selectedMk,
+          nilai_lama: alasan // Alasan Pengambilan terisi otomatis ke kolom nilai_lama
+        });
+
+      if (itemError) throw itemError;
+
+      // 4. Simpan tautan berkas asli ke tabel pembayaran
       const { error: pembayaranError } = await supabase
         .from('pembayaran')
         .insert({
@@ -69,19 +142,19 @@ export default function PendaftaranPage() {
       if (pembayaranError) throw pembayaranError;
 
       Swal.fire({
-      title: 'Berhasil',
-      text: 'Pendaftaran Berhasil! Bukti pembayaran telah tersimpan di database.',
-      icon: 'success',
-      confirmButtonColor: '#1A365D'
-    });
+        title: 'Berhasil',
+        text: 'Pendaftaran Berhasil! Bukti pembayaran telah tersimpan di database.',
+        icon: 'success',
+        confirmButtonColor: '#1A365D'
+      });
       router.push('/mahasiswa/riwayat');
     } catch (err: any) {
       Swal.fire({
-      title: 'Gagal',
-      text: 'Gagal menyimpan pendaftaran: ' + err.message,
-      icon: 'error',
-      confirmButtonColor: '#1A365D'
-    });
+        title: 'Gagal',
+        text: 'Gagal menyimpan pendaftaran: ' + err.message,
+        icon: 'error',
+        confirmButtonColor: '#1A365D'
+      });
     } finally {
       setLoading(false);
     }
@@ -103,11 +176,106 @@ export default function PendaftaranPage() {
             </p>
 
             <div className="flex flex-col gap-6 w-full min-w-0">
-              {!selectedFile ? (
-                <div 
-                  className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-blue-100 bg-blue-50/30 py-12 px-6 md:px-10 text-center cursor-pointer hover:bg-blue-50 transition-colors"
-                  onClick={() => document.getElementById('file-upload')?.click()}
-                >
+              {/* Form Input Mata Kuliah, SKS, dan Total Pembayaran */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 rounded-2xl bg-gray-50/50 border border-gray-100">
+                {/* Mata Kuliah Field */}
+                <div className="flex flex-col gap-2 md:col-span-2">
+                  <label className="text-xs font-black text-[#1A365D] uppercase tracking-widest ml-1">
+                    Mata Kuliah Yang Diambil <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      required
+                      value={selectedMk}
+                      onChange={handleMkChange}
+                      className="w-full rounded-xl bg-white border border-gray-200 px-5 py-4 text-sm font-bold text-gray-700 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none shadow-sm"
+                    >
+                      <option value="">Pilih Mata Kuliah...</option>
+                      {mataKuliahList.map((mk) => (
+                        <option key={mk.id} value={mk.id}>
+                          {mk.kode_mk} - {mk.nama_mk}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                {/* SKS Field */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs font-black text-[#1A365D] uppercase tracking-widest ml-1">
+                    Beban SKS
+                  </label>
+                  <input
+                    type="text"
+                    readOnly
+                    value={sks ? `${sks} SKS` : '-'}
+                    className="w-full rounded-xl bg-gray-100 border border-gray-200 px-5 py-4 text-sm font-black text-gray-500 outline-none cursor-not-allowed shadow-sm text-center"
+                  />
+                </div>
+
+                {/* Alasan Pengambilan Field */}
+                <div className="flex flex-col gap-2 md:col-span-3">
+                  <label className="text-xs font-black text-[#1A365D] uppercase tracking-widest ml-1">
+                    Alasan Pengambilan <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      required
+                      value={alasan}
+                      onChange={(e) => setAlasan(e.target.value)}
+                      className="w-full rounded-xl bg-white border border-gray-200 px-5 py-4 text-sm font-bold text-gray-700 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none shadow-sm"
+                    >
+                      <option>Mengulang (Nilai D/E)</option>
+                      <option>Perbaikan Nilai (C)</option>
+                      <option>Akselerasi (Maju)</option>
+                    </select>
+                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Total Pembayaran Field */}
+                <div className="flex flex-col gap-2 md:col-span-3">
+                  <label className="text-xs font-black text-[#1A365D] uppercase tracking-widest ml-1">
+                    Total Pembayaran (Rp) <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative group">
+                    <input
+                      type="number"
+                      required
+                      value={totalPembayaran || ''}
+                      onChange={(e) => setTotalPembayaran(Number(e.target.value))}
+                      placeholder="Masukkan total nominal transfer..."
+                      className="w-full rounded-xl bg-white border border-gray-200 px-5 py-4 text-sm font-bold text-gray-700 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-sm"
+                    />
+                    <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-xs font-black text-blue-600 tracking-wider">
+                      IDR
+                    </div>
+                  </div>
+                  <p className="text-[10px] font-semibold text-gray-400 ml-1">
+                    *Biaya disarankan: Rp150.000,- per SKS. Anda dapat mengubah nominal jika terdapat beasiswa/potongan.
+                  </p>
+                </div>
+              </div>
+
+              {/* Upload Bukti Pembayaran */}
+              <div className="flex flex-col gap-2">
+                <label className="text-xs font-black text-[#1A365D] uppercase tracking-widest ml-1">
+                  Bukti Pembayaran <span className="text-red-500">*</span>
+                </label>
+                {!selectedFile ? (
+                  <div 
+                    className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-blue-100 bg-blue-50/30 py-12 px-6 md:px-10 text-center cursor-pointer hover:bg-blue-50 transition-colors"
+                    onClick={() => document.getElementById('file-upload')?.click()}
+                  >
                   <input 
                     id="file-upload"
                     type="file" 
@@ -139,6 +307,7 @@ export default function PendaftaranPage() {
                   <button onClick={() => setSelectedFile(null)} className="text-xs font-bold text-red-500 hover:text-red-700 hover:underline uppercase shrink-0">Hapus</button>
                 </div>
               )}
+              </div>
 
                <button 
                 onClick={handleSubmit}

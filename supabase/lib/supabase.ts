@@ -10,16 +10,35 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Secondary client for creating users/dosen/mahasiswa without overriding current admin session
-export const supabaseAuthClient = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: false,
-    autoRefreshToken: false,
-    detectSessionInUrl: false,
-    storage: {
-      getItem: () => null,
-      setItem: () => {},
-      removeItem: () => {},
+let _supabaseAuthClient: any = null;
+
+const getAuthClient = () => {
+  if (!_supabaseAuthClient) {
+    _supabaseAuthClient = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        detectSessionInUrl: false,
+        storage: {
+          getItem: () => null,
+          setItem: () => {},
+          removeItem: () => {},
+        }
+      }
+    });
+  }
+  return _supabaseAuthClient;
+};
+
+export const supabaseAuthClient = new Proxy({} as any, {
+  get(target, prop, receiver) {
+    const client = getAuthClient();
+    const value = Reflect.get(client, prop, receiver);
+    if (typeof value === 'function') {
+      return value.bind(client);
     }
+    return value;
   }
 });
+
 

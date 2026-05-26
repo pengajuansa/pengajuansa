@@ -22,6 +22,7 @@ const CloseIcon = () => (
 export default function PembayaranSekjur() {
   const [payments, setPayments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
 
   // State for Modal
   const [selectedProof, setSelectedProof] = useState<string | null>(null);
@@ -29,6 +30,8 @@ export default function PembayaranSekjur() {
 
   useEffect(() => {
     fetchPayments();
+    const userStr = localStorage.getItem('user');
+    if (userStr) setUser(JSON.parse(userStr));
   }, []);
 
   const fetchPayments = async () => {
@@ -37,9 +40,13 @@ export default function PembayaranSekjur() {
       .from('pendaftaran_sa')
       .select(`
         *,
-        mahasiswa:mahasiswa_id (nama_mahasiswa, nim, prodi),
+        mahasiswa:mahasiswa_id (nama_mahasiswa, nim, prodi, jurusan, ipk, semester),
         pembayaran (bukti_url),
-        items:pendaftaran_items(id)
+        items:pendaftaran_items(
+          id,
+          nilai_lama,
+          mata_kuliah:mk_id(kode_mk, nama_mk, sks, semester_asal)
+        )
       `)
       .neq('status', 'Draft')
       .order('created_at', { ascending: false });
@@ -73,19 +80,19 @@ export default function PembayaranSekjur() {
 
       if (!error) {
         Swal.fire({
-      title: 'Berhasil',
-      text: "Pembayaran berhasil diverifikasi!",
-      icon: 'success',
-      confirmButtonColor: '#1A365D'
-    });
+          title: 'Berhasil',
+          text: "Pembayaran berhasil diverifikasi!",
+          icon: 'success',
+          confirmButtonColor: '#1A365D'
+        });
         fetchPayments();
       } else {
         Swal.fire({
-      title: 'Gagal',
-      text: "Gagal memverifikasi: " + error.message,
-      icon: 'error',
-      confirmButtonColor: '#1A365D'
-    });
+          title: 'Gagal',
+          text: "Gagal memverifikasi: " + error.message,
+          icon: 'error',
+          confirmButtonColor: '#1A365D'
+        });
       }
     }
   };
@@ -93,11 +100,11 @@ export default function PembayaranSekjur() {
   const openProofModal = (url: string | undefined) => {
     if (!url) {
       Swal.fire({
-      title: 'Informasi',
-      text: "Mahasiswa belum mengunggah bukti pembayaran.",
-      icon: 'info',
-      confirmButtonColor: '#1A365D'
-    });
+        title: 'Informasi',
+        text: "Mahasiswa belum mengunggah bukti pembayaran.",
+        icon: 'info',
+        confirmButtonColor: '#1A365D'
+      });
       return;
     }
     setSelectedProof(url);
@@ -175,9 +182,14 @@ export default function PembayaranSekjur() {
                 <div className="min-w-0">
                   <h4 className="text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-1">{pay.mahasiswa?.nama_mahasiswa}</h4>
                   <p className="text-[10px] font-medium text-gray-500">{pay.mahasiswa?.nim} • {pay.mahasiswa?.prodi || 'Sistem Informasi'}</p>
+                  {pay.items && pay.items.length > 0 && (
+                    <p className="text-[9px] font-black text-blue-600 uppercase tracking-wide mt-0.5 line-clamp-1">
+                      MK: {pay.items[0].mata_kuliah?.nama_mk} ({pay.items[0].mata_kuliah?.sks} SKS) • Alasan: {pay.items[0].nilai_lama || '-'}
+                    </p>
+                  )}
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-2 gap-3 bg-gray-50/50 rounded-2xl p-4 text-xs">
                 <div className="flex flex-col gap-0.5">
                   <span className="text-[9px] font-bold text-gray-400 uppercase">KODE FORM</span>
@@ -225,12 +237,12 @@ export default function PembayaranSekjur() {
                   </button>
                 )}
 
-                {/* Tombol Isi Formulir SA */}
-                {(!pay.items || pay.items.length === 0) && pay.pembayaran && pay.pembayaran.length > 0 && (
+                {/* Tombol Isi/Detail Formulir SA */}
+                {pay.pembayaran && pay.pembayaran.length > 0 && (
                   <Link href={`/sekjur/formulir-sa?pendaftaran_id=${pay.id}`} className="flex-1">
                     <button className="w-full flex items-center justify-center gap-1.5 rounded-xl bg-blue-600 py-2.5 text-[9px] font-black text-white shadow-md hover:scale-105 active:scale-95 transition-all uppercase">
                       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-                      Isi Form
+                      {pay.items && pay.items.length > 0 ? 'Formulir SA' : 'Isi Form'}
                     </button>
                   </Link>
                 )}
@@ -278,6 +290,11 @@ export default function PembayaranSekjur() {
                       <div className="flex flex-col">
                         <span className="text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{pay.mahasiswa?.nama_mahasiswa}</span>
                         <span className="text-[10px] font-medium text-gray-500">{pay.mahasiswa?.nim} • {pay.mahasiswa?.prodi || 'Sistem Informasi'}</span>
+                        {pay.items && pay.items.length > 0 && (
+                          <span className="text-[9px] font-black text-blue-600 uppercase tracking-wide mt-1">
+                            MK: {pay.items[0].mata_kuliah?.nama_mk} ({pay.items[0].mata_kuliah?.sks} SKS) • Alasan: {pay.items[0].nilai_lama || '-'}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </td>
@@ -318,12 +335,12 @@ export default function PembayaranSekjur() {
                         </button>
                       )}
 
-                      {/* Tombol Isi Formulir SA — hanya untuk entri dari mahasiswa yang belum diisi MK-nya */}
-                      {(!pay.items || pay.items.length === 0) && pay.pembayaran && pay.pembayaran.length > 0 && (
+                      {/* Tombol Isi/Detail Formulir SA */}
+                      {pay.pembayaran && pay.pembayaran.length > 0 && (
                         <Link href={`/sekjur/formulir-sa?pendaftaran_id=${pay.id}`}>
                           <button className="flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-[10px] font-black text-white shadow-lg shadow-blue-600/20 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
-                            Isi Formulir SA
+                            {pay.items && pay.items.length > 0 ? 'Formulir SA' : 'Isi Formulir SA'}
                           </button>
                         </Link>
                       )}

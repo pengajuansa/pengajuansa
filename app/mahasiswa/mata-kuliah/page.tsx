@@ -4,8 +4,6 @@ import React, { useEffect, useState } from 'react';
 import MainLayout from '../../../components/MainLayout';
 import { ClockIcon } from '../../../components/icons';
 import { supabase } from '../../../supabase/lib/supabase';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 import Swal from 'sweetalert2';
 
 export default function MataKuliahPage() {
@@ -81,138 +79,6 @@ export default function MataKuliahPage() {
     setLoading(false);
   };
 
-  const handleDownloadKHS = async (course: any) => {
-    if (!user) return;
-    
-    Swal.fire({
-      title: 'Menyiapkan KHS...',
-      text: 'Mohon tunggu, dokumen sedang dibuat',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
-    });
-
-    try {
-      // 1. Ambil data Mahasiswa yang lengkap (prodi dll)
-      const { data: studentData } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-
-      // 2. Ambil data tugas & nilai untuk Mata Kuliah ini
-      const { data: tasksData } = await supabase
-        .from('tugas')
-        .select(`
-          id, judul,
-          pengumpulan_tugas(nilai, mahasiswa_id)
-        `)
-        .eq('mk_id', course.id)
-        .eq('mahasiswa_id', user.id);
-
-      const tasks = tasksData || [];
-      const tableRows: any[] = [];
-      let totalNilai = 0;
-      let gradedTasksCount = 0;
-
-      tasks.forEach((t: any, index: number) => {
-        const submission = t.pengumpulan_tugas?.find((s: any) => s.mahasiswa_id === user.id);
-        const nilai = submission?.nilai !== null && submission?.nilai !== undefined ? parseFloat(submission.nilai) : 0;
-        const status = submission ? (submission.nilai !== null ? 'Dinilai' : 'Menunggu Penilaian') : 'Belum Dikumpulkan';
-        
-        if (status === 'Dinilai') {
-          totalNilai += nilai;
-          gradedTasksCount++;
-        }
-
-        tableRows.push([
-          index + 1,
-          t.judul,
-          status,
-          status === 'Dinilai' ? nilai : '-'
-        ]);
-      });
-
-      const nilaiAkhir = gradedTasksCount > 0 ? (totalNilai / gradedTasksCount).toFixed(2) : '0.00';
-      
-      let gradeHuruf = 'E';
-      const naFloat = parseFloat(nilaiAkhir as string);
-      if (naFloat >= 85) gradeHuruf = 'A';
-      else if (naFloat >= 80) gradeHuruf = 'A-';
-      else if (naFloat >= 75) gradeHuruf = 'B+';
-      else if (naFloat >= 70) gradeHuruf = 'B';
-      else if (naFloat >= 65) gradeHuruf = 'B-';
-      else if (naFloat >= 60) gradeHuruf = 'C+';
-      else if (naFloat >= 55) gradeHuruf = 'C';
-      else if (naFloat >= 40) gradeHuruf = 'D';
-
-      // 3. Generate PDF
-      const doc = new jsPDF();
-
-      // Header Kampus
-      doc.setFontSize(16);
-      doc.setFont("helvetica", "bold");
-      doc.text("KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI", 105, 20, { align: 'center' });
-      doc.setFontSize(14);
-      doc.text("POLITEKNIK NEGERI MANADO", 105, 28, { align: 'center' });
-      doc.setFontSize(10);
-      doc.setFont("helvetica", "normal");
-      doc.text("KARTU HASIL STUDI (KHS) - SEMESTER ANTARA", 105, 36, { align: 'center' });
-      doc.line(20, 42, 190, 42); // Garis pembatas
-
-      // Identitas Mahasiswa & MK
-      doc.setFontSize(10);
-      doc.text(`Nama Mahasiswa : ${studentData?.nama_lengkap || user.nama_lengkap}`, 20, 52);
-      doc.text(`NIM / NIP      : ${studentData?.nim_nip || user.nim_nip}`, 20, 59);
-      doc.text(`Program Studi  : ${studentData?.prodi || '-'}`, 20, 66);
-
-      doc.text(`Mata Kuliah    : ${course.title}`, 110, 52);
-      doc.text(`SKS / Semester : ${course.sks} / ${course.semester}`, 110, 59);
-      doc.text(`Dosen Pengampu : ${course.dosen}`, 110, 66);
-
-      // Tabel Nilai
-      autoTable(doc, {
-        startY: 75,
-        head: [['No', 'Tugas', 'Status', 'Nilai (0-100)']],
-        body: tableRows,
-        theme: 'grid',
-        headStyles: { fillColor: [26, 54, 93], textColor: 255 },
-        styles: { fontSize: 9 }
-      });
-
-      // Total & Kesimpulan Nilai
-      const finalY = (doc as any).lastAutoTable.finalY + 10;
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "bold");
-      doc.text(`Nilai Akhir Rata-rata : ${nilaiAkhir}`, 20, finalY);
-      doc.text(`Grade (Huruf Mutu)    : ${gradeHuruf}`, 20, finalY + 8);
-      
-      // Footer TTD
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      const today = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
-      doc.text(`Manado, ${today}`, 140, finalY + 20);
-      doc.text("Dosen Pengampu", 140, finalY + 27);
-      
-      doc.setFont("helvetica", "bold");
-      doc.text(course.dosen, 140, finalY + 50);
-
-      // Save PDF
-      doc.save(`KHS_SA_${course.title.replace(/\s+/g, '_')}_${user.nim_nip}.pdf`);
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Berhasil!',
-        text: `KHS untuk ${course.title} telah diunduh.`,
-        confirmButtonColor: '#1A365D'
-      });
-    } catch (err: any) {
-      console.error(err);
-      Swal.fire('Error', 'Gagal membuat dokumen KHS: ' + err.message, 'error');
-    }
-  };
-
   const topbarTitle = (
     <div className="flex items-center gap-4">
       <h2 className="m-0 text-xl font-bold text-[#1A365D]">Data Mata Kuliah SA</h2>
@@ -239,8 +105,8 @@ export default function MataKuliahPage() {
           {loading ? (
             <div className="col-span-full h-32 w-full rounded-2xl bg-gray-50 animate-pulse"></div>
           ) : courses.length > 0 ? (
-            courses.map((item) => (
-              <div key={item.id} className="relative flex flex-col rounded-3xl bg-white p-6 md:p-8 shadow-sm border border-gray-50 transition-all hover:shadow-xl hover:-translate-y-1">
+            courses.map((item, idx) => (
+              <div key={`${item.id}-${idx}`} className="relative flex flex-col rounded-3xl bg-white p-6 md:p-8 shadow-sm border border-gray-50 transition-all hover:shadow-xl hover:-translate-y-1">
                 <div className="absolute left-0 top-8 bottom-8 w-1.5 rounded-r-full" style={{ backgroundColor: item.color }}></div>
                 
                 <div className="flex items-center justify-between mb-4">
@@ -262,14 +128,6 @@ export default function MataKuliahPage() {
                       {item.dosen}
                     </p>
                   </div>
-                  {item.status === 'AKTIF' && (
-                    <button 
-                      onClick={() => handleDownloadKHS(item)}
-                      className="shrink-0 w-full sm:w-auto flex items-center justify-center rounded-xl bg-blue-50 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-blue-700 hover:bg-[#1A365D] hover:text-white transition-all shadow-sm"
-                    >
-                      Unduh KHS
-                    </button>
-                  )}
                 </div>
               </div>
             ))
