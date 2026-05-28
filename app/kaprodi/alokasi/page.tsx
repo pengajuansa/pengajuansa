@@ -63,7 +63,7 @@ const SearchableSelect = ({
         <ChevronDownIcon />
       </div>
       {isOpen && (
-        <div className="absolute z-50 top-full left-0 right-0 mt-2 rounded-2xl bg-white shadow-2xl shadow-blue-900/10 border border-gray-100 max-h-60 flex flex-col">
+        <div className="absolute z-50 top-full left-0 right-0 mt-2 rounded-2xl bg-white shadow-2xl shadow-blue-900/10 border border-gray-100 flex flex-col">
           <div className="p-3 sticky top-0 bg-white border-b border-gray-50 shrink-0">
             <input
               type="text"
@@ -74,7 +74,7 @@ const SearchableSelect = ({
               autoFocus
             />
           </div>
-          <div className="overflow-y-auto">
+          <div className="overflow-y-auto max-h-[205px]">
             {filtered.length > 0 ? filtered.map(o => (
               <div
                 key={o.id}
@@ -184,9 +184,8 @@ export default function AlokasiDosenKaprodi() {
           };
         }
 
-        // Ambil daftar dosen pengampu khusus untuk MK ini
-        const pengampuIds = masterPengampu.filter(mp => mp.mk_id === item.mk_id).map(mp => mp.dosen_id);
-        const filteredDosen = dosens?.filter(d => pengampuIds.includes(d.id)) || [];
+        // Mengambil semua dosen agar kaprodi bisa memilih siapa saja
+        const allDosen = dosens || [];
 
         return {
           id: `${app.id}-${item.mk_id}`, // Unique identifier for UI state
@@ -199,7 +198,7 @@ export default function AlokasiDosenKaprodi() {
           sks: item.mata_kuliah?.sks || 0,
           status: isAllocated ? 'ALLOCATED' : 'PENDING',
           lecturer: lecturerObj,
-          availableLecturers: filteredDosen
+          availableLecturers: allDosen
         };
       });
     });
